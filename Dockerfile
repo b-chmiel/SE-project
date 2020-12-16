@@ -1,7 +1,9 @@
 # Pull down an image from Docker Hub that includes the .NET core SDK: 
 # https://hub.docker.com/_/microsoft-dotnet-core-sdk
 # This is so we have all the tools necessary to compile the app.
+
 FROM docker.io/bachm44/ubuntu-dotnet3.1-node:stable AS build
+
 
 # Copy the source from your machine onto the container.
 WORKDIR /src
