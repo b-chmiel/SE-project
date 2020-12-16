@@ -1,10 +1,10 @@
-name: Deployment
+name: Building and testing
 
 on:
   push:
-    branches: [ master ]
+    branches-ignore: [ master ]
+  
 env:
-  HEROKU_APP_NAME: se-project-2020
   NETCORE_VERSION: '3.1.101'
   NODE_VERSION: 12.x
 
@@ -35,20 +35,3 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Test app
         run: dotnet test
-      - name: Publish app
-        run: dotnet publish --configuration Release --no-build --output publish
-    
-  dockerize:
-    runs-on: ubuntu-latest
-    needs: build-and-test
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Login to heroku
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=_  --password-stdin registry.heroku.com
-          heroku container:push web -a se-project-2020
-          heroku container:release web -a se-project-2020
-           

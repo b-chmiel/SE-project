@@ -26,9 +26,6 @@ RUN dotnet publish "se-project.csproj" -c Release -o /app/publish
 # that can still run the app.
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim
 
-# Expose port 80 to your local machine so you can access the app.
-EXPOSE 80
-
 # Copy the published app to this new runtime-only container.
 COPY --from=build /app/publish .
 
