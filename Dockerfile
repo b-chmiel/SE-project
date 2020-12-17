@@ -9,10 +9,6 @@ FROM docker.io/bachm44/ubuntu-dotnet3.1-node:stable AS build
 WORKDIR /src
 COPY . .
 
-# Install dependencies. 
-# https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-restore?tabs=netcore2x
-RUN dotnet restore "./se-project.csproj"
-
 # Compile, then pack the compiled app and dependencies into a deployable unit.
 # https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish?tabs=netcore21
 RUN dotnet publish "se-project.csproj" -c Release -o /app/publish
