@@ -20,9 +20,16 @@ namespace se_project
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    var port = Environment.GetEnvironmentVariable("PORT");
-                    webBuilder.UseStartup<Startup>()
-                        .UseUrls("http://*:" + port);
+                    var port = Environment.GetEnvironmentVariable("PORT") ;
+                    if (port == null)
+                    {
+                        webBuilder.UseStartup<Startup>();
+                    }
+                    else
+                    {
+                        webBuilder.UseStartup<Startup>()
+                            .UseUrls("http://*:" + port);
+                    }
                 });
     }
 }
