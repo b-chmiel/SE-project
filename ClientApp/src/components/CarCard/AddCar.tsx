@@ -8,6 +8,28 @@ function AddCarButton() {
   
     const initialRef: RefObject<any> = React.useRef()
     const finalRef: RefObject<any> = React.useRef()
+
+    const [model, setModel] = React.useState("");
+    const [type, setType] = React.useState("");
+    const [description, setDescription] = React.useState("");
+
+    function onChangeModel(e : React.FormEvent<HTMLInputElement>){
+        console.log("a")
+        console.log(e.currentTarget.value)
+        setModel(e.currentTarget.value)
+    }
+
+
+    function onChangeType(e : React.FormEvent<HTMLInputElement>){
+        setType(e.currentTarget.value)
+    }
+
+    function onChangeDescription(e : React.ChangeEvent<HTMLTextAreaElement>){
+        if(e.currentTarget.value.length<=300){
+            setDescription(e.currentTarget.value)
+        }
+    }
+
   
     return (
       <>
@@ -26,20 +48,19 @@ function AddCarButton() {
             <ModalBody pb={6}>
               <FormControl>
                 <FormLabel>Model</FormLabel>
-                <Input ref={initialRef} placeholder="model" />
+                <Input value={model} onChange={onChangeModel} ref={initialRef} placeholder="model" />
               </FormControl>
   
               <FormControl mt={4}>
                 <FormLabel>Type</FormLabel>
-                <Input placeholder="type" />
+                <Input value={type} onChange={onChangeType} placeholder="type" />
               </FormControl>
 
 
               <FormControl mt={4}>
-                <FormLabel>Description</FormLabel>
-                    <Textarea placeholder="description" />
+                <FormLabel>Description max. 300 letters</FormLabel>
+                    <Textarea value={description} onChange={onChangeDescription} placeholder="description" />
               </FormControl>
-              
             </ModalBody>
   
             <ModalFooter>
