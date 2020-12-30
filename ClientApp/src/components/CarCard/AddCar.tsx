@@ -1,4 +1,4 @@
-import { Button, useDisclosure, Modal, ModalOverlay, FormControl, FormLabel, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Textarea } from "@chakra-ui/react";
+import { Button, useDisclosure, Modal, ModalOverlay, FormControl, FormLabel, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Textarea, Select } from "@chakra-ui/react";
 
 import React, { RefObject } from "react";
 
@@ -20,7 +20,7 @@ function AddCarButton() {
     }
 
 
-    function onChangeType(e : React.FormEvent<HTMLInputElement>){
+    function onChangeType(e : React.ChangeEvent<HTMLSelectElement>){
         setType(e.currentTarget.value)
     }
 
@@ -53,9 +53,14 @@ function AddCarButton() {
   
               <FormControl mt={4}>
                 <FormLabel>Type</FormLabel>
-                <Input value={type} onChange={onChangeType} placeholder="type" />
+                <Select onChange={onChangeType} placeholder="Select type">
+                <option value="Sedan">Sedan</option>
+                <option value="SUV">SUV</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Truck">Truck</option>
+                <option value="Compact">Compact</option>
+              </Select>
               </FormControl>
-
 
               <FormControl mt={4}>
                 <FormLabel>Description max. 300 letters</FormLabel>
@@ -64,7 +69,7 @@ function AddCarButton() {
             </ModalBody>
   
             <ModalFooter>
-              <Button colorScheme="teal" mr={3}>
+              <Button isDisabled={model===""||type===""} colorScheme="teal" mr={3}>
                 Save
               </Button>
               <Button onClick={onClose}>Cancel</Button>
