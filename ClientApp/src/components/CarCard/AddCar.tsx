@@ -1,17 +1,19 @@
-import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Textarea, useDisclosure } from "@chakra-ui/react";
+import { Button, useDisclosure, Modal, ModalOverlay, FormControl, FormLabel, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Textarea, Select } from "@chakra-ui/react";
+
 import React, { RefObject } from "react";
 
 
-
 function AddCarButton() {
-    const {isOpen, onOpen, onClose} = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure()
+  
+    const initialRef: RefObject<any> = React.useRef()
+    const finalRef: RefObject<any> = React.useRef()
 
-    const initialRef: RefObject<any> = React.useRef();
-    const finalRef: RefObject<any> = React.useRef();
+    const [model, setModel] = React.useState("");
+    const [type, setType] = React.useState("");
+    const [description, setDescription] = React.useState("");
 
-    const [model, setModel] = React.useState('');
-    const [type, setType] = React.useState('');
-    const [description, setDescription] = React.useState('');
+
     function onChangeModel(e : React.FormEvent<HTMLInputElement>){
         setModel(e.currentTarget.value)
     }
