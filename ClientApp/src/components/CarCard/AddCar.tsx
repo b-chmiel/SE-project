@@ -1,19 +1,7 @@
-import {
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    Textarea,
-    useDisclosure,
-} from '@chakra-ui/react';
-import React, {RefObject} from 'react';
+import { Button, FormControl, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Textarea, useDisclosure } from "@chakra-ui/react";
+import React, { RefObject } from "react";
+
+
 
 function AddCarButton() {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -31,8 +19,8 @@ function AddCarButton() {
         setModel(e.currentTarget.value);
     }
 
-    function onChangeType(e: React.FormEvent<HTMLInputElement>) {
-        setType(e.currentTarget.value);
+    function onChangeType(e : React.ChangeEvent<HTMLSelectElement>){
+        setType(e.currentTarget.value)
     }
 
     function onChangeDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -42,43 +30,52 @@ function AddCarButton() {
     }
 
     return (
-        <>
-            <Button float="right" marginRight="20px" onClick={onOpen}>
-                + Add Car
-            </Button>
+      <>
+        <Button float="right" marginRight="20px" onClick={onOpen}>+ Add Car</Button>
+  
+        <Modal
+          initialFocusRef={initialRef}
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Add Car</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel>Model</FormLabel>
+                <Input value={model} onChange={onChangeModel} ref={initialRef} placeholder="model" />
+              </FormControl>
+  
+              <FormControl mt={4}>
+                <FormLabel>Type</FormLabel>
+                <Select onChange={onChangeType} placeholder="Select type">
+                <option value="Sedan">Sedan</option>
+                <option value="SUV">SUV</option>
+                <option value="Hatchback">Hatchback</option>
+                <option value="Truck">Truck</option>
+                <option value="Compact">Compact</option>
+              </Select>
+              </FormControl>
 
-            <Modal initialFocusRef={initialRef} finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Add Car</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody pb={6}>
-                        <FormControl>
-                            <FormLabel>Model</FormLabel>
-                            <Input value={model} onChange={onChangeModel} ref={initialRef} placeholder="model" />
-                        </FormControl>
-
-                        <FormControl mt={4}>
-                            <FormLabel>Type</FormLabel>
-                            <Input value={type} onChange={onChangeType} placeholder="type" />
-                        </FormControl>
-
-                        <FormControl mt={4}>
-                            <FormLabel>Description max. 300 letters</FormLabel>
-                            <Textarea value={description} onChange={onChangeDescription} placeholder="description" />
-                        </FormControl>
-                    </ModalBody>
-
-                    <ModalFooter>
-                        <Button colorScheme="teal" mr={3}>
-                            Save
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-        </>
-    );
-}
+              <FormControl mt={4}>
+                <FormLabel>Description max. 300 letters</FormLabel>
+                    <Textarea value={description} onChange={onChangeDescription} placeholder="description" />
+              </FormControl>
+            </ModalBody>
+  
+            <ModalFooter>
+              <Button isDisabled={model===""||type===""} colorScheme="teal" mr={3}>
+                Save
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    )
+  }
 
 export default AddCarButton;
