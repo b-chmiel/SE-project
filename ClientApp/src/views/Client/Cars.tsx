@@ -1,5 +1,6 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import React from "react";
+import AddCarButton from "../../components/CarCard/AddCar";
 import CarCard from "../../components/CarCard/CarCard";
 
 type CarsProps = {
@@ -8,7 +9,7 @@ type CarsProps = {
 
 const Cars: React.FC<CarsProps> = ({props}) => {
     return <Box>
-        <Button float="right" marginRight="20px">+ Add Car</Button>
+        <AddCarButton></AddCarButton>
         <CarCard
             state={2}
             model="OPEL ASTRA"
