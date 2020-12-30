@@ -30,10 +30,8 @@ export const DatePicker: React.FC<Props> = ({name, value, onChange, isClearable 
             selected={value && new Date(value)}
             onChange={(value: any) => onChange(name, value as Date)}
             isClearable={isClearable}
-            showPopperArrow={showPopperArrow}
             minDate={getTomorrow()}
-            startOpen
-            shouldCloseOnSelect={false}
+            inline
         />
     );
 };

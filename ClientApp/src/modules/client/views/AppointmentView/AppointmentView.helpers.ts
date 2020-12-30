@@ -7,12 +7,11 @@ export const validate = (values: MakeAppointmentData) => {
     const errors: FormikErrors<MakeAppointmentData> = {};
 
     if (!values.actions) {
-        console.log('sdf');
         errors.actions = 'Please specify description. ';
     }
 
-    if (values.actions.length > 400) {
-        errors.actions = 'Description should not exceed 400 characters. ';
+    if (values.actions.length > 300) {
+        errors.actions = 'Description should not exceed 300 characters. ';
     }
 
     return errors;
