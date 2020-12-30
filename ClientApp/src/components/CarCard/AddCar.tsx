@@ -13,22 +13,21 @@ function AddCarButton() {
     const [type, setType] = React.useState("");
     const [description, setDescription] = React.useState("");
 
+
     function onChangeModel(e : React.FormEvent<HTMLInputElement>){
         setModel(e.currentTarget.value)
     }
-
 
     function onChangeType(e : React.ChangeEvent<HTMLSelectElement>){
         setType(e.currentTarget.value)
     }
 
-    function onChangeDescription(e : React.ChangeEvent<HTMLTextAreaElement>){
-        if(e.currentTarget.value.length<=300){
-            setDescription(e.currentTarget.value)
+    function onChangeDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        if (e.currentTarget.value.length <= 300) {
+            setDescription(e.currentTarget.value);
         }
     }
 
-  
     return (
       <>
         <Button float="right" marginRight="20px" onClick={onOpen}>+ Add Car</Button>
@@ -78,5 +77,4 @@ function AddCarButton() {
     )
   }
 
-
-export default AddCarButton
+export default AddCarButton;

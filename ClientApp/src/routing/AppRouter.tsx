@@ -1,8 +1,9 @@
 import React from 'react';
-import {getBaseName} from "./AppRouter.helpers";
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import StartPageView from "../modules/startPage/views/StartPageView/StartPageView";
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
 import Cars from '../views/Client/Cars';
+import {getBaseName} from './AppRouter.helpers';
+import {Routes} from './routes';
 
 export const AppRouter: React.FC = () => {
     const basename = getBaseName();
@@ -10,11 +11,14 @@ export const AppRouter: React.FC = () => {
         <BrowserRouter basename={basename}>
             <Switch>
                 <Route path={'/'} exact>
-                    <StartPageView/>
+                    <AppointmentView />
+                </Route>
+                <Route path={Routes.MAKE_APPOINTMENT}>
+                    <AppointmentView />
                 </Route>
                 {/* card test component to remove  */}
                 <Route path={'/cars'}>
-                    <Cars props={""}></Cars>
+                    <Cars props={''}></Cars>
                 </Route>
             </Switch>
         </BrowserRouter>
