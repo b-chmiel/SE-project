@@ -10,6 +10,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Textarea,
     useDisclosure,
 } from '@chakra-ui/react';
 import React, {RefObject} from 'react';
@@ -44,7 +45,7 @@ function AddCarButton() {
 
                         <FormControl mt={4}>
                             <FormLabel>Description</FormLabel>
-                            <Input placeholder="description" />
+                            <Textarea placeholder="description" />
                         </FormControl>
                     </ModalBody>
 
