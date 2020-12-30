@@ -14,8 +14,6 @@ function AddCarButton() {
     const [description, setDescription] = React.useState("");
 
     function onChangeModel(e : React.FormEvent<HTMLInputElement>){
-        console.log("a")
-        console.log(e.currentTarget.value)
         setModel(e.currentTarget.value)
     }
 
