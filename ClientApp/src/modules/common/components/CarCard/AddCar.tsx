@@ -4,21 +4,20 @@ import React, { RefObject } from "react";
 
 
 function AddCarButton() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-  
-    const initialRef: RefObject<any> = React.useRef()
-    const finalRef: RefObject<any> = React.useRef()
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
-    const [model, setModel] = React.useState("");
-    const [type, setType] = React.useState("");
+    const initialRef: RefObject<any> = React.useRef();
+    const finalRef: RefObject<any> = React.useRef();
 
+    const [model, setModel] = React.useState('');
+    const [type, setType] = React.useState('');
 
-    function onChangeModel(e : React.FormEvent<HTMLInputElement>){
-        setModel(e.currentTarget.value)
+    function onChangeModel(e: React.FormEvent<HTMLInputElement>) {
+        setModel(e.currentTarget.value);
     }
 
-    function onChangeType(e : React.ChangeEvent<HTMLSelectElement>){
-        setType(e.currentTarget.value)
+    function onChangeType(e: React.ChangeEvent<HTMLSelectElement>) {
+        setType(e.currentTarget.value);
     }
 
     return (

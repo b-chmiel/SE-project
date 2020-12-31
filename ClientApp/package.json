@@ -24,6 +24,7 @@
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "typeface-roboto": "^1.1.13",
     "typescript": "^3.9.7",
     "web-vitals": "^0.2.4"
   },
