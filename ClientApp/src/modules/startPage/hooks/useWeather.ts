@@ -1,6 +1,6 @@
-import {useState} from "react";
-import {WeatherInfo} from "../api/weatherAPI.types";
-import {getWeather} from "../api/weatherAPI";
+import {useState} from 'react';
+import {WeatherInfo} from '../api/weatherAPI.types';
+import {getWeather} from '../api/weatherAPI';
 
 export function useWeather() {
     const [weather, setWeather] = useState<WeatherInfo[] | null>(null);
