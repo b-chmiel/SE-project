@@ -5,7 +5,7 @@ import {AppointmentView} from '../modules/client/views/AppointmentView/Appointme
 import AddCarButton from '../modules/common/components/CarCard/AddCar';
 import CarCard from '../modules/common/components/CarCard/CarCard';
 import {Menu} from '../modules/common/components/Menu/Menu';
-import {MENU_HEIGHT} from '../modules/common/components/Menu/Menu.constants';
+import {MENU_HEIGHT, MENU_WIDTH} from '../modules/common/components/Menu/Menu.constants';
 import {getBaseName} from './AppRouter.helpers';
 import {Routes} from './routes';
 
@@ -14,12 +14,12 @@ export const AppRouter: React.FC = () => {
     return (
         <BrowserRouter basename={basename}>
             <Menu />
-            <Box marginTop={`${MENU_HEIGHT + 20}px`}>
+            <Box paddingTop={`${MENU_HEIGHT + 24}px`} marginLeft={`${MENU_WIDTH + 24}px`}>
                 <Switch>
                     <Route path={'/'} exact>
                         <AppointmentView />
                     </Route>
-                    <Route path={Routes.MAKE_APPOINTMENT}>
+                    <Route path={Routes.REPORT_ACCIDENT}>
                         <AppointmentView />
                     </Route>
                     {/*TODO remove this. This is only for testing car component*/}

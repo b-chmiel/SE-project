@@ -4,16 +4,19 @@ export const colors = {
     green: '#0ECC21',
     red: '#EB0000',
     yellow: '#E3992B',
-    purple: '#8000FF',
     darkgray: '#454545',
     white: 'white',
+    electricViolet: '#8000FF', //accent color
+    purpleHeart: '#7627C5',
+    mediumPurple: '#A96BE7',
+    windsor: '#470B84',
 };
 
 export const Container = {
     variants: {
         'car-card': {
             border: '2px',
-            borderColor: '#8000FF',
+            borderColor: colors.electricViolet,
             padding: '10px',
             borderRadius: '8px',
             margin: '20px',
@@ -28,12 +31,12 @@ export const Button = {
     variants: {
         outline: {
             border: '2px solid',
-            borderColor: colors.purple,
+            borderColor: colors.electricViolet,
         },
         solid: {
-            bg: colors.purple,
+            bg: colors.electricViolet,
             color: colors.white,
-            _hover: {bg: colors.purple},
+            _hover: {bg: colors.electricViolet},
         },
     },
     defaultProps: {
@@ -42,10 +45,19 @@ export const Button = {
     },
 };
 
+export const Text = {
+    baseStyle: {
+        fontFamily: 'Roboto',
+        size: '24px',
+        weight: '400',
+    },
+};
+
 export const theme = extendTheme({
     components: {
         Container,
         Button,
+        Text,
     },
     colors,
 });

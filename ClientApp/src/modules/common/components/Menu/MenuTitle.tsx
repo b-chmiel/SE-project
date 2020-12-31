@@ -12,7 +12,7 @@ export const MenuTitle = () => {
             justify={'space-between'}
             p={5}
             shadow={'sm'}
-            backgroundColor={colors.purple}
+            backgroundColor={colors.electricViolet}
             width={'100%'}
             h={`${MENU_HEIGHT}px`}
             position={'fixed'}
