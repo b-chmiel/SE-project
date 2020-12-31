@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import React from "react";
-import AddCarButton from "../../components/CarCard/AddCar";
-import CarCard from "../../components/CarCard/CarCard";
+import AddCarButton from "../../modules/common/components/CarCard/AddCar";
+import CarCard from '../../modules/common/components/CarCard/CarCard'
 
 type CarsProps = {
     props: string
