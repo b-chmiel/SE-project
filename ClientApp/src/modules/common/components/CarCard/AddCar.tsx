@@ -1,4 +1,4 @@
-import { Button, useDisclosure, Modal, ModalOverlay, FormControl, FormLabel, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Textarea, Select } from "@chakra-ui/react";
+import { Button, useDisclosure, Modal, ModalOverlay, FormControl, FormLabel, Input, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, Select } from "@chakra-ui/react";
 
 import React, { RefObject } from "react";
 
@@ -11,7 +11,6 @@ function AddCarButton() {
 
     const [model, setModel] = React.useState("");
     const [type, setType] = React.useState("");
-    const [description, setDescription] = React.useState("");
 
 
     function onChangeModel(e : React.FormEvent<HTMLInputElement>){
@@ -20,12 +19,6 @@ function AddCarButton() {
 
     function onChangeType(e : React.ChangeEvent<HTMLSelectElement>){
         setType(e.currentTarget.value)
-    }
-
-    function onChangeDescription(e: React.ChangeEvent<HTMLTextAreaElement>) {
-        if (e.currentTarget.value.length <= 300) {
-            setDescription(e.currentTarget.value);
-        }
     }
 
     return (
@@ -57,11 +50,6 @@ function AddCarButton() {
                 <option value="Truck">Truck</option>
                 <option value="Compact">Compact</option>
               </Select>
-              </FormControl>
-
-              <FormControl mt={4}>
-                <FormLabel>Description max. 300 letters</FormLabel>
-                    <Textarea value={description} onChange={onChangeDescription} placeholder="description" />
               </FormControl>
             </ModalBody>
   
