@@ -3,12 +3,13 @@ import { Center, Container, Grid, GridItem, Box, Button } from "@chakra-ui/react
 import React from "react";
 import car from "./resources/car.svg";
 import { useHistory } from "react-router-dom";
+import type {DiagnosticProfileType} from '../DiagnosticProfile/DiagnosticProfileType'
 
 type CardProps = {
     state: number,
     model: string,
     type: string,
-    desc: string
+    diagnostics: DiagnosticProfileType
 }
 
 function getCardState(state: number){
@@ -35,7 +36,7 @@ function getCardState(state: number){
     }
 }
 
-const CarCard: React.FC<CardProps> = ({ state, model, type, desc}) => {
+const CarCard: React.FC<CardProps> = ({ state, model, type, diagnostics}) => {
     let history = useHistory();
     function makeAppointment(carid: number) {
         history.push("/appointment?car_id=" + carid); //CHANGE to appropiate car id 
@@ -66,9 +67,25 @@ const CarCard: React.FC<CardProps> = ({ state, model, type, desc}) => {
             <GridItem colSpan={4} rowSpan={4}>
                 {getCardState(state)}
                 <Box color="darkgray"
-                    paddingTop="10px">
-                    {desc}
+                    paddingTop="5px">
+                    breaks: {diagnostics.breaks}
                 </Box>
+                <Box color="darkgray">
+                    engine: {diagnostics.engine}
+                </Box>
+                <Box color="darkgray">
+                    body: {diagnostics.body}
+                </Box>
+                <Box color="darkgray">
+                lighting: {diagnostics.lighting}
+                </Box>
+                <Box color="darkgray">
+                battery: {diagnostics.battery}
+                </Box>
+                <Box color="darkgray">
+                    sensors: {diagnostics.sensors}
+                </Box>
+                
                 
             </GridItem>
             <GridItem colSpan={4} rowSpan={1}>

@@ -11,18 +11,17 @@ const Cars: React.FC<CarsProps> = ({props}) => {
     return <Box>
         <AddCarButton></AddCarButton>
         <CarCard
+            diagnostics={{engine: "broke ", body: "broke ", breaks: "broke", battery: "doesnt work", lighting: "doesnt work", sensors: "doesnt work"}}
             state={2}
             model="OPEL ASTRA"
             type="SEDAN"
-            desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci dapibus ultrices in iaculis nunc sed. Sit amet est placerat in egestas erat imperdiet sed euismod. Rhoncus dolor purus non enim praesent elementum facilisis leo vel."
         ></CarCard>
         <CarCard
+            diagnostics={{engine: "broke ", body: "broke ", breaks: "broke", battery: "doesnt work", lighting: "doesnt work", sensors: "doesnt work"}}
             state={1}
             model="VOLKSVAGEN PASSAT"
             type="SEDAN"
-            desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Orci dapibus ultrices in iaculis nunc sed. Sit amet est placerat in egestas erat imperdiet sed euismod. Rhoncus dolor purus non enim praesent elementum facilisis leo vel."
         ></CarCard>
     </Box>
 }
-
 export default Cars
