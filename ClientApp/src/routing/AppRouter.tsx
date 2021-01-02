@@ -4,9 +4,10 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
 import {Menu} from '../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../modules/common/components/Menu/Menu.constants';
+import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
 import Cars from '../views/Client/Cars';
 import {getBaseName} from './AppRouter.helpers';
-import {ClientRoutes} from './routes';
+import {ClientRoutes, WorkshopEmployeeRoutes} from './routes';
 
 export const AppRouter: React.FC = () => {
     const basename = getBaseName();
@@ -24,6 +25,9 @@ export const AppRouter: React.FC = () => {
                     {/*TODO remove this. This is only for testing car component*/}
                     <Route path={'/cars'}>
                         <Cars props={''}></Cars>
+                    </Route>
+                    <Route path={WorkshopEmployeeRoutes.CASE}>
+                        <CaseView />
                     </Route>
                 </Switch>
             </Box>

@@ -1,7 +1,7 @@
 import {Box} from '@chakra-ui/react';
 import React from 'react';
-import AddCarButton from '../../modules/common/components/CarCard/AddCar';
-import CarCard from '../../modules/common/components/CarCard/CarCard';
+import {CarCard} from '../../modules/common/components/CarCard/CarCard';
+import {CarCardModal} from '../../modules/common/components/CarCard/CarCardModal';
 
 type CarsProps = {
     props: string;
@@ -10,7 +10,7 @@ type CarsProps = {
 const Cars: React.FC<CarsProps> = ({props}) => {
     return (
         <Box>
-            <AddCarButton></AddCarButton>
+            <CarCardModal></CarCardModal>
             <CarCard
                 diagnostics={{
                     engine: 'broke ',
@@ -23,6 +23,7 @@ const Cars: React.FC<CarsProps> = ({props}) => {
                 state={2}
                 model="OPEL ASTRA"
                 type="SEDAN"
+                showAppointmentButton
             ></CarCard>
             <CarCard
                 diagnostics={{
@@ -36,6 +37,7 @@ const Cars: React.FC<CarsProps> = ({props}) => {
                 state={1}
                 model="VOLKSVAGEN PASSAT"
                 type="SEDAN"
+                showAppointmentButton={true}
             ></CarCard>
         </Box>
     );
