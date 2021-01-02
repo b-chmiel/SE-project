@@ -1,22 +1,21 @@
 import {
     Button,
-    useDisclosure,
-    Modal,
-    ModalOverlay,
     FormControl,
     FormLabel,
     Input,
+    Modal,
     ModalBody,
     ModalCloseButton,
     ModalContent,
     ModalFooter,
     ModalHeader,
+    ModalOverlay,
     Select,
+    useDisclosure,
 } from '@chakra-ui/react';
-
 import React, {RefObject} from 'react';
 
-function AddCarButton() {
+export const CarCardModal: React.FC = () => {
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     const initialRef: RefObject<any> = React.useRef();
@@ -72,6 +71,4 @@ function AddCarButton() {
             </Modal>
         </>
     );
-}
-
-export default AddCarButton;
+};
