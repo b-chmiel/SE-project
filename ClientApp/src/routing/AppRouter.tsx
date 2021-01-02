@@ -6,7 +6,7 @@ import {Menu} from '../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../modules/common/components/Menu/Menu.constants';
 import Cars from '../views/Client/Cars';
 import {getBaseName} from './AppRouter.helpers';
-import {Routes} from './routes';
+import {ClientRoutes} from './routes';
 
 export const AppRouter: React.FC = () => {
     const basename = getBaseName();
@@ -18,7 +18,7 @@ export const AppRouter: React.FC = () => {
                     <Route path={'/'} exact>
                         <AppointmentView />
                     </Route>
-                    <Route path={Routes.REPORT_ACCIDENT}>
+                    <Route path={ClientRoutes.REPORT_ACCIDENT}>
                         <AppointmentView />
                     </Route>
                     {/*TODO remove this. This is only for testing car component*/}

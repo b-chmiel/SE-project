@@ -2,10 +2,13 @@ import {Flex} from '@chakra-ui/react';
 import React from 'react';
 import {colors} from '../../../../../globalTheme/theme';
 import {MENU_HEIGHT, MENU_WIDTH} from '../Menu.constants';
-import {Links} from './MenuNav.constants';
+import {getMenuEntries} from './MenuNav.helpers';
+import {CURRENT_USER} from './MenuNav.mocks';
 import {MenuNavItem} from './MenuNavItem';
 
 export const MenuNav = () => {
+    const menuLinks = getMenuEntries(CURRENT_USER) as any[];
+
     return (
         <Flex
             as={'nav'}
@@ -18,8 +21,8 @@ export const MenuNav = () => {
             flexDir={'column'}
             paddingTop={`${MENU_HEIGHT}px`}
         >
-            {Links.map(({path, title}) => (
-                <MenuNavItem path={path} title={title} />
+            {menuLinks.map(({path, title}, i) => (
+                <MenuNavItem key={i} path={path} title={title} />
             ))}
         </Flex>
     );
