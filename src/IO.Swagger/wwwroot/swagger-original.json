@@ -1,0 +1,1087 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "<h2> WILL BE UPDATED!</h2></br><b>Incomplete</b> API for car workshop system (lacks employees and parts management).</br><a href=\"https://app.swaggerhub.com/apis/soft_eng/project/0.1.1\">Swagger project (contains models)</a>.",
+    "version" : "0.1.1",
+    "title" : "Car Workshop",
+    "contact" : {
+      "email" : "k.baciejowski@gmail.com"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/soft_eng/project/0.1.1",
+  "tags" : [ {
+    "name" : "clients",
+    "description" : "Operations about clients"
+  }, {
+    "name" : "cars",
+    "description" : "Car-related operations"
+  }, {
+    "name" : "visits",
+    "description" : "Visit- related operations"
+  }, {
+    "name" : "payments",
+    "description" : "Payment management"
+  }, {
+    "name" : "employees",
+    "description" : "Employees' operations"
+  }, {
+    "name" : "parts",
+    "description" : "Parts circulation"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/client" : {
+      "post" : {
+        "tags" : [ "clients" ],
+        "summary" : "Add new client to the system",
+        "operationId" : "addClient",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "New client attributes",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/body"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "clients" ],
+        "summary" : "Update an existing client",
+        "operationId" : "updateClient",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "New client object",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Client"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "404" : {
+            "description" : "Client not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:clients" ]
+        } ]
+      }
+    },
+    "/client/{clientId}" : {
+      "get" : {
+        "tags" : [ "clients" ],
+        "summary" : "Find client by ID",
+        "description" : "Returns a single client",
+        "operationId" : "getClientById",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clientId",
+          "in" : "path",
+          "description" : "Id of client to return",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Client"
+            }
+          },
+          "400" : {
+            "description" : "Invalid Id supplied"
+          },
+          "404" : {
+            "description" : "Client not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:clients" ]
+        } ]
+      }
+    },
+    "/car" : {
+      "post" : {
+        "tags" : [ "cars" ],
+        "summary" : "Add new car to the system",
+        "operationId" : "addCar",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/Car"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:cars" ]
+        } ]
+      }
+    },
+    "/car/{carId}" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car by id",
+        "operationId" : "getCar",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carId",
+          "in" : "path",
+          "description" : "Id of car to return",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Car"
+            }
+          },
+          "400" : {
+            "description" : "Invalid Id supplied"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:cars" ]
+        } ]
+      }
+    },
+    "/car/{carId}/insurance" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find insurance by car Id",
+        "operationId" : "getInsurance",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carId",
+          "in" : "path",
+          "description" : "Id of car assigned to insurance",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Insurance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid Id supplied"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:cars" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "cars" ],
+        "summary" : "Add/overwrite car insurance",
+        "description" : "Adds or overwrites car insurance. Performed action is determined by type of insurance (i.e. if liability insurance exists it will be replaced).",
+        "operationId" : "putInsurance",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carId",
+          "in" : "path",
+          "description" : "Id of car assigned to insurance",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "Insurance",
+          "description" : "New insurance object",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Client"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:cars" ]
+        } ]
+      }
+    },
+    "/employee" : {
+      "post" : {
+        "tags" : [ "employees" ],
+        "summary" : "Add new employee",
+        "operationId" : "addEmployee",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/body_1"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:employees" ]
+        } ]
+      }
+    },
+    "/client/{clientId}/set_discount" : {
+      "put" : {
+        "tags" : [ "clients", "employees" ],
+        "summary" : "Set client's discount",
+        "description" : "Accepts discount in percentage (0-30)",
+        "operationId" : "setDiscount",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clientId",
+          "in" : "path",
+          "description" : "Client id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "New client's discount",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/body_2"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "404" : {
+            "description" : "Client not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:clients" ]
+        } ]
+      }
+    },
+    "/car/{carId}/profile" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find diagnostic profile by car Id",
+        "operationId" : "getProfile",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carId",
+          "in" : "path",
+          "description" : "Id of car assigned to the diagnostic profile",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DiagnosticProfile"
+            }
+          },
+          "400" : {
+            "description" : "Invalid Id supplied"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:cars" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "cars", "employees" ],
+        "summary" : "Overwrite car profile",
+        "description" : "Overwrites diagnostic profile of designated car.",
+        "operationId" : "setProfile",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "carId",
+          "in" : "path",
+          "description" : "Id of car assigned to the diagnostic profile",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "Profile",
+          "description" : "New diagnostic profile object",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/DiagnosticProfile"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "404" : {
+            "description" : "Profile not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:cars" ]
+        } ]
+      }
+    },
+    "/visit" : {
+      "post" : {
+        "tags" : [ "visits" ],
+        "summary" : "Schedule a visit",
+        "operationId" : "addVisit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Information about scheduled visit. Required actions can be modified later on by an employee.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/body_3"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:visits" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "visits", "employees" ],
+        "summary" : "Update a visit",
+        "operationId" : "updateVisit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Visit"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:visits" ]
+        } ]
+      }
+    },
+    "/visit/find_by_status" : {
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Find visits by Status",
+        "description" : "Multiple status values can be provided with comma separated strings",
+        "operationId" : "findVisits",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status values that need to be considered for filter",
+          "required" : true,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "default" : "planned",
+            "enum" : [ "planned", "atService", "repaired", "checkedIn" ]
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/inline_response_200"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid status value"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:visits" ]
+        } ]
+      }
+    },
+    "/visit/{visitId}" : {
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Find visit by Id",
+        "operationId" : "getVisit",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/inline_response_200"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid id supplied"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:visits" ]
+        } ]
+      }
+    },
+    "/client/{clientId}/visits" : {
+      "get" : {
+        "tags" : [ "clients", "visits" ],
+        "summary" : "Get all client's visits",
+        "operationId" : "getClientVisits",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clientId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Visit"
+              }
+            }
+          },
+          "404" : {
+            "description" : "Client not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:visits" ]
+        } ]
+      }
+    },
+    "/payment/{visitId}" : {
+      "get" : {
+        "tags" : [ "payments" ],
+        "summary" : "Read payment information",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Payment"
+            }
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "read:payments" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "payments" ],
+        "summary" : "Create/overwrite payment.",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Payment"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:payments" ]
+        } ]
+      }
+    },
+    "/visit/{visitId}/repair" : {
+      "put" : {
+        "tags" : [ "employees", "visits" ],
+        "summary" : "Marks repairment as finished",
+        "operationId" : "repair",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:visits" ]
+        } ]
+      }
+    },
+    "/visit/{visitId}/maintain" : {
+      "put" : {
+        "tags" : [ "employees", "visits" ],
+        "summary" : "Marks maintenance as finished",
+        "operationId" : "maintain",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:visits" ]
+        } ]
+      }
+    },
+    "/visit/{visitId}/diagnose" : {
+      "put" : {
+        "tags" : [ "employees", "visits" ],
+        "summary" : "Marks diagnostic as finished",
+        "operationId" : "diagnose",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "workshop_auth" : [ "write:visits" ]
+        } ]
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "workshop_auth" : {
+      "type" : "oauth2",
+      "authorizationUrl" : "https://example.com/oauth/dialog",
+      "flow" : "implicit",
+      "scopes" : {
+        "write:clients" : "modify clients",
+        "read:clients" : "read clients",
+        "write:cars" : "modify cars",
+        "read:cars" : "read cars",
+        "write:visits" : "modify visits",
+        "read:visits" : "read visits",
+        "write:payments" : "modify payments",
+        "read:payments" : "read payments",
+        "write:employees" : "modify employees",
+        "read:employees" : "read employees"
+      }
+    },
+    "api_key" : {
+      "type" : "apiKey",
+      "name" : "api_key",
+      "in" : "header"
+    }
+  },
+  "definitions" : {
+    "Employee" : {
+      "type" : "object",
+      "required" : [ "employeeId", "name", "surname" ],
+      "properties" : {
+        "employeeId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 13
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Katarzyna"
+        },
+        "surname" : {
+          "type" : "string",
+          "example" : "Nowak"
+        }
+      }
+    },
+    "Client" : {
+      "type" : "object",
+      "required" : [ "clientId", "discount", "name", "phoneNumber", "surname" ],
+      "properties" : {
+        "clientId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 152
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Jan"
+        },
+        "surname" : {
+          "type" : "string",
+          "example" : "Kowalski"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "example" : "+48 123 456 789"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "kowalski@example.com"
+        },
+        "discount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 5
+        }
+      },
+      "example" : {
+        "clientId" : 152,
+        "phoneNumber" : "+48 123 456 789",
+        "surname" : "Kowalski",
+        "name" : "Jan",
+        "discount" : 5,
+        "email" : "kowalski@example.com"
+      }
+    },
+    "Car" : {
+      "type" : "object",
+      "required" : [ "carId", "model", "type" ],
+      "properties" : {
+        "carId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 301
+        },
+        "model" : {
+          "type" : "string",
+          "example" : "Škoda Fabia 2012"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "sedan",
+          "enum" : [ "sedan", "hatchback" ]
+        }
+      },
+      "example" : {
+        "model" : "Škoda Fabia 2012",
+        "type" : "sedan",
+        "carId" : 301
+      }
+    },
+    "Insurance" : {
+      "type" : "object",
+      "required" : [ "coverage", "dateOfExpiry", "type" ],
+      "properties" : {
+        "dateOfExpiry" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-30T23:59:59.999+01"
+        },
+        "coverage" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 100000
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "liability insurance",
+          "enum" : [ "liability insurance", "comprehensive cover" ]
+        }
+      },
+      "example" : {
+        "coverage" : 100000,
+        "dateOfExpiry" : "2020-12-30T23:59:59.999+01",
+        "type" : "liability insurance"
+      }
+    },
+    "Visit" : {
+      "type" : "object",
+      "required" : [ "date", "visitId" ],
+      "properties" : {
+        "visitId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 5512
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-24T12:00:00+01"
+        },
+        "price" : {
+          "type" : "number",
+          "example" : 100.5
+        },
+        "requiredActions" : {
+          "type" : "array",
+          "example" : [ "oil change", "breaks checking" ],
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "atService",
+          "enum" : [ "atService", "repaired", "checkedIn" ]
+        },
+        "assignedEmployees" : {
+          "type" : "array",
+          "example" : [ {
+            "employeeId" : 12,
+            "name" : "Bolesław",
+            "surname" : "Nowak"
+          }, {
+            "employeeId" : 13,
+            "name" : "Katarzyna",
+            "surname" : "Nowak"
+          } ],
+          "items" : {
+            "$ref" : "#/definitions/Employee"
+          }
+        }
+      },
+      "example" : {
+        "date" : "2020-12-24T12:00:00+01",
+        "requiredActions" : [ "oil change", "breaks checking" ],
+        "visitId" : 5512,
+        "price" : 100.5,
+        "assignedEmployees" : [ {
+          "employeeId" : 12,
+          "name" : "Bolesław",
+          "surname" : "Nowak"
+        }, {
+          "employeeId" : 13,
+          "name" : "Katarzyna",
+          "surname" : "Nowak"
+        } ],
+        "status" : "atService"
+      }
+    },
+    "DiagnosticProfile" : {
+      "type" : "object",
+      "properties" : {
+        "engine" : {
+          "type" : "string",
+          "example" : "2120.00cm3"
+        },
+        "body" : {
+          "type" : "string",
+          "example" : "black"
+        },
+        "lowVoltage" : {
+          "type" : "string",
+          "example" : "12V"
+        },
+        "lighting" : {
+          "type" : "string"
+        },
+        "brakes" : {
+          "type" : "string"
+        },
+        "sensors" : {
+          "type" : "string",
+          "example" : "parking sensors"
+        },
+        "miscellaneous" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "conditionig" : {
+          "type" : "string",
+          "example" : "full"
+        }
+      },
+      "example" : {
+        "sensors" : "parking sensors",
+        "miscellaneous" : [ "miscellaneous", "miscellaneous" ],
+        "engine" : "2120.00cm3",
+        "lowVoltage" : "12V",
+        "brakes" : "brakes",
+        "conditionig" : "full",
+        "body" : "black",
+        "lighting" : "lighting"
+      }
+    },
+    "Payment" : {
+      "type" : "object",
+      "required" : [ "amount", "isFulfilled" ],
+      "properties" : {
+        "amount" : {
+          "type" : "number",
+          "example" : 123.99
+        },
+        "advance" : {
+          "type" : "number",
+          "example" : 0.0
+        },
+        "isFulfilled" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      },
+      "example" : {
+        "isFulfilled" : false,
+        "amount" : 123.99,
+        "advance" : 0.0
+      }
+    },
+    "AutoPart" : {
+      "type" : "object",
+      "required" : [ "amount", "id", "model", "price" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 58210
+        },
+        "model" : {
+          "type" : "string",
+          "example" : "red light bulb 12V 2A noNameCompany"
+        },
+        "amount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 5
+        },
+        "price" : {
+          "type" : "number",
+          "example" : 15.99
+        }
+      }
+    },
+    "ApiResponse" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "type" : {
+          "type" : "string"
+        },
+        "message" : {
+          "type" : "string"
+        }
+      }
+    },
+    "body" : {
+      "type" : "object",
+      "required" : [ "name", "surname" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Jan"
+        },
+        "surname" : {
+          "type" : "string",
+          "example" : "Kowalski"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "example" : "+48 123 456 789"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "kowalski@example.com"
+        }
+      }
+    },
+    "body_1" : {
+      "type" : "object",
+      "required" : [ "name", "surname" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Jan"
+        },
+        "surname" : {
+          "type" : "string",
+          "example" : "Kowalski"
+        }
+      }
+    },
+    "body_2" : {
+      "properties" : {
+        "discount" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 15
+        }
+      }
+    },
+    "body_3" : {
+      "type" : "object",
+      "properties" : {
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-24T12:00:00+01"
+        },
+        "requiredActions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "example" : ""
+          }
+        }
+      }
+    },
+    "inline_response_200" : {
+      "type" : "object",
+      "properties" : {
+        "carId" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 1552
+        },
+        "visit" : {
+          "$ref" : "#/definitions/Visit"
+        }
+      },
+      "example" : {
+        "visit" : {
+          "date" : "2020-12-24T12:00:00+01",
+          "requiredActions" : [ "oil change", "breaks checking" ],
+          "visitId" : 5512,
+          "price" : 100.5,
+          "assignedEmployees" : [ {
+            "employeeId" : 12,
+            "name" : "Bolesław",
+            "surname" : "Nowak"
+          }, {
+            "employeeId" : 13,
+            "name" : "Katarzyna",
+            "surname" : "Nowak"
+          } ],
+          "status" : "atService"
+        },
+        "carId" : 1552
+      }
+    }
+  }
+}
