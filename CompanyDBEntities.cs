@@ -20,7 +20,6 @@ namespace se_project
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseNpgsql("Server=ec2-54-247-71-245.eu-west-1.compute.amazonaws.com;Port=5432;User Id=nzsiiyxpwxqnef;Password=f62f533092bba8bc3de0a80bafb53ea3781db5b0a80629a031b062fd0dac80fa;Database=desirj1i9l52n3;SSL Mode=Require;TrustServerCertificate=True;");
             }
         }

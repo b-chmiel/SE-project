@@ -16,7 +16,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using se_project.Attributes;
-using se_project.Security;
 using Microsoft.AspNetCore.Authorization;
 using se_project.Models;
 
