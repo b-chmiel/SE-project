@@ -70,7 +70,7 @@ namespace se_project
                         },
                     });
                     c.CustomSchemaIds(type => type.FullName);
-                    c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{_hostingEnv.ApplicationName}.xml");
+
                     // Sets the basePath property in the Swagger document generated
                     c.DocumentFilter<BasePathFilter>("/api/0.1.1");
 
