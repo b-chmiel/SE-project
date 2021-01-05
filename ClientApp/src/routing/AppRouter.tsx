@@ -8,6 +8,9 @@ import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
 import Cars from '../views/Client/Cars';
 import {getBaseName} from './AppRouter.helpers';
 import {ClientRoutes, WorkshopEmployeeRoutes} from './routes';
+import RestrictedRoute from '../modules/authorization/RestrictedRoute';
+import AuthorizationPage from '../modules/authorization/View/AuthorizationPage';
+import CreateUserPage from '../modules/authorization/View/CreateUserPage';
 
 export const AppRouter: React.FC = () => {
     const basename = getBaseName();
@@ -17,18 +20,25 @@ export const AppRouter: React.FC = () => {
             <Box paddingTop={`${MENU_HEIGHT + 24}px`} marginLeft={`${MENU_WIDTH + 24}px`}>
                 <Switch>
                     <Route path={'/'} exact>
-                        <AppointmentView />
+                            <AppointmentView />
                     </Route>
                     <Route path={ClientRoutes.REPORT_ACCIDENT}>
                         <AppointmentView />
                     </Route>
                     {/*TODO remove this. This is only for testing car component*/}
-                    <Route path={'/cars'}>
+                    <RestrictedRoute path={'/cars'} >
                         <Cars props={''}></Cars>
-                    </Route>
+                    </RestrictedRoute>
                     <Route path={WorkshopEmployeeRoutes.CASE}>
                         <CaseView />
                     </Route>
+                    <Route path="/signin">
+                        <AuthorizationPage/>
+                    </Route>
+                    <Route path="/signup">
+                        <CreateUserPage/>
+                    </Route>    
+
                 </Switch>
             </Box>
         </BrowserRouter>
