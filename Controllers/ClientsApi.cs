@@ -39,8 +39,9 @@ namespace se_project.Controllers
         [SwaggerOperation("AddClient")]
         public virtual IActionResult AddClient([FromBody]Body body)
         { 
+            Console.WriteLine(body);
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
+            return StatusCode(400);
 
 
             throw new NotImplementedException();

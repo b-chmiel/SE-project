@@ -40,6 +40,7 @@ namespace se_project
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Insurance> Insurances { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Visit> Visits { get; set; }
     }
 }
