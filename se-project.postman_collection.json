@@ -23,15 +23,11 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/0.1.1/user",
-							"protocol": "http",
+							"raw": "{{ServerPath}}/user",
 							"host": [
-								"localhost"
+								"{{ServerPath}}"
 							],
-							"port": "8080",
 							"path": [
-								"api",
-								"0.1.1",
 								"user"
 							]
 						}
@@ -127,7 +123,7 @@
 		},
 		{
 			"key": "ServerPath",
-			"value": "http://localhost:8080/api/0.1.1"
+			"value": "https://se-project-2020.herokuapp.com/api/0.1.1"
 		}
 	]
 }
