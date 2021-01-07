@@ -35,6 +35,7 @@ namespace se_project.Controllers
             body.Guid = Guid.NewGuid().ToString();
             Console.WriteLine(body);
             _context.Add(body);
+            _context.SaveChanges();
 
             return StatusCode(201, body);
             
