@@ -52,7 +52,7 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets GUID
         /// </summary>
-        [Required]
+        //[Required]
         [DataMember(Name="guid")]
         public string Guid { get; set; }
 
@@ -66,7 +66,7 @@ namespace se_project.Models
         /// Gets or Sets clientID/employeeId
         /// </summary>
         [Required]
-        [DataMember(Name="Id")]
+        [DataMember(Name="id")]
         public int Id { get; set; }
 
         /// <summary>
