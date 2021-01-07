@@ -35,7 +35,13 @@ namespace se_project.Controllers
             body.Guid = Guid.NewGuid().ToString();
             Console.WriteLine(body);
             _context.Add(body);
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            } catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
 
             return StatusCode(201, body);
             
