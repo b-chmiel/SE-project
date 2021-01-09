@@ -204,8 +204,18 @@
           "200" : {
             "description" : "Successful operation",
             "schema" : {
-              "type" : "string",
-              "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+              "type" : "object",
+              "properties" : {
+                "guid" : {
+                  "type" : "string",
+                  "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+                },
+                "role" : {
+                  "type" : "string",
+                  "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+                  "example" : "CLIENT"
+                }
+              }
             }
           },
           "404" : {
