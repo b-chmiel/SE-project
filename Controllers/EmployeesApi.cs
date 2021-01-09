@@ -155,15 +155,15 @@ namespace se_project.Controllers
         /// Overwrite car profile
         /// </summary>
         /// <remarks>Overwrites diagnostic profile of designated car.</remarks>
-        /// <param name="carId">Id of car assigned to the diagnostic profile</param>
+        /// <param name="licensePlate">Id of car assigned to the diagnostic profile</param>
         /// <param name="profile">New diagnostic profile object</param>
         /// <response code="400">Validation exception</response>
         /// <response code="404">Profile not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/car/{carId}/profile")]
+        [Route("/api/0.1.1/car/{licensePlate}/profile")]
         [ValidateModelState]
         [SwaggerOperation("SetProfile")]
-        public virtual IActionResult SetProfile([FromRoute][Required]int? carId, [FromBody]DiagnosticProfile profile)
+        public virtual IActionResult SetProfile([FromRoute][Required]int? licensePlate, [FromBody]DiagnosticProfile profile)
         { 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400);

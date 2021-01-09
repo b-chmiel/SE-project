@@ -161,7 +161,7 @@
         ]
       }
     },
-    "/car/{carId}": {
+    "/car/{licensePlate}": {
       "get": {
         "tags": [ "cars" ],
         "summary": "Find car by id",
@@ -170,7 +170,7 @@
         "produces": [ "application/json" ],
         "parameters": [
           {
-            "name": "carId",
+            "name": "licensePlate",
             "in": "path",
             "description": "Id of car to return",
             "required": true,
@@ -199,7 +199,7 @@
         ]
       }
     },
-    "/car/{carId}/insurance": {
+    "/car/{licensePlate}/insurance": {
       "get": {
         "tags": [ "cars" ],
         "summary": "Find insurance by car Id",
@@ -208,7 +208,7 @@
         "produces": [ "application/json" ],
         "parameters": [
           {
-            "name": "carId",
+            "name": "licensePlate",
             "in": "path",
             "description": "Id of car assigned to insurance",
             "required": true,
@@ -248,7 +248,7 @@
         "produces": [ "application/json" ],
         "parameters": [
           {
-            "name": "carId",
+            "name": "licensePlate",
             "in": "path",
             "description": "Id of car assigned to insurance",
             "required": true,
@@ -349,7 +349,7 @@
         ]
       }
     },
-    "/car/{carId}/profile": {
+    "/car/{licensePlate}/profile": {
       "get": {
         "tags": [ "cars" ],
         "summary": "Find diagnostic profile by car Id",
@@ -358,7 +358,7 @@
         "produces": [ "application/json" ],
         "parameters": [
           {
-            "name": "carId",
+            "name": "licensePlate",
             "in": "path",
             "description": "Id of car assigned to the diagnostic profile",
             "required": true,
@@ -395,7 +395,7 @@
         "produces": [ "application/json" ],
         "parameters": [
           {
-            "name": "carId",
+            "name": "licensePlate",
             "in": "path",
             "description": "Id of car assigned to the diagnostic profile",
             "required": true,
@@ -861,9 +861,9 @@
     },
     "Car": {
       "type": "object",
-      "required": [ "carId", "model", "type" ],
+      "required": [ "licensePlate", "model", "type" ],
       "properties": {
-        "carId": {
+        "licensePlate": {
           "type": "integer",
           "format": "int32",
           "example": 301
@@ -881,7 +881,7 @@
       "example": {
         "model": "Škoda Fabia 2012",
         "type": "sedan",
-        "carId": 301
+        "licensePlate": 301
       }
     },
     "Insurance": {
@@ -1153,7 +1153,7 @@
     "inline_response_200": {
       "type": "object",
       "properties": {
-        "carId": {
+        "licensePlate": {
           "type": "integer",
           "format": "int32",
           "example": 1552
@@ -1182,7 +1182,7 @@
           ],
           "status": "atService"
         },
-        "carId": 1552
+        "licensePlate": 1552
       }
     }
   }

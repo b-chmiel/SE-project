@@ -28,10 +28,10 @@ namespace se_project.Models
     public partial class InlineResponse200 : IEquatable<InlineResponse200>
     { 
         /// <summary>
-        /// Gets or Sets CarId
+        /// Gets or Sets LicensePlate
         /// </summary>
-        [DataMember(Name="carId")]
-        public int? CarId { get; set; }
+        [DataMember(Name="licensePlate")]
+        public string LicensePlate { get; set; }
 
         /// <summary>
         /// Gets or Sets Visit
@@ -47,7 +47,7 @@ namespace se_project.Models
         {
             var sb = new StringBuilder();
             sb.Append("class InlineResponse200 {\n");
-            sb.Append("  CarId: ").Append(CarId).Append("\n");
+            sb.Append("  LicensePlate: ").Append(LicensePlate).Append("\n");
             sb.Append("  Visit: ").Append(Visit).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -86,9 +86,9 @@ namespace se_project.Models
 
             return 
                 (
-                    CarId == other.CarId ||
-                    CarId != null &&
-                    CarId.Equals(other.CarId)
+                    LicensePlate == other.LicensePlate ||
+                    LicensePlate != null &&
+                    LicensePlate.Equals(other.LicensePlate)
                 ) && 
                 (
                     Visit == other.Visit ||
@@ -107,8 +107,8 @@ namespace se_project.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (CarId != null)
-                    hashCode = hashCode * 59 + CarId.GetHashCode();
+                    if (LicensePlate != null)
+                    hashCode = hashCode * 59 + LicensePlate.GetHashCode();
                     if (Visit != null)
                     hashCode = hashCode * 59 + Visit.GetHashCode();
                 return hashCode;
