@@ -95,6 +95,18 @@ namespace se_project.Models
         /// </summary>
         [DataMember(Name="discount")]
         public int Discount { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets AssignedVisits
+        /// </summary>
+        [DataMember(Name="assignedVisits")]
+        public virtual ICollection<Visit> AssignedVisits { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets UserVisits
+        /// </summary>
+        [DataMember(Name="userVisits")]
+        public virtual ICollection<Visit> UserVisits { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

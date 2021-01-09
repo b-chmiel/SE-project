@@ -35,7 +35,6 @@ namespace se_project
 
         public DbSet<User> Users { get; set; }
         public DbSet<Visit> Visits { get; set; }
-        public DbSet<ClientVisit> ClientVisits { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<DiagnosticProfile> DiagnosticProfiles { get; set; }
         //public DbSet<AutoPart> AutoParts { get; set; }
