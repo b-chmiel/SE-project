@@ -89,6 +89,7 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets AssignedEmployees
         /// </summary>
+        [ForeignKey("Username")]
         [DataMember(Name="assignedEmployees")]
         public virtual ICollection<User> AssignedEmployees { get; set; }
         

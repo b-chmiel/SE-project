@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -99,12 +100,14 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets AssignedVisits
         /// </summary>
+        [ForeignKey("VisitId")]
         [DataMember(Name="assignedVisits")]
         public virtual ICollection<Visit> AssignedVisits { get; set; }
         
         /// <summary>
         /// Gets or Sets UserVisits
         /// </summary>
+        [ForeignKey("VisitId")]
         [DataMember(Name="userVisits")]
         public virtual ICollection<Visit> UserVisits { get; set; }
 
