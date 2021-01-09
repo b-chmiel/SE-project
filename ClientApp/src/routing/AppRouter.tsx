@@ -38,7 +38,7 @@ export const AppRouter: React.FC = () => {
                     </AvailableRoute>
                     <AvailableRoute path="/signup">
                         <CreateUserPage/>
-                    </AvailableRoute>    
+                    </AvailableRoute>
                 </Switch>
             </Box>
         </BrowserRouter>

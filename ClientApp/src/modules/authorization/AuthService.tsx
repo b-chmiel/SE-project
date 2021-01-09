@@ -49,7 +49,7 @@ export function createUser(username: string, password: string): void{
     var user: UserSignUp = {
         username: username, 
         password: password,
-        userType: "WORKSHOP_EMPLOYEE",
+        userType: "CLIENT",
         name: username,
         surname: username,
         phoneNumber: "600000000"
@@ -60,5 +60,7 @@ export function createUser(username: string, password: string): void{
         console.log(res)
         console.log(res.status)      
         return res.status //400 exist, 200 success
-    })
+    }).catch((err)=>
+        console.log(err)
+    )
 }
