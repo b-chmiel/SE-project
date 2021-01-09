@@ -56,6 +56,7 @@ export function createUser(username: string, password: string): void{
         phoneNumber: "600000000"
     }
     saveCreds(username, password)
+    const URL = "/api/0.1.1";
     axios.post(URL + "/user", user)
     .then((res)=>{
         console.log(res)
