@@ -11,6 +11,7 @@ import {ClientRoutes, WorkshopEmployeeRoutes} from './routes';
 import RestrictedRoute from '../modules/authorization/RestrictedRoute';
 import AuthorizationPage from '../modules/authorization/View/AuthorizationPage';
 import CreateUserPage from '../modules/authorization/View/CreateUserPage';
+import AvailableRoute from '../modules/authorization/AvailableRoute';
 
 export const AppRouter: React.FC = () => {
     const basename = getBaseName();
@@ -32,12 +33,12 @@ export const AppRouter: React.FC = () => {
                     <Route path={WorkshopEmployeeRoutes.CASE}>
                         <CaseView />
                     </Route>
-                    <Route path="/signin">
+                    <AvailableRoute path="/signin">
                         <AuthorizationPage/>
-                    </Route>
-                    <Route path="/signup">
+                    </AvailableRoute>
+                    <AvailableRoute path="/signup">
                         <CreateUserPage/>
-                    </Route>    
+                    </AvailableRoute>    
 
                 </Switch>
             </Box>

@@ -8,11 +8,13 @@ type RestrictedRouteProps = {
 
 const RestrictedRoute: React.FC<RestrictedRouteProps> = ({children, path}) => {
     const history = useHistory();
+    const authorized = localStorage.getItem("authorized")
  
     function getContent () {
-        if(localStorage.getItem("authorized")==="false"){
-            history.push('/signin')
+        if(authorized==="true"){
+            history.push("/cars")
         }
+        
         return children;
     }
 

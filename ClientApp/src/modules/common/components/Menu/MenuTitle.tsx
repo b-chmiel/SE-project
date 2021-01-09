@@ -1,8 +1,9 @@
-import {Flex, Text} from '@chakra-ui/react';
+import { Flex, Text} from '@chakra-ui/react';
 import React from 'react';
 import {colors} from '../../../../globalTheme/theme';
+import LogoutButton from '../../../authorization/LogoutButton';
 import {MENU_HEIGHT} from './Menu.constants';
-import {ServiceIcon, SettingsIcon} from './Menu.icons';
+import {ServiceIcon} from './Menu.icons';
 
 export const MenuTitle = () => {
     return (
@@ -25,7 +26,8 @@ export const MenuTitle = () => {
                     myService
                 </Text>
             </Flex>
-            <SettingsIcon boxSize={6} />
+            {/* <SettingsIcon boxSize={6} /> */}
+            <LogoutButton></LogoutButton>
         </Flex>
     );
 };
