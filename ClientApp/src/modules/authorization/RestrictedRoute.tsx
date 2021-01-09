@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, useHistory} from 'react-router-dom';
+import {AuthenticationRoot} from '../../routing/routes'
 
 
 type RestrictedRouteProps = {
@@ -11,7 +12,7 @@ const RestrictedRoute: React.FC<RestrictedRouteProps> = ({children, path}) => {
  
     function getContent () {
         if(localStorage.getItem("authorized")==="false"){
-            history.push('/signin')
+            history.push(AuthenticationRoot.SIGNIN)
         }
         return children;
     }

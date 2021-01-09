@@ -1,9 +1,10 @@
 import { Box, Button, Container, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Link, useHistory} from 'react-router-dom';
-import AuthService from '../AuthService';
 import { Heading } from "@chakra-ui/react"
 import { button, errormsg, input } from './Authorization.styles';
+import { ClientRoutes, AuthenticationRoot} from '../../../routing/routes'
+import { createUser } from '../AuthService';
 
 const CreateUserPage: React.FC<{}> = ({children}) => {
     const history = useHistory();
@@ -28,8 +29,8 @@ const CreateUserPage: React.FC<{}> = ({children}) => {
     }
 
     function submitLogin(username: string, password: string){
-        AuthService.createUser(username, password)
-        history.push("/cars")
+        createUser(username, password)
+        history.push(ClientRoutes.CARS)
     }
     function showErrorMatching(){
         return password===confirmPassword?<></>:<Box style={errormsg}>
@@ -42,7 +43,6 @@ const CreateUserPage: React.FC<{}> = ({children}) => {
         </Box>:<></>
     }
 
-
     return (
         <>
             <Container variant={'authorization'}>
@@ -50,10 +50,11 @@ const CreateUserPage: React.FC<{}> = ({children}) => {
                 <Input value={username} onChange={onChangeUsername} placeholder="username" style={input} />
                 <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input} />
                 <Input value={confirmPassword} onChange={onChangeConfirmPassword} type="password" placeholder="confirm password" style={input} />
-                <Button disabled={password!==confirmPassword||(password===""||username===""||confirmPassword==="")} onClick={()=>submitLogin(username, password)} style={button}>Sing up</Button>
+                <Button disabled={password!==confirmPassword||(password===""||username===""||confirmPassword==="")}
+                     onClick={()=>submitLogin(username, password)} style={button}>Sing up</Button>
                 {showErrorMatching()}
                 {showErrorNotNull()}
-                <Link to="/signin" style={button}>
+                <Link to={AuthenticationRoot.SIGNIN} style={button}>
                     Or sign in
                 </Link>
             </Container>

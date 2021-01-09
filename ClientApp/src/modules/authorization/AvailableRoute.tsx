@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, useHistory} from 'react-router-dom';
+import {ClientRoutes} from '../../routing/routes'
 
 
 type RestrictedRouteProps = {
@@ -12,7 +13,7 @@ const RestrictedRoute: React.FC<RestrictedRouteProps> = ({children, path}) => {
  
     function getContent () {
         if(authorized==="true"){
-            history.push("/cars")
+            history.push(ClientRoutes.CARS)
         }
         
         return children;

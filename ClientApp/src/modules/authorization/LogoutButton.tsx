@@ -1,18 +1,19 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import AuthService from './AuthService';
+import {AuthenticationRoot} from '../../routing/routes'
+import { logout } from './AuthService';
 
 const LogoutButton: React.FC<{}> = () => {
     const history = useHistory();
  
-    function logout () {
-        AuthService.logout()
-        history.push('/signin')
+    function signout () {
+        logout()
+        history.push(AuthenticationRoot.SIGNIN)
     }
 
     return (
-        <Button onClick={logout}>
+        <Button onClick={signout}>
             Logout
         </Button>
     );

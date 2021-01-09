@@ -1,9 +1,10 @@
 import { Box, Button, Container, Input } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { Link, useHistory} from 'react-router-dom';
-import AuthService from '../AuthService';
 import { Heading } from "@chakra-ui/react"
 import { button, errormsg, input } from './Authorization.styles';
+import { ClientRoutes, AuthenticationRoot} from '../../../routing/routes'
+import { authorize, saveCreds } from '../AuthService';
 
 
 const AuthorizationPage: React.FC<{}> = ({children}) => {
@@ -27,10 +28,10 @@ const AuthorizationPage: React.FC<{}> = ({children}) => {
     }
 
     function submitLogin(username: string, password: string){
-        AuthService.saveCreds(username, password)
-        AuthService.authorize().then((res)=>{
+        saveCreds(username, password)
+        authorize().then((res)=>{
             if(res===true){
-                history.push("/cars")
+                history.push(ClientRoutes.CARS)
             }else{
                 setError(true);
             }
@@ -45,7 +46,7 @@ const AuthorizationPage: React.FC<{}> = ({children}) => {
                 <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input}/>
                 <Button disabled={username===""||password===""} onClick={()=>submitLogin(username, password)} style={button}>Login</Button>
                 {showError()}
-                <Link to="/signup" style={button}>
+                <Link to={AuthenticationRoot.SIGNUP} style={button}>
                     Or sign up
                 </Link>
             </Container>

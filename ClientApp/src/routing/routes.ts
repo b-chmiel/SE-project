@@ -20,3 +20,9 @@ export enum InsuranceEmployeeRoutes {
     OFFERS = '/offers',
     INSURANCES = '/insurances',
 }
+
+export enum AuthenticationRoot {
+        SIGNUP = "/signup",
+        SIGNIN = "/signin",
+        USER = "/user"
+} 
