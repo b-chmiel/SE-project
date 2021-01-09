@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace se_project.Models
 { 
@@ -29,8 +30,9 @@ namespace se_project.Models
     {
         [Key]
         [Required]
-        [DataMember(Name = "carId")]
-        public int CarId { get; set; }
+        [DataMember(Name = "licensePlate")]
+        public string LicensePlate { get; set; }
+        [ForeignKey("LicensePlate")]
         public virtual Car Car { get; set; }
 
 
@@ -90,6 +92,7 @@ namespace se_project.Models
         {
             var sb = new StringBuilder();
             sb.Append("class DiagnosticProfile {\n");
+            sb.Append("  LicensePlate: ").Append(LicensePlate).Append("\n");
             sb.Append("  Engine: ").Append(Engine).Append("\n");
             sb.Append("  Body: ").Append(Body).Append("\n");
             sb.Append("  LowVoltage: ").Append(LowVoltage).Append("\n");
@@ -133,7 +136,12 @@ namespace se_project.Models
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
+                (
+                    LicensePlate == other.LicensePlate ||
+                    LicensePlate != null &&
+                    LicensePlate.Equals(other.LicensePlate)
+                ) &&
                 (
                     Engine == other.Engine ||
                     Engine != null &&
@@ -186,6 +194,8 @@ namespace se_project.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
+                    if (LicensePlate != null)
+                    hashCode = hashCode * 59 + LicensePlate.GetHashCode();
                     if (Engine != null)
                     hashCode = hashCode * 59 + Engine.GetHashCode();
                     if (Body != null)

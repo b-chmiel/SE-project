@@ -25,146 +25,121 @@ namespace se_project.Controllers
     /// 
     /// </summary>
     [ApiController]
-    public class CarsApiController : ControllerBase
-    {
-        private readonly CompanyDBEntities _context;
-        public CarsApiController(CompanyDBEntities context)
-        {
-            _context = context;
-        }
+    public class EmployeesApiController : ControllerBase
+    { 
         /// <summary>
-        /// Add new car to the system
+        /// Add new employee
         /// </summary>
-
+        
         /// <param name="body"></param>
         /// <response code="400">Validation exception</response>
         [HttpPost]
-        [Route("/api/0.1.1/car")]
+        [Route("/api/0.1.1/employee")]
         [ValidateModelState]
-        [SwaggerOperation("AddCar")]
-        public virtual IActionResult AddCar([FromBody]Car car)
+        [SwaggerOperation("AddEmployee")]
+        public virtual IActionResult AddEmployee([FromBody]Body1 body)
         { 
-
+            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(400);
 
 
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Find car by id
+        /// Marks diagnostic as finished
         /// </summary>
         
-        /// <param name="licensePlate">Id of car to return</param>
+        /// <param name="visitId"></param>
         /// <response code="200">Successful operation</response>
-        /// <response code="400">Invalid Id supplied</response>
-        /// <response code="404">Car not found</response>
-        [HttpGet]
-        [Route("/api/0.1.1/car/{licensePlate}")]
-        [ValidateModelState]
-        [SwaggerOperation("GetCar")]
-        [SwaggerResponse(statusCode: 200, type: typeof(Car), description: "Successful operation")]
-        public virtual IActionResult GetCar([FromRoute][Required]int? licensePlate)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Car));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "{\n  \"model\" : \"Škoda Fabia 2012\",\n  \"type\" : \"sedan\",\n  \"licensePlate\" : 301\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<Car>(exampleJson)
-            : default(Car);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// Find insurance by car Id
-        /// </summary>
-        
-        /// <param name="licensePlate">Id of car assigned to insurance</param>
-        /// <response code="200">Successful operation</response>
-        /// <response code="400">Invalid Id supplied</response>
-        /// <response code="404">Car not found</response>
-        [HttpGet]
-        [Route("/api/0.1.1/car/{licensePlate}/insurance")]
-        [ValidateModelState]
-        [SwaggerOperation("GetInsurance")]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<Insurance>), description: "Successful operation")]
-        public virtual IActionResult GetInsurance([FromRoute][Required]int? licensePlate)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<Insurance>));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"coverage\" : 100000,\n  \"dateOfExpiry\" : \"2020-12-30T23:59:59.999+01\",\n  \"type\" : \"liability insurance\"\n}, {\n  \"coverage\" : 100000,\n  \"dateOfExpiry\" : \"2020-12-30T23:59:59.999+01\",\n  \"type\" : \"liability insurance\"\n} ]";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<List<Insurance>>(exampleJson)
-            : default(List<Insurance>);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// Find diagnostic profile by car Id
-        /// </summary>
-        
-        /// <param name="licensePlate">Id of car assigned to the diagnostic profile</param>
-        /// <response code="200">Successful operation</response>
-        /// <response code="400">Invalid Id supplied</response>
-        /// <response code="404">Car not found</response>
-        [HttpGet]
-        [Route("/api/0.1.1/car/{licensePlate}/profile")]
-        [ValidateModelState]
-        [SwaggerOperation("GetProfile")]
-        [SwaggerResponse(statusCode: 200, type: typeof(DiagnosticProfile), description: "Successful operation")]
-        public virtual IActionResult GetProfile([FromRoute][Required]int? licensePlate)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(DiagnosticProfile));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "{\n  \"sensors\" : \"parking sensors\",\n  \"miscellaneous\" : [ \"miscellaneous\", \"miscellaneous\" ],\n  \"engine\" : \"2120.00cm3\",\n  \"lowVoltage\" : \"12V\",\n  \"brakes\" : \"brakes\",\n  \"conditionig\" : \"full\",\n  \"body\" : \"black\",\n  \"lighting\" : \"lighting\"\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<DiagnosticProfile>(exampleJson)
-            : default(DiagnosticProfile);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// Add/overwrite car insurance
-        /// </summary>
-        /// <remarks>Adds or overwrites car insurance. Performed action is determined by type of insurance (i.e. if liability insurance exists it will be replaced).</remarks>
-        /// <param name="licensePlate">Id of car assigned to insurance</param>
-        /// <param name="insurance">New insurance object</param>
-        /// <response code="400">Validation exception</response>
-        /// <response code="404">Car not found</response>
+        /// <response code="400">Invalid visit id supplied</response>
+        /// <response code="404">Visit not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/car/{licensePlate}/insurance")]
+        [Route("/api/0.1.1/visit/{visitId}/diagnose")]
         [ValidateModelState]
-        [SwaggerOperation("PutInsurance")]
-        public virtual IActionResult PutInsurance([FromRoute][Required]int? licensePlate, [FromBody]Client insurance)
+        [SwaggerOperation("Diagnose")]
+        public virtual IActionResult Diagnose([FromRoute][Required]int? visitId)
+        { 
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200);
+
+            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(400);
+
+            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(404);
+
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Marks maintenance as finished
+        /// </summary>
+        
+        /// <param name="visitId"></param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">Invalid visit id supplied</response>
+        /// <response code="404">Visit not found</response>
+        [HttpPut]
+        [Route("/api/0.1.1/visit/{visitId}/maintain")]
+        [ValidateModelState]
+        [SwaggerOperation("Maintain")]
+        public virtual IActionResult Maintain([FromRoute][Required]int? visitId)
+        { 
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200);
+
+            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(400);
+
+            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(404);
+
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Marks repairment as finished
+        /// </summary>
+        
+        /// <param name="visitId"></param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">Invalid visit id supplied</response>
+        /// <response code="404">Visit not found</response>
+        [HttpPut]
+        [Route("/api/0.1.1/visit/{visitId}/repair")]
+        [ValidateModelState]
+        [SwaggerOperation("Repair")]
+        public virtual IActionResult Repair([FromRoute][Required]int? visitId)
+        { 
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200);
+
+            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(400);
+
+            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(404);
+
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Set client&#39;s discount
+        /// </summary>
+        /// <remarks>Accepts discount in percentage (0-30)</remarks>
+        /// <param name="clientId">Client id</param>
+        /// <param name="body">New client&#39;s discount</param>
+        /// <response code="400">Validation exception</response>
+        /// <response code="404">Client not found</response>
+        [HttpPut]
+        [Route("/api/0.1.1/client/{clientId}/set_discount")]
+        [ValidateModelState]
+        [SwaggerOperation("SetDiscount")]
+        public virtual IActionResult SetDiscount([FromRoute][Required]int? clientId, [FromBody]Body2 body)
         { 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400);
@@ -189,6 +164,29 @@ namespace se_project.Controllers
         [ValidateModelState]
         [SwaggerOperation("SetProfile")]
         public virtual IActionResult SetProfile([FromRoute][Required]int? licensePlate, [FromBody]DiagnosticProfile profile)
+        { 
+            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(400);
+
+            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(404);
+
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Update a visit
+        /// </summary>
+        
+        /// <param name="body"></param>
+        /// <response code="400">Validation exception</response>
+        /// <response code="404">Visit not found</response>
+        [HttpPut]
+        [Route("/api/0.1.1/visit")]
+        [ValidateModelState]
+        [SwaggerOperation("UpdateVisit")]
+        public virtual IActionResult UpdateVisit([FromBody]Visit body)
         { 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400);
