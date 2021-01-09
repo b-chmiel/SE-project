@@ -2,7 +2,7 @@
   "swagger" : "2.0",
   "info" : {
     "title" : "Car Workshop",
-    "version" : "0.1.2",
+    "version" : "0.1.1i",
     "description" : "<h2>List of currently implemented methods</h2></br><a href=\"https://1drv.ms/u/s!Aj9U8Dnh2AB9gYojtWPvZ0ViyQNXQw?e=h3t1Nl\">Notes</a>",
     "contact" : {
       "email" : "k.baciejowski@gmail.com"
@@ -52,7 +52,7 @@
               },
               "phoneNumber" : {
                 "type" : "string",
-                "example" : 48123456789
+                "example" : +48123456789
               },
               "email" : {
                 "type" : "string",
@@ -121,7 +121,7 @@
               },
               "phoneNumber" : {
                 "type" : "string",
-                "example" : 48123456789
+                "example" : +48123456789
               },
               "email" : {
                 "type" : "string",
@@ -247,7 +247,7 @@
         },
         "phoneNumber" : {
           "type" : "string",
-          "example" : 48123456789
+          "example" : +48123456789
         },
         "email" : {
           "type" : "string",
@@ -263,6 +263,6 @@
     }
   },
   "schemes" : [ "https" ],
-  "host" : "virtserver.swaggerhub.com",
-  "basePath" : "/soft_eng/project/0.1.2"
+  "host" : "se-project-2020.herokuapp.com",
+  "basePath" : "/api/0.1.1"
 }
