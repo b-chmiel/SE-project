@@ -85,7 +85,7 @@ namespace se_project.Controllers
             var user = _context.Users.FirstOrDefault(x =>
                 x.Username.Equals(body.Username) && x.Password.Equals(body.Password));
             if (user is null) return StatusCode(404);
-            return new ObjectResult(new SignInResponse(true, user.Guid, user.UserType.ToString()));
+            return new ObjectResult(new SignInResponse(user.Guid, user.UserType.ToString()));
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace se_project.Controllers
                 return StatusCode(400);
             }
 
-            return StatusCode(201, body);
+            return StatusCode(200, body);
         }
         
         /// <summary>
