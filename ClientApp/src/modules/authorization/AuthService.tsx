@@ -19,7 +19,7 @@ export async function authorize(): Promise<boolean> {
         localStorage.setItem("client_uuid", "")
         localStorage.setItem("authorized", "false")
         return false;
-    }
+}
     
 
 };
@@ -28,6 +28,7 @@ export function saveCreds(username: string, password: string): void {
     var user: UserSignIn = {
         username: username, 
         password: password,
+
     }
     localStorage.setItem("creds", JSON.stringify(user))
 }

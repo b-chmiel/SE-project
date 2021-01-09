@@ -42,7 +42,6 @@ const CreateUserPage: React.FC<{}> = ({children}) => {
             Fields cannot be null
         </Box>:<></>
     }
-
     return (
         <>
             <Container variant={'authorization'}>

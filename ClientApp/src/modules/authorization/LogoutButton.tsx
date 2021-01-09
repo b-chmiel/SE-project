@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 import {AuthenticationRoot} from '../../routing/routes'
 import { logout } from './AuthService';
 
+
 const LogoutButton: React.FC<{}> = () => {
     const history = useHistory();
  

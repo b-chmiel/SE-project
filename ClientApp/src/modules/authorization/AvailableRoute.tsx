@@ -2,7 +2,6 @@ import React from 'react';
 import {Route, useHistory} from 'react-router-dom';
 import {ClientRoutes} from '../../routing/routes'
 
-
 type RestrictedRouteProps = {
     path: string
 }
