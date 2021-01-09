@@ -89,16 +89,14 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets AssignedEmployees
         /// </summary>
-        [ForeignKey("Username")]
-        [DataMember(Name="assignedEmployees")]
-        public virtual ICollection<User> AssignedEmployees { get; set; }
-        
-        
+        /*[ForeignKey("Username")]
+        [DataMember(Name="assignedEmployees")]*/
+        public virtual ICollection<EmployeeVisit> AssignedEmployees { get; set; }
+
         /// <summary>
         /// Gets or Sets CarOwner
         /// </summary>
-        [ForeignKey("Username")]
-        [DataMember(Name="carOwner")]
+        public String CarOwnerUsername { get; set; }
         public virtual User CarOwner { get; set; }
 
         /// <summary>

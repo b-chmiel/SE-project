@@ -81,7 +81,6 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets PhoneNumber
         /// </summary>
-        [Required]
         [DataMember(Name="phoneNumber")]
         public string PhoneNumber { get; set; }
 
@@ -96,19 +95,12 @@ namespace se_project.Models
         /// </summary>
         [DataMember(Name="discount")]
         public int Discount { get; set; }
-        
-        /// <summary>
-        /// Gets or Sets AssignedVisits
-        /// </summary>
-        [ForeignKey("VisitId")]
-        [DataMember(Name="assignedVisits")]
-        public virtual ICollection<Visit> AssignedVisits { get; set; }
-        
+
+        public virtual ICollection<EmployeeVisit> AssignedVisits { get; set; }
+
         /// <summary>
         /// Gets or Sets UserVisits
         /// </summary>
-        [ForeignKey("VisitId")]
-        [DataMember(Name="userVisits")]
         public virtual ICollection<Visit> UserVisits { get; set; }
 
         /// <summary>

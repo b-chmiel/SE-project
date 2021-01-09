@@ -43,7 +43,7 @@ namespace se_project.Controllers
                 return StatusCode(400);
             }
 
-            return StatusCode(201, body);
+            return StatusCode(200, body);
         }
 
         /// <summary>
@@ -69,9 +69,8 @@ namespace se_project.Controllers
             var user = _context.Users.FirstOrDefault(x => x.Guid.Equals(guid));
             if (user is null)
             {
-                return StatusCode(400);
+                return StatusCode(404);
             }
-
             return new ObjectResult(user);
         }
 
@@ -85,9 +84,8 @@ namespace se_project.Controllers
         {
             var user = _context.Users.FirstOrDefault(x =>
                 x.Username.Equals(body.Username) && x.Password.Equals(body.Password));
-            return user is null 
-                ? new ObjectResult(new SignInResponse(false, "", "")) 
-                : new ObjectResult(new SignInResponse(true, user.Guid, user.UserType.ToString()));
+            if (user is null) return StatusCode(404);
+            return new ObjectResult(new SignInResponse(true, user.Guid, user.UserType.ToString()));
         }
 
         /// <summary>
