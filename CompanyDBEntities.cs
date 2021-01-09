@@ -34,13 +34,14 @@ namespace se_project
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         public DbSet<User> Users { get; set; }
-        /*public DbSet<AutoPart> AutoParts { get; set; }
+        public DbSet<Visit> Visits { get; set; }
+        public DbSet<ClientVisit> ClientVisits { get; set; }
+        public DbSet<AutoPart> AutoParts { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<DiagnosticProfile> DiagnosticProfiles { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Insurance> Insurances { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Visit> Visits { get; set; }*/
     }
 }
