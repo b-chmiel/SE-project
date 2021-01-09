@@ -27,7 +27,7 @@
           "required" : true,
           "schema" : {
             "type" : "object",
-            "required" : [ "username", "password", "userType" ],
+            "required" : [ "username", "password", "userType", "name", "surname" ],
             "properties" : {
               "username" : {
                 "type" : "string",
@@ -40,23 +40,105 @@
               "userType" : {
                 "type" : "string",
                 "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
-                "default" : "WORKSHOP_EMPLOYEE"
+                "example" : "CLIENT"
+              },
+              "name" : {
+                "type" : "string",
+                "example" : "Jan"
+              },
+              "surname" : {
+                "type" : "string",
+                "example" : "Nowak"
+              },
+              "phoneNumber" : {
+                "type" : "string",
+                "example" : 48123456789
+              },
+              "email" : {
+                "type" : "string",
+                "example" : "mail@example.com"
+              },
+              "discount" : {
+                "type" : "integer",
+                "format" : "$int32",
+                "example" : 5,
+                "default" : 0
               }
             }
           }
         } ],
         "responses" : {
-          "201" : {
+          "200" : {
             "description" : "Successful operation",
             "schema" : {
               "$ref" : "#/definitions/User"
             }
           },
           "400" : {
-            "description" : "(PLANNED) Validation exception"
+            "description" : "Validation exception"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "users" ],
+        "summary" : "Update an existing user",
+        "operationId" : "updateClient",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "New user attributes",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "guid" ],
+            "properties" : {
+              "guid" : {
+                "type" : "string",
+                "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+              },
+              "username" : {
+                "type" : "string",
+                "example" : "myUser"
+              },
+              "password" : {
+                "type" : "string",
+                "example" : "myPass"
+              },
+              "userType" : {
+                "type" : "string",
+                "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+                "example" : "CLIENT"
+              },
+              "name" : {
+                "type" : "string",
+                "example" : "Jan"
+              },
+              "surname" : {
+                "type" : "string",
+                "example" : "Nowak"
+              },
+              "phoneNumber" : {
+                "type" : "string",
+                "example" : 48123456789
+              },
+              "email" : {
+                "type" : "string",
+                "example" : "mail@example.com"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
           },
-          "500" : {
-            "description" : "(TEMPORARLY) User cannot be created"
+          "400" : {
+            "description" : "Validation exception"
           }
         }
       }
@@ -86,7 +168,7 @@
             "description" : "Invalid GUID supplied"
           },
           "404" : {
-            "description" : "(PLANNED) User not found"
+            "description" : "User not found"
           }
         }
       }
@@ -123,11 +205,11 @@
             "description" : "Successful operation",
             "schema" : {
               "type" : "string",
-              "example" : "e0f9ae90-4d46-4afd-b257-eaa9757efcde"
+              "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
             }
           },
           "404" : {
-            "description" : "User not found"
+            "description" : "User with such credentials does not exist"
           }
         }
       }
@@ -136,8 +218,12 @@
   "definitions" : {
     "User" : {
       "type" : "object",
-      "required" : [ "username", "password", "guid", "userType" ],
+      "required" : [ "guid", "username", "password", "userType", "name", "surname" ],
       "properties" : {
+        "guid" : {
+          "type" : "string",
+          "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+        },
         "username" : {
           "type" : "string",
           "example" : "myUser"
@@ -146,23 +232,37 @@
           "type" : "string",
           "example" : "myPass"
         },
-        "guid" : {
-          "type" : "string",
-          "example" : "e0f9ae90-4d46-4afd-b257-eaa9757efcde"
-        },
         "userType" : {
           "type" : "string",
           "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
-          "default" : "WORKSHOP_EMPLOYEE"
+          "example" : "CLIENT"
         },
-        "id" : {
+        "name" : {
+          "type" : "string",
+          "example" : "Jan"
+        },
+        "surname" : {
+          "type" : "string",
+          "example" : "Nowak"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "example" : 48123456789
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "mail@example.com"
+        },
+        "discount" : {
           "type" : "integer",
-          "example" : 1
+          "format" : "$int32",
+          "example" : 5,
+          "default" : 0
         }
       }
     }
   },
+  "schemes" : [ "https" ],
   "host" : "virtserver.swaggerhub.com",
-  "basePath" : "/soft_eng/project/0.1.2",
-  "schemes" : [ "https" ]
+  "basePath" : "/soft_eng/project/0.1.2"
 }
