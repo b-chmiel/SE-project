@@ -6,7 +6,6 @@ import { button, errormsg, input } from './Authorization.styles';
 import { ClientRoutes, AuthenticationRoot} from '../../../routing/routes'
 import { authorize, saveCreds } from '../AuthService';
 
-
 const AuthorizationPage: React.FC<{}> = ({children}) => {
     const history = useHistory();
 
@@ -38,7 +37,7 @@ const AuthorizationPage: React.FC<{}> = ({children}) => {
         });
     }
 
-    return (
+   return (
         <>
             <Container variant={'authorization'}>
                 <Heading as="h3" size="xl">Sign in</Heading>
