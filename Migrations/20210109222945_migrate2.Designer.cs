@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using se_project;
@@ -10,9 +11,10 @@ using se_project;
 namespace se_project.Migrations
 {
     [DbContext(typeof(CompanyDBEntities))]
-    partial class CompanyDBEntitiesModelSnapshot : ModelSnapshot
+    [Migration("20210109222945_migrate2")]
+    partial class migrate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

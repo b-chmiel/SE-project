@@ -70,6 +70,9 @@ namespace se_project.Models
         public TypeEnum? Type { get; set; }
 
         public virtual DiagnosticProfile DiagnosticProfile { get; set; }
+        [Required]
+        [DataMember(Name = "username")]
+        public string Username { get; set; }
         public virtual User Owner { get; set; }
         /// <summary>
         /// Returns the string presentation of the object
