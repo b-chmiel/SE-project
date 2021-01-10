@@ -1,7 +1,7 @@
-import { Flex, Text} from '@chakra-ui/react';
+import {Flex, Text} from '@chakra-ui/react';
 import React from 'react';
 import {colors} from '../../../../globalTheme/theme';
-import LogoutButton from '../../../authorization/LogoutButton';
+import LogoutButton from '../../../authorization/components/LogoutButton/LogoutButton';
 import {MENU_HEIGHT} from './Menu.constants';
 import {ServiceIcon} from './Menu.icons';
 
