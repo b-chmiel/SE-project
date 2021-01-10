@@ -146,22 +146,21 @@ namespace se_project.Controllers
 
             return StatusCode(200, body);
         }
-        
+
         /// <summary>
         /// Get all client&#39;s visits
         /// </summary>
-        
-        /// <param name="guid"></param>
+        /// <param name="username"></param>
         /// <response code="200">Successful operation</response>
         /// <response code="404">Client not found</response>
         [HttpGet]
-        [Route("/api/0.1.1/user/{guid}/visits")]
+        [Route("/api/0.1.1/user/{username}/visits")]
         [ValidateModelState]
         [SwaggerOperation("GetUserVisits")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Visit>), description: "Successful operation")]
-        public virtual IActionResult GetClientVisits([FromRoute][Required]string guid)
+        public virtual IActionResult GetClientVisits([FromRoute][Required]string username)
         { 
-            var user = _context.Users.FirstOrDefault(x => x.Guid.Equals(guid));
+            var user = _context.Users.FirstOrDefault(x => x.Username.Equals(username));
             if (user is null)
             {
                 return StatusCode(404);
@@ -172,48 +171,38 @@ namespace se_project.Controllers
                 return StatusCode(404);
             }
 
-            // var query =
-            //     from t1 in _context.ClientVisits
-            //     join t2 in _context.Visits on t1.VisitId equals t2.VisitId
-            //     where t1.ClientId = user.Username
-            //     select new {t1.field2, t2.field3};
-            //
-            // var visits = _context.ClientVisits.Where(x => x..Equals())
+            var visits = _context.Visits.Where(x => x.CarOwnerUsername == username);
 
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"date\" : \"2020-12-24T12:00:00+01\",\n  \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n  \"visitId\" : 5512,\n  \"price\" : 100.5,\n  \"assignedEmployees\" : [ {\n    \"employeeId\" : 12,\n    \"name\" : \"Bolesław\",\n    \"surname\" : \"Nowak\"\n  }, {\n    \"employeeId\" : 13,\n    \"name\" : \"Katarzyna\",\n    \"surname\" : \"Nowak\"\n  } ],\n  \"status\" : \"atService\"\n}, {\n  \"date\" : \"2020-12-24T12:00:00+01\",\n  \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n  \"visitId\" : 5512,\n  \"price\" : 100.5,\n  \"assignedEmployees\" : [ {\n    \"employeeId\" : 12,\n    \"name\" : \"Bolesław\",\n    \"surname\" : \"Nowak\"\n  }, {\n    \"employeeId\" : 13,\n    \"name\" : \"Katarzyna\",\n    \"surname\" : \"Nowak\"\n  } ],\n  \"status\" : \"atService\"\n} ]";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<List<Visit>>(exampleJson)
-            : default(List<Visit>);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return new ObjectResult(visits);
         }
         
         /// <summary>
         /// Set client&#39;s discount
         /// </summary>
         /// <remarks>Accepts discount in percentage (0-30)</remarks>
-        /// <param name="guid">Client id</param>
+        /// <param name="username">Client id</param>
         /// <param name="body">New client&#39;s discount</param>
         /// <response code="400">Validation exception</response>
         /// <response code="404">Client not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/user/{guid}/set_discount")]
+        [Route("/api/0.1.1/user/{username}/set_discount")]
         [ValidateModelState]
         [SwaggerOperation("SetDiscount")]
-        public virtual IActionResult SetDiscount([FromRoute][Required]int guid, [FromBody]Body2 body)
+        public virtual IActionResult SetDiscount([FromRoute][Required]string username, [FromBody]Body2 body)
         { 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
+            var user = _context.Users.FirstOrDefault(x => x.Username.Equals(username));
+            if (user is null)
+            {
+                return StatusCode(404);
+            }
 
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            if (user.UserType != UserType.CLIENT)
+            {
+                return StatusCode(400);
+            }
 
-
-            throw new NotImplementedException();
+            user.Discount = body.Discount;
+            return new ObjectResult(user);
         }
-        
-        
     }
 }

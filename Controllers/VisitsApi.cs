@@ -15,8 +15,10 @@ using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using se_project.Attributes;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using se_project.Models;
 
 namespace se_project.Controllers
@@ -27,6 +29,12 @@ namespace se_project.Controllers
     [ApiController]
     public class VisitsApiController : ControllerBase
     { 
+        private readonly CompanyDBEntities _context;
+
+        public VisitsApiController(CompanyDBEntities context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Schedule a visit
         /// </summary>
@@ -39,38 +47,32 @@ namespace se_project.Controllers
         [SwaggerOperation("AddVisit")]
         public virtual IActionResult AddVisit([FromBody]Body3 body)
         { 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
+            var user = _context.Users.FirstOrDefault(x => x.Username.Equals(body.Username));
+            if (user is null)
+            {
+                return StatusCode(400);
+            }
 
+            var visit = new Visit
+            {
+                Date = body.Date,
+                CarOwner = user,
+                CarOwnerUsername = body.Username,
+                RequiredActions = body.RequiredActions,
+                Status = 0
+            };
 
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Marks diagnostic as finished
-        /// </summary>
-        
-        /// <param name="visitId"></param>
-        /// <response code="200">Successful operation</response>
-        /// <response code="400">Invalid visit id supplied</response>
-        /// <response code="404">Visit not found</response>
-        [HttpPut]
-        [Route("/api/0.1.1/visit/{visitId}/diagnose")]
-        [ValidateModelState]
-        [SwaggerOperation("Diagnose")]
-        public virtual IActionResult Diagnose([FromRoute][Required]int? visitId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+            _context.Visits.Add(visit);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            
+            return new ObjectResult(visit);
         }
 
         /// <summary>
@@ -86,51 +88,15 @@ namespace se_project.Controllers
         [SwaggerOperation("FindVisits")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse200>), description: "Successful operation")]
         public virtual IActionResult FindVisits([FromQuery][Required()]List<string> status)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<InlineResponse200>));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"visit\" : {\n    \"date\" : \"2020-12-24T12:00:00+01\",\n    \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n    \"visitId\" : 5512,\n    \"price\" : 100.5,\n    \"assignedEmployees\" : [ {\n      \"employeeId\" : 12,\n      \"name\" : \"Bolesław\",\n      \"surname\" : \"Nowak\"\n    }, {\n      \"employeeId\" : 13,\n      \"name\" : \"Katarzyna\",\n      \"surname\" : \"Nowak\"\n    } ],\n    \"status\" : \"atService\"\n  },\n  \"licensePlate\" : 1552\n}, {\n  \"visit\" : {\n    \"date\" : \"2020-12-24T12:00:00+01\",\n    \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n    \"visitId\" : 5512,\n    \"price\" : 100.5,\n    \"assignedEmployees\" : [ {\n      \"employeeId\" : 12,\n      \"name\" : \"Bolesław\",\n      \"surname\" : \"Nowak\"\n    }, {\n      \"employeeId\" : 13,\n      \"name\" : \"Katarzyna\",\n      \"surname\" : \"Nowak\"\n    } ],\n    \"status\" : \"atService\"\n  },\n  \"licensePlate\" : 1552\n} ]";
+        {
+            if (status.Count < 1)
+            {
+                return new ObjectResult(_context.Visits);
+            }
             
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<List<InlineResponse200>>(exampleJson)
-            : default(List<InlineResponse200>);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// Get all client&#39;s visits
-        /// </summary>
-        
-        /// <param name="clientId"></param>
-        /// <response code="200">Successful operation</response>
-        /// <response code="404">Client not found</response>
-        [HttpGet]
-        [Route("/api/0.1.1/client/{clientId}/visits")]
-        [ValidateModelState]
-        [SwaggerOperation("GetClientVisits")]
-        [SwaggerResponse(statusCode: 200, type: typeof(List<Visit>), description: "Successful operation")]
-        public virtual IActionResult GetClientVisits([FromRoute][Required]int? clientId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<Visit>));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"date\" : \"2020-12-24T12:00:00+01\",\n  \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n  \"visitId\" : 5512,\n  \"price\" : 100.5,\n  \"assignedEmployees\" : [ {\n    \"employeeId\" : 12,\n    \"name\" : \"Bolesław\",\n    \"surname\" : \"Nowak\"\n  }, {\n    \"employeeId\" : 13,\n    \"name\" : \"Katarzyna\",\n    \"surname\" : \"Nowak\"\n  } ],\n  \"status\" : \"atService\"\n}, {\n  \"date\" : \"2020-12-24T12:00:00+01\",\n  \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n  \"visitId\" : 5512,\n  \"price\" : 100.5,\n  \"assignedEmployees\" : [ {\n    \"employeeId\" : 12,\n    \"name\" : \"Bolesław\",\n    \"surname\" : \"Nowak\"\n  }, {\n    \"employeeId\" : 13,\n    \"name\" : \"Katarzyna\",\n    \"surname\" : \"Nowak\"\n  } ],\n  \"status\" : \"atService\"\n} ]";
+            var visits = _context.Visits.Where(x => status.Contains(((Visit.StatusEnum)x.Status).ToString()));
             
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<List<Visit>>(exampleJson)
-            : default(List<Visit>);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return new ObjectResult(visits);
         }
 
         /// <summary>
@@ -147,24 +113,53 @@ namespace se_project.Controllers
         [SwaggerOperation("GetVisit")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse200>), description: "Successful operation")]
         public virtual IActionResult GetVisit([FromRoute][Required]int? visitId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<InlineResponse200>));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"visit\" : {\n    \"date\" : \"2020-12-24T12:00:00+01\",\n    \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n    \"visitId\" : 5512,\n    \"price\" : 100.5,\n    \"assignedEmployees\" : [ {\n      \"employeeId\" : 12,\n      \"name\" : \"Bolesław\",\n      \"surname\" : \"Nowak\"\n    }, {\n      \"employeeId\" : 13,\n      \"name\" : \"Katarzyna\",\n      \"surname\" : \"Nowak\"\n    } ],\n    \"status\" : \"atService\"\n  },\n  \"licensePlate\" : 1552\n}, {\n  \"visit\" : {\n    \"date\" : \"2020-12-24T12:00:00+01\",\n    \"requiredActions\" : [ \"oil change\", \"breaks checking\" ],\n    \"visitId\" : 5512,\n    \"price\" : 100.5,\n    \"assignedEmployees\" : [ {\n      \"employeeId\" : 12,\n      \"name\" : \"Bolesław\",\n      \"surname\" : \"Nowak\"\n    }, {\n      \"employeeId\" : 13,\n      \"name\" : \"Katarzyna\",\n      \"surname\" : \"Nowak\"\n    } ],\n    \"status\" : \"atService\"\n  },\n  \"licensePlate\" : 1552\n} ]";
+        {
+            if (visitId < 0)
+            {
+                return StatusCode(400);
+            }
             
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<List<InlineResponse200>>(exampleJson)
-            : default(List<InlineResponse200>);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+            var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
+            if (visit is null)
+            {
+                return StatusCode(404);
+            }
+
+            return new ObjectResult(visit);
+        }
+        
+        /// <summary>
+        /// Marks diagnostic as finished
+        /// </summary>
+        
+        /// <param name="visitId"></param>
+        /// <response code="200">Successful operation</response>
+        /// <response code="400">Invalid visit id supplied</response>
+        /// <response code="404">Visit not found</response>
+        [HttpPut]
+        [Route("/api/0.1.1/visit/{visitId}/diagnose")]
+        [ValidateModelState]
+        [SwaggerOperation("Diagnose")]
+        public virtual IActionResult Diagnose([FromRoute][Required]int? visitId)
+        { 
+            var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
+            if (visit is null)
+            {
+                return StatusCode(404);
+            }
+
+            visit.Status = Visit.StatusEnum.CheckedInEnum;
+            
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            
+            return new ObjectResult(visit);
         }
 
         /// <summary>
@@ -181,17 +176,24 @@ namespace se_project.Controllers
         [SwaggerOperation("Maintain")]
         public virtual IActionResult Maintain([FromRoute][Required]int? visitId)
         { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+            var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
+            if (visit is null)
+            {
+                return StatusCode(404);
+            }
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+            visit.Status = Visit.StatusEnum.AtServiceEnum;
+            
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            
+            return new ObjectResult(visit);
         }
 
         /// <summary>
@@ -208,17 +210,24 @@ namespace se_project.Controllers
         [SwaggerOperation("Repair")]
         public virtual IActionResult Repair([FromRoute][Required]int? visitId)
         { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+            var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
+            if (visit is null)
+            {
+                return StatusCode(404);
+            }
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+            visit.Status = Visit.StatusEnum.RepairedEnum;
+            
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            
+            return new ObjectResult(visit);
         }
 
         /// <summary>
@@ -234,14 +243,24 @@ namespace se_project.Controllers
         [SwaggerOperation("UpdateVisit")]
         public virtual IActionResult UpdateVisit([FromBody]Visit body)
         { 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
+            var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(body.VisitId));
+            if (visit is null)
+            {
+                return StatusCode(404);
+            }
 
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+            visit = body;
+            
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            
+            return new ObjectResult(visit);
         }
     }
 }

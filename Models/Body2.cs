@@ -30,8 +30,9 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets Discount
         /// </summary>
+        [Required]
         [DataMember(Name="discount")]
-        public int? Discount { get; set; }
+        public int Discount { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

@@ -28,6 +28,13 @@ namespace se_project.Models
     public partial class Body3 : IEquatable<Body3>
     { 
         /// <summary>
+        /// Gets or Sets username
+        /// </summary>
+        [Required]
+        [DataMember(Name="username")]
+        public string Username { get; set; }
+        
+        /// <summary>
         /// Gets or Sets Date
         /// </summary>
         [DataMember(Name="date")]

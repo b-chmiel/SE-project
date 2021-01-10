@@ -31,9 +31,11 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets VisitId
         /// </summary>
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         [DataMember(Name="visitId")]
-        public long? VisitId { get; set; }
+        public int VisitId { get; set; }
 
         /// <summary>
         /// Gets or Sets Date
@@ -60,24 +62,29 @@ namespace se_project.Models
         [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public enum StatusEnum
         {
-            
             /// <summary>
-            /// Enum AtServiceEnum for atService
+            /// Enum DiagnoseEnum for checkedIn
             /// </summary>
-            [EnumMember(Value = "atService")]
-            AtServiceEnum = 1,
-            
-            /// <summary>
-            /// Enum RepairedEnum for repaired
-            /// </summary>
-            [EnumMember(Value = "repaired")]
-            RepairedEnum = 2,
+            [EnumMember(Value = "diagnose")]
+            Diagnose = 0,
             
             /// <summary>
             /// Enum CheckedInEnum for checkedIn
             /// </summary>
             [EnumMember(Value = "checkedIn")]
-            CheckedInEnum = 3
+            CheckedInEnum = 1,
+                
+            /// <summary>
+            /// Enum AtServiceEnum for atService
+            /// </summary>
+            [EnumMember(Value = "atService")]
+            AtServiceEnum = 2,
+            
+            /// <summary>
+            /// Enum RepairedEnum for repaired
+            /// </summary>
+            [EnumMember(Value = "repaired")]
+            RepairedEnum = 3
         }
 
         /// <summary>
@@ -96,7 +103,7 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets CarOwner
         /// </summary>
-        public String CarOwnerUsername { get; set; }
+        public string CarOwnerUsername { get; set; }
         public virtual User CarOwner { get; set; }
 
         /// <summary>
