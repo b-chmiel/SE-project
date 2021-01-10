@@ -4,4 +4,4 @@ export enum UserType {
     INSURANCE_EMPLOYEE,
 }
 
-export const CURRENT_USER = UserType.WORKSHOP_EMPLOYEE;
+export const CURRENT_USER = UserType.CLIENT;

@@ -21,3 +21,11 @@ export enum InsuranceEmployeeRoutes {
     OFFERS = '/offers',
     INSURANCES = '/insurances',
 }
+
+export enum AuthenticationRoutes {
+    SIGNUP = '/signup',
+    SIGNIN = '/signin',
+    USER = '/user',
+}
+
+export const API_BASE_PATH = '/api/0.1.1';
