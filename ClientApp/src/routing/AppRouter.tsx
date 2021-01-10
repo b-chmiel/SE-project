@@ -4,6 +4,7 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AuthorizationView from '../modules/authorization/views/AuthorizationView/AuthorizationView';
 import CreateUserView from '../modules/authorization/views/CreateUserView/CreateUserView';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
+import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
 import {Menu} from '../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../modules/common/components/Menu/Menu.constants';
 import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
@@ -32,6 +33,9 @@ export const AppRouter: React.FC = () => {
                     </RestrictedRoute>
                     <Route path={WorkshopEmployeeRoutes.CASE}>
                         <CaseView />
+                    </Route>
+                    <Route path={ClientRoutes.CLIENT_CASE}>
+                        <ClientCaseView />
                     </Route>
                     <AvailableRoute path="/signin">
                         <AuthorizationView />

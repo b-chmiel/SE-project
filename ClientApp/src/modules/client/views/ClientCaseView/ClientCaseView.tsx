@@ -1,13 +1,13 @@
 import {Box, Button, Grid, GridItem} from '@chakra-ui/react';
 import React from 'react';
 import {CarCard} from '../../../common/components/CarCard/CarCard';
-import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
 import {DescriptionCard} from '../../../common/components/DescriptionCard/DescriptionCard';
 import {TextInfoBadge} from '../../../common/components/TextInfoBadge/TextInfoBadge';
-import {MockedCarInfo} from './CaseView.mocks';
+import {ActionsList} from '../../components/ActionsList/ActionsList';
+import {MockedClientCarInfo} from './ClientCaseView.mocks';
 
-export const CaseView: React.FC = () => {
-    const carInfo = MockedCarInfo;
+export const ClientCaseView: React.FC = () => {
+    const carInfo = MockedClientCarInfo;
 
     return (
         <>
@@ -16,20 +16,8 @@ export const CaseView: React.FC = () => {
                     <CarCard diagnostics={carInfo.diagnostics} state={carInfo.state} model={carInfo.model} type={carInfo.type} />
                 </GridItem>
                 <GridItem rowSpan={2} colSpan={1} marginTop={4}>
-                    <DatePicker name={'date'} value={new Date()} onChange={() => {}} showPopperArrow disabled={true} />
-                </GridItem>
-                <GridItem rowSpan={2} colSpan={1} marginTop={2}>
                     <Button width="242px" margin={2}>
-                        CHANGE STATUS
-                    </Button>
-                    <Button width="242px" margin={2}>
-                        REPORT ISSUES
-                    </Button>
-                    <Button width="242px" margin={2}>
-                        ORDER PARTS
-                    </Button>
-                    <Button width="242px" margin={2}>
-                        DIAGNOSTIC
+                        CALL TO WORKSHOP
                     </Button>
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={1} rowStart={2}>
@@ -39,6 +27,8 @@ export const CaseView: React.FC = () => {
             </Grid>
             <Box margin={4} marginRight={16}>
                 <DescriptionCard description={carInfo.description} />
+                <ActionsList actions={carInfo.actions} title={'ACTIONS'} />
+                <ActionsList actions={carInfo.commentsFromWorkshop} title={'COMMENTS FROM WORKSHOP'} />
             </Box>
         </>
     );
