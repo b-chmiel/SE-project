@@ -2,6 +2,7 @@ import {Box} from '@chakra-ui/react';
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
+import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
 import {Menu} from '../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../modules/common/components/Menu/Menu.constants';
 import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
@@ -28,6 +29,9 @@ export const AppRouter: React.FC = () => {
                     </Route>
                     <Route path={WorkshopEmployeeRoutes.CASE}>
                         <CaseView />
+                    </Route>
+                    <Route path={ClientRoutes.CLIENT_CASE}>
+                        <ClientCaseView />
                     </Route>
                 </Switch>
             </Box>
