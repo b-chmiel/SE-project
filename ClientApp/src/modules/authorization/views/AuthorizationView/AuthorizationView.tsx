@@ -1,4 +1,4 @@
-import {Box, Button, Container, Heading, Input} from '@chakra-ui/react';
+import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthenticationRoutes, ClientRoutes} from '../../../../routing/routes';
@@ -35,20 +35,25 @@ const AuthorizationView: React.FC = ({children}) => {
     }
 
     return (
-        <Container variant={'authorization'}>
-            <Heading as="h3" size="xl">
-                Sign in
-            </Heading>
-            <Input value={username} onChange={onChangeUsername} placeholder="username" style={input} />
-            <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input} />
-            <Button disabled={username === '' || password === ''} onClick={() => submitLogin(username, password)} style={button}>
-                Login
-            </Button>
-            {showError()}
-            <Link to={AuthenticationRoutes.SIGNUP} style={button}>
-                Or sign up
-            </Link>
-        </Container>
+        <Center>
+            <Container variant={'authorization'}>
+                <Center>
+                    <Heading as="h3" size="xl">
+                        Sign in
+                    </Heading>
+                </Center>
+                <Input value={username} onChange={onChangeUsername} placeholder="username" style={input} />
+                <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input} />
+
+                <Button disabled={username === '' || password === ''} onClick={() => submitLogin(username, password)} style={button}>
+                    Login
+                </Button>
+                {showError()}
+                <Link to={AuthenticationRoutes.SIGNUP} style={button}>
+                    Or sign up
+                </Link>
+            </Container>
+        </Center>
     );
 };
 export default AuthorizationView;
