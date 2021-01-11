@@ -4,6 +4,7 @@ import AuthorizationView from '../modules/authorization/views/AuthorizationView/
 import CreateUserView from '../modules/authorization/views/CreateUserView/CreateUserView';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
 import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
+import {InsuranceClient} from '../modules/common/components/InsuranceClientData/InsuranceClientData';
 import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
 import Cars from '../views/Client/Cars';
 import {getBaseName} from './AppRouter.helpers';
@@ -21,6 +22,9 @@ export const AppRouter: React.FC = () => {
                 <Route path={'/'} exact>
                     <AppointmentView />
                     {isAuthenticated ? <Redirect to={ClientRoutes.REPORT_ACCIDENT} /> : <AuthorizationView />}
+                </Route>
+                <Route path={'/insurance'}>
+                    <InsuranceClient personInfo={{name:"Jan",surname:"Kowalski",serviceId:"AX123555",pesel:"90801199662"}}/>
                 </Route>
                 <RestrictedRoute path={ClientRoutes.REPORT_ACCIDENT}>
                     <AppointmentView />
