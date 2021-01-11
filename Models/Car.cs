@@ -28,11 +28,12 @@ namespace se_project.Models
     public partial class Car : IEquatable<Car>
     {
         /// <summary>
-        /// Gets or Sets CarId
+        /// Gets or Sets LicensePlate
         /// </summary>
+        [Key]
         [Required]
-        [DataMember(Name="carId")]
-        public int CarId { get; set; }
+        [DataMember(Name="licensePlate")]
+        public string LicensePlate { get; set; }
 
         /// <summary>
         /// Gets or Sets Model
@@ -69,6 +70,7 @@ namespace se_project.Models
         public TypeEnum? Type { get; set; }
 
         public virtual DiagnosticProfile DiagnosticProfile { get; set; }
+        public virtual User Owner { get; set; }
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
@@ -77,7 +79,7 @@ namespace se_project.Models
         {
             var sb = new StringBuilder();
             sb.Append("class Car {\n");
-            sb.Append("  CarId: ").Append(CarId).Append("\n");
+            sb.Append("  LicensePlate: ").Append(LicensePlate).Append("\n");
             sb.Append("  Model: ").Append(Model).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("}\n");
@@ -117,9 +119,9 @@ namespace se_project.Models
 
             return 
                 (
-                    CarId == other.CarId ||
-                    CarId != null &&
-                    CarId.Equals(other.CarId)
+                    LicensePlate == other.LicensePlate ||
+                    LicensePlate != null &&
+                    LicensePlate.Equals(other.LicensePlate)
                 ) && 
                 (
                     Model == other.Model ||
@@ -143,8 +145,8 @@ namespace se_project.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (CarId != null)
-                    hashCode = hashCode * 59 + CarId.GetHashCode();
+                    if (LicensePlate != null)
+                    hashCode = hashCode * 59 + LicensePlate.GetHashCode();
                     if (Model != null)
                     hashCode = hashCode * 59 + Model.GetHashCode();
                     if (Type != null)

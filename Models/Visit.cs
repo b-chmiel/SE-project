@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -88,8 +89,15 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets AssignedEmployees
         /// </summary>
-        [DataMember(Name="assignedEmployees")]
-        public List<Employee> AssignedEmployees { get; set; }
+        /*[ForeignKey("Username")]
+        [DataMember(Name="assignedEmployees")]*/
+        public virtual ICollection<EmployeeVisit> AssignedEmployees { get; set; }
+
+        /// <summary>
+        /// Gets or Sets CarOwner
+        /// </summary>
+        public String CarOwnerUsername { get; set; }
+        public virtual User CarOwner { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

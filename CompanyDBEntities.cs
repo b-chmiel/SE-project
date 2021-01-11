@@ -27,20 +27,26 @@ namespace se_project
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "en_US.UTF-8");
-
             OnModelCreatingPartial(modelBuilder);
+            //client-visit
+            modelBuilder.Entity<Visit>()
+                .HasOne(p => p.CarOwner)
+                .WithMany(b => b.UserVisits)
+                .HasForeignKey(p => p.CarOwnerUsername);
+            //employee-visit
+            modelBuilder.Entity<EmployeeVisit>().HasKey(e => new { e.Username, e.VisitId });
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         public DbSet<User> Users { get; set; }
-        /*public DbSet<AutoPart> AutoParts { get; set; }
+        public DbSet<Visit> Visits { get; set; }
         public DbSet<Car> Cars { get; set; }
-        public DbSet<Client> Clients { get; set; }
         public DbSet<DiagnosticProfile> DiagnosticProfiles { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-        public DbSet<Insurance> Insurances { get; set; }
-        public DbSet<Payment> Payments { get; set; }
-        public DbSet<Visit> Visits { get; set; }*/
+        public DbSet<EmployeeVisit> EmployeesVisits { get; set; }
+        //public DbSet<AutoPart> AutoParts { get; set; }
+        // public DbSet<Employee> Employees { get; set; }
+        // public DbSet<Insurance> Insurances { get; set; }
+        // public DbSet<Payment> Payments { get; set; }
     }
 }

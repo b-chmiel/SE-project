@@ -16,6 +16,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -35,6 +36,13 @@ namespace se_project.Models
     public partial class User : IEquatable<User>
     {
         /// <summary>
+        /// Gets or Sets GUID
+        /// </summary>
+        //[Required]
+        [DataMember(Name="guid")]
+        public string Guid { get; set; }
+        
+        /// <summary>
         /// Gets or Sets Username
         /// </summary>
         [Key]
@@ -50,24 +58,50 @@ namespace se_project.Models
         public string Password { get; set; }
 
         /// <summary>
-        /// Gets or Sets GUID
-        /// </summary>
-        //[Required]
-        [DataMember(Name="guid")]
-        public string Guid { get; set; }
-
-        /// <summary>
         /// Gets or Sets Email
         /// </summary>
+        [Required]
         [DataMember(Name="userType")]
         public UserType UserType { get; set; }
 
         /// <summary>
-        /// Gets or Sets clientID/employeeId
+        /// Gets or Sets Name
         /// </summary>
         [Required]
-        [DataMember(Name="id")]
-        public int Id { get; set; }
+        [DataMember(Name="name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Surname
+        /// </summary>
+        [Required]
+        [DataMember(Name="surname")]
+        public string Surname { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets PhoneNumber
+        /// </summary>
+        [DataMember(Name="phoneNumber")]
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Email
+        /// </summary>
+        [DataMember(Name="email")]
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Discount
+        /// </summary>
+        [DataMember(Name="discount")]
+        public int Discount { get; set; }
+
+        public virtual ICollection<EmployeeVisit> AssignedVisits { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UserVisits
+        /// </summary>
+        public virtual ICollection<Visit> UserVisits { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -81,7 +115,11 @@ namespace se_project.Models
             sb.Append("  Password: ").Append(Password).Append("\n");
             sb.Append("  GUID: ").Append(Guid).Append("\n");
             sb.Append("  UserType: ").Append(UserType).Append("\n");
-            sb.Append("  clientID/employeeId: ").Append(Id).Append("\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  Surname: ").Append(Surname).Append("\n");
+            sb.Append("  PhoneNumber: ").Append(PhoneNumber).Append("\n");
+            sb.Append("  Email: ").Append(Email).Append("\n");
+            sb.Append("  Discount: ").Append(Discount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -139,8 +177,29 @@ namespace se_project.Models
                     UserType.Equals(other.UserType)
                 ) && 
                 (
-                    Id == other.Id ||
-                    Id.Equals(other.Id)
+                    Name == other.Name ||
+                    Name != null &&
+                    Name.Equals(other.Name)
+                ) && 
+                (
+                    Surname == other.Surname ||
+                    Surname != null &&
+                    Surname.Equals(other.Surname)
+                ) && 
+                (
+                    PhoneNumber == other.PhoneNumber ||
+                    PhoneNumber != null &&
+                    PhoneNumber.Equals(other.PhoneNumber)
+                ) && 
+                (
+                    Email == other.Email ||
+                    Email != null &&
+                    Email.Equals(other.Email)
+                ) && 
+                (
+                    Discount == other.Discount ||
+                    Discount != null &&
+                    Discount.Equals(other.Discount)
                 );
         }
 
@@ -150,7 +209,7 @@ namespace se_project.Models
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            return HashCode.Combine(Username, Password, Guid, UserType, Id);
+            return HashCode.Combine(Username, Password, Guid, UserType);
         }
 
         #region Operators

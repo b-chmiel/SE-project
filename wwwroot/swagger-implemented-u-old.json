@@ -1,0 +1,165 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Car Workshop",
+    "version" : "0.1.1i",
+    "description" : "List of currently implemented methods",
+    "contact" : {
+      "email" : "k.baciejowski@gmail.com"
+    }
+  },
+  "tags" : [ {
+    "name" : "users",
+    "description" : "Operations about users"
+  } ],
+  "paths" : {
+    "/user" : {
+      "post" : {
+        "tags" : [ "users" ],
+        "summary" : "Add new user to the system",
+        "operationId" : "addClient",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "New user attributes",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "username", "password", "userType" ],
+            "properties" : {
+              "username" : {
+                "type" : "string",
+                "example" : "myUser"
+              },
+              "password" : {
+                "type" : "string",
+                "example" : "myPass"
+              },
+              "userType" : {
+                "type" : "string",
+                "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+                "default" : "WORKSHOP_EMPLOYEE"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          }
+        }
+      }
+    },
+    "/user/{guid}" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Find user by GUID",
+        "operationId" : "getUserByGuid",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "guid",
+          "in" : "path",
+          "description" : "GUID of user to return",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "400" : {
+            "description" : "Invalid GUID supplied"
+          },
+          "404" : {
+            "description" : "(PLANNED) User not found"
+          }
+        }
+      }
+    },
+    "/user/signin" : {
+      "post" : {
+        "tags" : [ "users" ],
+        "summary" : "Obtain GUID using login and password",
+        "operationId" : "signIn",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Authorization data",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "username", "password" ],
+            "properties" : {
+              "username" : {
+                "type" : "string",
+                "example" : "myUser"
+              },
+              "password" : {
+                "type" : "string",
+                "example" : "myPass"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "string",
+              "example" : "e0f9ae90-4d46-4afd-b257-eaa9757efcde"
+            }
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "User" : {
+      "type" : "object",
+      "required" : [ "username", "password", "guid", "userType" ],
+      "properties" : {
+        "username" : {
+          "type" : "string",
+          "example" : "myUser"
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "myPass"
+        },
+        "guid" : {
+          "type" : "string",
+          "example" : "e0f9ae90-4d46-4afd-b257-eaa9757efcde"
+        },
+        "userType" : {
+          "type" : "string",
+          "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+          "default" : "WORKSHOP_EMPLOYEE"
+        },
+        "id" : {
+          "type" : "integer",
+          "example" : 1
+        }
+      }
+    }
+  },
+  "host": "se-project-2020.herokuapp.com",
+  "basePath": "/api/0.1.1",
+  "schemes" : [ "https" ]
+}
