@@ -1,4 +1,4 @@
-import {Box, Button, Container, Heading, Input} from '@chakra-ui/react';
+import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthenticationRoutes, ClientRoutes} from '../../../../routing/routes';
@@ -42,32 +42,38 @@ const CreateUserView: React.FC = ({children}) => {
         );
     }
     return (
-        <Container variant={'authorization'}>
-            <Heading as="h3" size="xl">
-                Sign up
-            </Heading>
-            <Input value={username} onChange={onChangeUsername} placeholder="username" style={input} />
-            <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input} />
-            <Input
-                value={confirmPassword}
-                onChange={onChangeConfirmPassword}
-                type="password"
-                placeholder="confirm password"
-                style={input}
-            />
-            <Button
-                disabled={password !== confirmPassword || password === '' || username === '' || confirmPassword === ''}
-                onClick={() => submitLogin(username, password)}
-                style={button}
-            >
-                Sing up
-            </Button>
-            {showErrorMatching()}
-            {showErrorNotNull()}
-            <Link to={AuthenticationRoutes.SIGNIN} style={button}>
-                Or sign in
-            </Link>
-        </Container>
+        <Center>
+            <Container variant={'authorization'}>
+                <Center>
+                    <Heading as="h3" size="xl">
+                        Sign up
+                    </Heading>
+                </Center>
+                <Input value={username} onChange={onChangeUsername} placeholder="username" style={input} />
+                <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input} />
+                <Input
+                    value={confirmPassword}
+                    onChange={onChangeConfirmPassword}
+                    type="password"
+                    placeholder="confirm password"
+                    style={input}
+                />
+                <Center>
+                    <Button
+                        disabled={password !== confirmPassword || password === '' || username === '' || confirmPassword === ''}
+                        onClick={() => submitLogin(username, password)}
+                        style={button}
+                    >
+                        Sign up
+                    </Button>
+                </Center>
+                {showErrorMatching()}
+                {showErrorNotNull()}
+                <Link to={AuthenticationRoutes.SIGNIN} style={button}>
+                    Or sign in
+                </Link>
+            </Container>
+        </Center>
     );
 };
 export default CreateUserView;
