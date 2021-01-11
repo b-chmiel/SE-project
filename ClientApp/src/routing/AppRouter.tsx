@@ -31,7 +31,6 @@ export const AppRouter: React.FC = () => {
                         <CaseView />
                     </Route>
                     <Route path={'/insurance'}>
-                        {/* <InsuranceClient name={"Jan Kowalski"} data={["AX123555","90801199662"]}></InsuranceClient> */}
                         <InsuranceClient personInfo={{name:"Jan",surname:"Kowalski",serviceId:"AX123555",pesel:"90801199662"}}/>
                     </Route>
                 </Switch>
