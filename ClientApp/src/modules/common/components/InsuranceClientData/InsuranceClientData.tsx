@@ -1,14 +1,13 @@
 import React from 'react';
 import {Text, Container, Grid, GridItem} from '@chakra-ui/react';
 import {PersonIcon} from './InsuranceClientData.icons';
-import 'react-datepicker/dist/react-datepicker.css';
+import { PersonInfo } from './InsuranceClientData.types';
 
 interface Props { 
-    name: string;
-    data: string[];
+    personInfo: PersonInfo;
 }
 
-export const InsuranceClient: React.FC<Props> = ({name, data}) => {
+export const InsuranceClient: React.FC<Props> = ({personInfo}) => {
     return ( 
         <Container>
             <Grid h="150px" templateRows="repeat(2, 1fr)"  templateColumns="repeat(5, 1fr)" gap={4}>
@@ -20,16 +19,15 @@ export const InsuranceClient: React.FC<Props> = ({name, data}) => {
                         OWNER
                     </Text>
                     <Text color={'windsor'} fontSize={'20px'} >
-                        {name}
+                        {personInfo.name+" "+personInfo.surname}
                     </Text>
                     <Text fontSize={'20px'}>
-                        {data[0]}
+                        {personInfo.pesel}
                     </Text> 
                     <Text  fontSize={'20px'}>
-                        {data[1]}
+                        {personInfo.serviceId}
                     </Text> 
                 </GridItem>
-
             </Grid>
         </Container>
     );
