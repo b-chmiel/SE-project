@@ -2,6 +2,7 @@ import {Box} from '@chakra-ui/react';
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
+import { InsuranceClient } from '../modules/common/components/InsuranceClientData/InsuranceClientData';
 import {Menu} from '../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../modules/common/components/Menu/Menu.constants';
 import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
@@ -28,6 +29,9 @@ export const AppRouter: React.FC = () => {
                     </Route>
                     <Route path={WorkshopEmployeeRoutes.CASE}>
                         <CaseView />
+                    </Route>
+                    <Route path={'/insurance'}>
+                        <InsuranceClient name={"Jan Kowalski"} data={["AX123555","90801199662"]}></InsuranceClient>
                     </Route>
                 </Switch>
             </Box>
