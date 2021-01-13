@@ -7,7 +7,7 @@ export const AvailableHours: string[] = ['8:00', '9:00', '10:00', '11:00', '12:0
 export const initialFormValues: MakeAppointmentData = {
     date: getTomorrow(),
     time: getFirstFreeHour(getTomorrow()),
-    actions: '',
+    actions: [],
     priority: AppointmentPriority.MEDIUM,
     type: AppointmentType.CAR_CARE,
 };

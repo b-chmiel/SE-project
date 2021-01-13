@@ -20,11 +20,10 @@ export const AppRouter: React.FC = () => {
         <BrowserRouter basename={basename}>
             <Switch>
                 <Route path={'/'} exact>
-                    <AppointmentView />
                     {isAuthenticated ? <Redirect to={ClientRoutes.REPORT_ACCIDENT} /> : <AuthorizationView />}
                 </Route>
                 <Route path={'/insurance'}>
-                    <InsuranceClient personInfo={{name:"Jan",surname:"Kowalski",serviceId:"AX123555",pesel:"90801199662"}}/>
+                    <InsuranceClient personInfo={{name: 'Jan', surname: 'Kowalski', serviceId: 'AX123555', pesel: '90801199662'}} />
                 </Route>
                 <RestrictedRoute path={ClientRoutes.REPORT_ACCIDENT}>
                     <AppointmentView />
