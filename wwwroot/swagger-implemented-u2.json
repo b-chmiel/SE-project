@@ -384,9 +384,9 @@
     },
     "Car" : {
       "type" : "object",
-      "required" : [ "licencePlate", "model", "type" ],
+      "required" : [ "licensePlate", "model", "type" ],
       "properties" : {
-        "licencePlate" : {
+        "licensePlate" : {
           "type" : "string",
           "example" : "DDZ 18N0"
         },
@@ -407,9 +407,9 @@
     },
     "DiagnosticProfile" : {
       "type" : "object",
-      "required" : [ "licencePlate" ],
+      "required" : [ "licensePlate" ],
       "properties" : {
-        "licencePlate" : {
+        "licensePlate" : {
           "type" : "string",
           "example" : "DDZ 18N0"
         },
