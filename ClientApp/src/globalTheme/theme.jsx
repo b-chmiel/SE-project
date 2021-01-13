@@ -21,6 +21,14 @@ export const Container = {
             borderRadius: '8px',
             margin: '20px',
         },
+        'authorization': {
+            border: '2px',
+            borderColor: colors.electricViolet,
+            padding: '10px',
+            borderRadius: '8px',
+            width: "400px",
+            margin: '20px',
+        }
     },
 };
 

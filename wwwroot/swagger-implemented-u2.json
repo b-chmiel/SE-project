@@ -11,6 +11,9 @@
   "tags" : [ {
     "name" : "users",
     "description" : "Operations about users"
+  }, {
+    "name" : "cars",
+    "description" : "Operations on cars"
   } ],
   "paths" : {
     "/user" : {
@@ -223,6 +226,117 @@
           }
         }
       }
+    },
+    "/car" : {
+      "post" : {
+        "tags" : [ "cars" ],
+        "summary" : "Add new car to the system",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "addCar",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/Car"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/car/{licensePlate}" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car by the license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "getCar",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car to return",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Car"
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/car/{licensePlate}/profile" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car diagnostic profile by license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "getProfile",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car to return",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DiagnosticProfile"
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
     }
   },
   "definitions" : {
@@ -270,6 +384,78 @@
           "default" : 0
         }
       }
+    },
+    "Car" : {
+      "type" : "object",
+      "required" : [ "licensePlate", "model", "type" ],
+      "properties" : {
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "model" : {
+          "type" : "string",
+          "example" : "Škoda Fabia 2012"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "hatchback",
+          "enum" : [ "sedan", "hatchback" ]
+        },
+        "username" : {
+          "type" : "string",
+          "example" : "myUser"
+        }
+      }
+    },
+    "DiagnosticProfile" : {
+      "type" : "object",
+      "required" : [ "licensePlate" ],
+      "properties" : {
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "engine" : {
+          "type" : "string",
+          "example" : "2120.00cm3"
+        },
+        "body" : {
+          "type" : "string",
+          "example" : "black"
+        },
+        "lowVoltage" : {
+          "type" : "string",
+          "example" : "12V"
+        },
+        "lighting" : {
+          "type" : "string"
+        },
+        "brakes" : {
+          "type" : "string"
+        },
+        "sensors" : {
+          "type" : "string",
+          "example" : "parking sensors"
+        },
+        "miscellaneous" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "conditionig" : {
+          "type" : "string",
+          "example" : "full"
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "GuidAuth" : {
+      "type" : "apiKey",
+      "in" : "header",
+      "name" : "Guid"
     }
   },
   "schemes" : [ "https" ],

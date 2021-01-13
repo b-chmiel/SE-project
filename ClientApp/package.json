@@ -3,7 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@chakra-ui/icons": "^1.0.3",
         "@chakra-ui/react": "^1.0.4",
+        "@emotion/css": "^11.1.3",
         "@emotion/react": "^11.1.4",
         "@emotion/styled": "^11.0.0",
         "@testing-library/jest-dom": "^5.11.6",
@@ -57,5 +59,23 @@
         "hooks": {
             "pre-commit": "git-format-staged -f 'prettier --ignore-unknown --stdin --stdin-filepath \"{}\"' ."
         }
+    },
+    "jest": {
+        "collectCoverageFrom": [
+            "src/**/*.{js,jsx,ts,tsx}",
+            "!<rootDir>/node_modules/",
+            "!<rootDir>/path/to/dir/"
+        ],
+        "coverageThreshold": {
+            "global": {
+                "branches": 90,
+                "functions": 90,
+                "lines": 90,
+                "statements": 90
+            }
+        },
+        "coverageReporters": [
+            "text"
+        ]
     }
 }
