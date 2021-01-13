@@ -10,12 +10,11 @@ import {
     Radio,
     RadioGroup,
     Select,
-    Textarea,
 } from '@chakra-ui/react';
-
-import {Formik, FormikHelpers} from 'formik';
+import {Field, Formik, FormikHelpers} from 'formik';
 import * as React from 'react';
 import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
+import {TodoList} from '../../components/TodoList/TodoList';
 import {AvailableHours, initialFormValues} from './AppointmentView.constants';
 import {checkIfHourIsAvailable, validate} from './AppointmentView.helpers';
 import {AppointmentPriorityNames, AppointmentTypeNames, MakeAppointmentData} from './AppointmentView.types';
@@ -35,22 +34,7 @@ export const AppointmentView: React.FC = () => {
                     return (
                         <form onSubmit={handleSubmit}>
                             <Grid gap={8} templateRows="repeat(2, 1fr)" templateColumns="repeat(5, 1fr)">
-                                <GridItem colSpan={3} h={'200px'}>
-                                    <FormControl isInvalid={!!(errors.actions && touched.actions)}>
-                                        <FormLabel>DESCRIPTION</FormLabel>
-                                        <Textarea
-                                            name={'actions'}
-                                            value={values.actions}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            resize={'none'}
-                                            borderColor={!!(errors.actions && touched.actions) ? 'red' : 'inherit'}
-                                            minH={'140px'}
-                                        />
-                                        <FormErrorMessage color={'red'}>{errors.actions}</FormErrorMessage>
-                                    </FormControl>
-                                </GridItem>
-                                <GridItem rowStart={2}>
+                                <GridItem rowStart={1}>
                                     <FormControl isInvalid={!!(errors.priority && touched.priority)}>
                                         <FormLabel>PRIORITY</FormLabel>
                                         <InputGroup>
@@ -65,7 +49,7 @@ export const AppointmentView: React.FC = () => {
                                         <FormErrorMessage>{errors.priority}</FormErrorMessage>
                                     </FormControl>
                                 </GridItem>
-                                <GridItem rowStart={2}>
+                                <GridItem rowStart={1}>
                                     <FormControl isInvalid={!!(errors.type && touched.type)}>
                                         <FormLabel>APPOINTMENT TYPE</FormLabel>
                                         <InputGroup>
@@ -95,7 +79,7 @@ export const AppointmentView: React.FC = () => {
                                         SAVE
                                     </Button>
                                 </GridItem>
-                                <GridItem rowStart={2} colStart={3}>
+                                <GridItem rowStart={1} colStart={3}>
                                     <FormControl isInvalid={!!(errors.time && touched.time)}>
                                         <FormLabel>AVAILABLE HOURS</FormLabel>
                                         <RadioGroup
@@ -118,6 +102,10 @@ export const AppointmentView: React.FC = () => {
                                             </Grid>
                                         </RadioGroup>
                                     </FormControl>
+                                </GridItem>
+                                <GridItem colSpan={3} h={'200px'}>
+                                    <FormLabel>REQUIRED ACTIONS</FormLabel>
+                                    <Field name="requiredActions" component={TodoList} />
                                 </GridItem>
                             </Grid>
                         </form>

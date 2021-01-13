@@ -1,6 +1,6 @@
 export interface MakeAppointmentData {
     date: Date;
-    actions: string;
+    actions: string[];
     time: string; //format: hh:mm
     priority: AppointmentPriority;
     type: AppointmentType;
