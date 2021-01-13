@@ -18,6 +18,11 @@ using System.ComponentModel.DataAnnotations;
 using se_project.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using se_project.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using Validator = se_project.Functions.Validator;
+using ValidationException = se_project.Functions.ValidationException;
+using se_project.Functions;
 
 namespace se_project.Controllers
 { 
@@ -43,12 +48,49 @@ namespace se_project.Controllers
         [ValidateModelState]
         [SwaggerOperation("AddCar")]
         public virtual IActionResult AddCar([FromBody]Car car)
-        { 
+        {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (!String.IsNullOrEmpty(car.Username)&&(!car.Username.Equals(sender.Item1)&&sender.Item2!=UserType.WORKSHOP_EMPLOYEE))
+                return StatusCode(403);
+            if (String.IsNullOrEmpty(car.Username))
+            {
+                car.Username = sender.Item1;
+            }
+            try
+            {
+                Validator.Validate(_context, car);
+            }
+            catch (ValidationException e)
+            {
+                return StatusCode(400, e.Message);
+            }
+            car.Owner = _context.Users.First(x => x.Username.Equals(car.Username));
 
+            DiagnosticProfile diagnosticProfile = new DiagnosticProfile();
+            diagnosticProfile.LicensePlate = car.LicensePlate;
+            car.DiagnosticProfile = diagnosticProfile;
 
-
-            throw new NotImplementedException();
+            _context.Add(car);
+            _context.Add(diagnosticProfile);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException e)
+            {
+                return StatusCode(400, e.Message+" -> "+e.InnerException.Message);
+            }
+            return new ObjectResult (car);
         }
+
 
         /// <summary>
         /// Find car by id
@@ -63,25 +105,29 @@ namespace se_project.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetCar")]
         [SwaggerResponse(statusCode: 200, type: typeof(Car), description: "Successful operation")]
-        public virtual IActionResult GetCar([FromRoute][Required]int? licensePlate)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Car));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "{\n  \"model\" : \"Škoda Fabia 2012\",\n  \"type\" : \"sedan\",\n  \"licensePlate\" : 301\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<Car>(exampleJson)
-            : default(Car);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult GetCar([FromRoute][Required]string licensePlate)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                return StatusCode(400);
+            }
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            var car = _context.Cars.First(x => x.LicensePlate.Equals(licensePlate));
+            if ((!car.Username.Equals(sender.Item1))&&!(sender.Item2==UserType.WORKSHOP_EMPLOYEE||sender.Item2==UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
+            if (car is null)
+            {
+                return StatusCode(404);
+            }
+            return new ObjectResult(car);
         }
 
         /// <summary>
@@ -131,25 +177,29 @@ namespace se_project.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetProfile")]
         [SwaggerResponse(statusCode: 200, type: typeof(DiagnosticProfile), description: "Successful operation")]
-        public virtual IActionResult GetProfile([FromRoute][Required]int? licensePlate)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(DiagnosticProfile));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "{\n  \"sensors\" : \"parking sensors\",\n  \"miscellaneous\" : [ \"miscellaneous\", \"miscellaneous\" ],\n  \"engine\" : \"2120.00cm3\",\n  \"lowVoltage\" : \"12V\",\n  \"brakes\" : \"brakes\",\n  \"conditionig\" : \"full\",\n  \"body\" : \"black\",\n  \"lighting\" : \"lighting\"\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<DiagnosticProfile>(exampleJson)
-            : default(DiagnosticProfile);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult GetProfile([FromRoute][Required]string licensePlate)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                return StatusCode(400);
+            }
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            var diagnosticProfile = _context.DiagnosticProfiles.First(x => x.LicensePlate.Equals(licensePlate));
+            if ((!diagnosticProfile.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
+            if (diagnosticProfile is null)
+            {
+                return StatusCode(404);
+            }
+            return new ObjectResult(diagnosticProfile);
         }
 
         /// <summary>
@@ -188,8 +238,12 @@ namespace se_project.Controllers
         [Route("/api/0.1.1/car/{licensePlate}/profile")]
         [ValidateModelState]
         [SwaggerOperation("SetProfile")]
-        public virtual IActionResult SetProfile([FromRoute][Required]int? licensePlate, [FromBody]DiagnosticProfile profile)
-        { 
+        public virtual IActionResult SetProfile([FromRoute][Required]string licensePlate, [FromBody]DiagnosticProfile profile)
+        {
+            if (string.IsNullOrWhiteSpace(licensePlate))
+            {
+                throw new ArgumentException($"'{nameof(licensePlate)}' cannot be null or whitespace", nameof(licensePlate));
+            }
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400);
 
