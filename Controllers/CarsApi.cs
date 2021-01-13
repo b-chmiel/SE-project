@@ -20,9 +20,9 @@ using Microsoft.AspNetCore.Authorization;
 using se_project.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using se_project.Functions;
 using Validator = se_project.Functions.Validator;
 using ValidationException = se_project.Functions.ValidationException;
+using se_project.Functions;
 
 namespace se_project.Controllers
 { 
@@ -49,6 +49,21 @@ namespace se_project.Controllers
         [SwaggerOperation("AddCar")]
         public virtual IActionResult AddCar([FromBody]Car car)
         {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (!String.IsNullOrEmpty(car.Username)&&(!car.Username.Equals(sender.Item1)&&sender.Item2!=UserType.WORKSHOP_EMPLOYEE))
+                return StatusCode(403);
+            if (String.IsNullOrEmpty(car.Username))
+            {
+                car.Username = sender.Item1;
+            }
             try
             {
                 Validator.Validate(_context, car);
@@ -96,7 +111,18 @@ namespace se_project.Controllers
             {
                 return StatusCode(400);
             }
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
             var car = _context.Cars.First(x => x.LicensePlate.Equals(licensePlate));
+            if ((!car.Username.Equals(sender.Item1))&&!(sender.Item2==UserType.WORKSHOP_EMPLOYEE||sender.Item2==UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
             if (car is null)
             {
                 return StatusCode(404);
@@ -157,7 +183,18 @@ namespace se_project.Controllers
             {
                 return StatusCode(400);
             }
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
             var diagnosticProfile = _context.DiagnosticProfiles.First(x => x.LicensePlate.Equals(licensePlate));
+            if ((!diagnosticProfile.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
             if (diagnosticProfile is null)
             {
                 return StatusCode(404);
@@ -201,8 +238,12 @@ namespace se_project.Controllers
         [Route("/api/0.1.1/car/{licensePlate}/profile")]
         [ValidateModelState]
         [SwaggerOperation("SetProfile")]
-        public virtual IActionResult SetProfile([FromRoute][Required]int? licensePlate, [FromBody]DiagnosticProfile profile)
-        { 
+        public virtual IActionResult SetProfile([FromRoute][Required]string licensePlate, [FromBody]DiagnosticProfile profile)
+        {
+            if (string.IsNullOrWhiteSpace(licensePlate))
+            {
+                throw new ArgumentException($"'{nameof(licensePlate)}' cannot be null or whitespace", nameof(licensePlate));
+            }
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400);
 
