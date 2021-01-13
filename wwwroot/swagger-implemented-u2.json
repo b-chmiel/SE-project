@@ -231,6 +231,7 @@
       "post" : {
         "tags" : [ "cars" ],
         "summary" : "Add new car to the system",
+        "description" : "<b>!Available only for car owner and employee!</b>",
         "operationId" : "addCar",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -261,6 +262,7 @@
       "get" : {
         "tags" : [ "cars" ],
         "summary" : "Find car by the license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
         "operationId" : "getCar",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -300,6 +302,7 @@
       "get" : {
         "tags" : [ "cars" ],
         "summary" : "Find car diagnostic profile by license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
         "operationId" : "getProfile",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
