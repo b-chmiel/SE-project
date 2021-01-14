@@ -29,7 +29,7 @@ export function logout(): void {
 
 export function createUser(name: string, surname: string, username: string, password: string, type: string, telephone: string): void {
     const userType = type;
-    const phoneNumber = telphone;
+    const phoneNumber = telephone;
     var user: UserSignUp = {
         username,
         password,
