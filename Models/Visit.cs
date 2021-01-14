@@ -35,6 +35,7 @@ namespace se_project.Models
         [DataMember(Name="visitId")]
         public long? VisitId { get; set; }
 
+
         /// <summary>
         /// Gets or Sets Date
         /// </summary>
@@ -53,6 +54,11 @@ namespace se_project.Models
         /// </summary>
         [DataMember(Name="requiredActions")]
         public List<string> RequiredActions { get; set; }
+
+        [Required]
+        [DataMember(Name = "licensePlate")]
+        public string LicensePlate { get; set; }
+        public virtual Car Car { get; set; }
 
         /// <summary>
         /// Gets or Sets Status
