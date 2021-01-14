@@ -19,6 +19,7 @@ using System.Linq;
 using se_project.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using se_project.Functions;
 using se_project.Models;
 
 namespace se_project.Controllers
@@ -47,8 +48,18 @@ namespace se_project.Controllers
         [SwaggerOperation("AddVisit")]
         public virtual IActionResult AddVisit([FromBody]Body3 body)
         { 
-            var user = _context.Users.FirstOrDefault(x => x.Username.Equals(body.Username));
-            if (user is null)
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            
+            var car = _context.Cars.FirstOrDefault(x => x.LicensePlate.Equals(body.LicensePlate));
+            if (car is null)
             {
                 return StatusCode(400);
             }
@@ -56,8 +67,8 @@ namespace se_project.Controllers
             var visit = new Visit
             {
                 Date = body.Date,
-                CarOwner = user,
-                CarOwnerUsername = body.Username,
+                Car = car,
+                CarOwnerUsername = body.LicensePlate,
                 RequiredActions = body.RequiredActions,
                 Status = 0
             };
@@ -89,6 +100,16 @@ namespace se_project.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse200>), description: "Successful operation")]
         public virtual IActionResult FindVisits([FromQuery][Required()]List<string> status)
         {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            
             if (status.Count < 1)
             {
                 return new ObjectResult(_context.Visits);
@@ -114,6 +135,16 @@ namespace se_project.Controllers
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse200>), description: "Successful operation")]
         public virtual IActionResult GetVisit([FromRoute][Required]int? visitId)
         {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            
             if (visitId < 0)
             {
                 return StatusCode(400);
@@ -142,6 +173,18 @@ namespace se_project.Controllers
         [SwaggerOperation("Diagnose")]
         public virtual IActionResult Diagnose([FromRoute][Required]int? visitId)
         { 
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (sender.Item2!=UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403); 
+            
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
             {
@@ -176,6 +219,18 @@ namespace se_project.Controllers
         [SwaggerOperation("Maintain")]
         public virtual IActionResult Maintain([FromRoute][Required]int? visitId)
         { 
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (sender.Item2!=UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403); 
+            
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
             {
@@ -210,6 +265,18 @@ namespace se_project.Controllers
         [SwaggerOperation("Repair")]
         public virtual IActionResult Repair([FromRoute][Required]int? visitId)
         { 
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (sender.Item2!=UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403); 
+            
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
             {
@@ -243,6 +310,18 @@ namespace se_project.Controllers
         [SwaggerOperation("UpdateVisit")]
         public virtual IActionResult UpdateVisit([FromBody]Visit body)
         { 
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (sender.Item2!=UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403); 
+            
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(body.VisitId));
             if (visit is null)
             {

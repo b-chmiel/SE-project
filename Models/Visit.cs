@@ -22,6 +22,24 @@ using Newtonsoft.Json;
 
 namespace se_project.Models
 { 
+    
+    public enum VisitPriority {
+        LOW,
+        MEDIUM,
+        HIGH,
+        EMERGENCY,
+    }
+        
+    public enum VisitType {
+        PREVENTIVE_MAINTENANCE_SERVICE,
+        RUNNING_REPAIRS,
+        BODY_REPAIR,
+        AIR_CONDITIONING_SYSTEM,
+        CAR_CARE,
+        WARRANTY_REPAIRS,
+        WHEEL_CARE,
+        ACCIDENT_REPAIR,
+    }
     /// <summary>
     /// 
     /// </summary>
@@ -92,12 +110,18 @@ namespace se_project.Models
             [EnumMember(Value = "repaired")]
             RepairedEnum = 3
         }
-
+        
         /// <summary>
         /// Gets or Sets Status
         /// </summary>
         [DataMember(Name="status")]
         public StatusEnum? Status { get; set; }
+        
+        [DataMember(Name="priority")]
+        public VisitPriority Priority { get; set; }
+        
+        [DataMember(Name="type")]
+        public VisitType Type { get; set; }
 
         /// <summary>
         /// Gets or Sets AssignedEmployees

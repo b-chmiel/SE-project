@@ -27,12 +27,9 @@ namespace se_project.Models
     [DataContract]
     public partial class Body3 : IEquatable<Body3>
     { 
-        /// <summary>
-        /// Gets or Sets username
-        /// </summary>
         [Required]
-        [DataMember(Name="username")]
-        public string Username { get; set; }
+        [DataMember(Name = "licensePlate")]
+        public string LicensePlate { get; set; }
         
         /// <summary>
         /// Gets or Sets Date
@@ -45,6 +42,18 @@ namespace se_project.Models
         /// </summary>
         [DataMember(Name="requiredActions")]
         public List<string> RequiredActions { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets VisitPriority
+        /// </summary>
+        [DataMember(Name="priority")]
+        public VisitPriority Priority { get; set; }
+        
+        /// <summary>
+        /// Gets or Sets VisitType
+        /// </summary>
+        [DataMember(Name="type")]
+        public VisitType Type { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

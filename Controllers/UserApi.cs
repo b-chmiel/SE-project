@@ -51,7 +51,7 @@ namespace se_project.Controllers
         /// Find user by GUID
         /// </summary>
         /// <remarks>Returns a single user</remarks>
-        /// <param name="guid">GUID of user to return</param>
+        /// <param name="username">GUID of user to return</param>
         /// <response code="200">Successful operation</response>
         /// <response code="400">Invalid GUID supplied</response>
         /// <response code="404">User not found</response>
@@ -206,12 +206,22 @@ namespace se_project.Controllers
         /// <response code="200">Successful operation</response>
         /// <response code="404">Client not found</response>
         [HttpGet]
-        [Route("/api/0.1.1/users/{guid}/visits")]
+        [Route("/api/0.1.1/users/{username}/visits")]
         [ValidateModelState]
         [SwaggerOperation("GetUserVisits")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Visit>), description: "Successful operation")]
         public virtual IActionResult GetClientVisits([FromRoute][Required]string username)
         { 
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+
             var user = _context.Users.FirstOrDefault(x => x.Username.Equals(username));
             if (user is null)
             {
