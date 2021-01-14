@@ -11,7 +11,7 @@ type Props = {
 
 const RestrictedRoute: React.FC<Props> = ({children, path}) => {
     const history = useHistory();
-    const isAuthenticated = localStorage.getItem('authorized') === 'true';
+    const isAuthenticated = localStorage.getItem('client_uuid')===null?false:true;
 
     function getContent() {
         if (!isAuthenticated) {

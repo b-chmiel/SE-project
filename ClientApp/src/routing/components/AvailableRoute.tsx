@@ -8,13 +8,12 @@ type Props = {
 
 const AvailableRoute: React.FC<Props> = ({children, path}) => {
     const history = useHistory();
-    const isAuthenticated = localStorage.getItem('authorized') === 'true';
+    const isAuthenticated = localStorage.getItem('client_uuid')===null?true:false;
 
     function getContent() {
         if (isAuthenticated) {
             history.push(ClientRoutes.CARS);
         }
-
         return children;
     }
 
