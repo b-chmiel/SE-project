@@ -11,8 +11,8 @@ using se_project;
 namespace se_project.Migrations
 {
     [DbContext(typeof(CompanyDBEntities))]
-    [Migration("20210109163241_migrate")]
-    partial class migrate
+    [Migration("20210114173417_migrate3")]
+    partial class migrate3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,9 @@ namespace se_project.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
+
                     b.HasKey("LicensePlate");
 
                     b.HasIndex("OwnerUsername");
@@ -56,7 +59,7 @@ namespace se_project.Migrations
                     b.Property<string>("Brakes")
                         .HasColumnType("text");
 
-                    b.Property<string>("Conditionig")
+                    b.Property<string>("Conditioning")
                         .HasColumnType("text");
 
                     b.Property<string>("Engine")
@@ -90,11 +93,14 @@ namespace se_project.Migrations
                     b.Property<string>("EmployeeUsername")
                         .HasColumnType("text");
 
+                    b.Property<int?>("VisitId1")
+                        .HasColumnType("integer");
+
                     b.HasKey("Username", "VisitId");
 
                     b.HasIndex("EmployeeUsername");
 
-                    b.HasIndex("VisitId");
+                    b.HasIndex("VisitId1");
 
                     b.ToTable("EmployeesVisits");
                 });
@@ -138,10 +144,13 @@ namespace se_project.Migrations
 
             modelBuilder.Entity("se_project.Models.Visit", b =>
                 {
-                    b.Property<long?>("VisitId")
+                    b.Property<int>("VisitId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("CarLicensePlate")
+                        .HasColumnType("text");
 
                     b.Property<string>("CarOwnerUsername")
                         .HasColumnType("text");
@@ -150,8 +159,15 @@ namespace se_project.Migrations
                         .IsRequired()
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("LicensePlate")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<decimal?>("Price")
                         .HasColumnType("numeric");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("integer");
 
                     b.Property<List<string>>("RequiredActions")
                         .HasColumnType("text[]");
@@ -159,7 +175,12 @@ namespace se_project.Migrations
                     b.Property<int?>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
                     b.HasKey("VisitId");
+
+                    b.HasIndex("CarLicensePlate");
 
                     b.HasIndex("CarOwnerUsername");
 
@@ -194,9 +215,7 @@ namespace se_project.Migrations
 
                     b.HasOne("se_project.Models.Visit", "Visit")
                         .WithMany("AssignedEmployees")
-                        .HasForeignKey("VisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VisitId1");
 
                     b.Navigation("Employee");
 
@@ -205,9 +224,15 @@ namespace se_project.Migrations
 
             modelBuilder.Entity("se_project.Models.Visit", b =>
                 {
+                    b.HasOne("se_project.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarLicensePlate");
+
                     b.HasOne("se_project.Models.User", "CarOwner")
                         .WithMany("UserVisits")
                         .HasForeignKey("CarOwnerUsername");
+
+                    b.Navigation("Car");
 
                     b.Navigation("CarOwner");
                 });

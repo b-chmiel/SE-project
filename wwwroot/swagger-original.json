@@ -1010,7 +1010,7 @@
             "type": "string"
           }
         },
-        "conditionig": {
+        "conditioning": {
           "type": "string",
           "example": "full"
         }
@@ -1021,7 +1021,7 @@
         "engine": "2120.00cm3",
         "lowVoltage": "12V",
         "brakes": "brakes",
-        "conditionig": "full",
+        "conditioning": "full",
         "body": "black",
         "lighting": "lighting"
       }
