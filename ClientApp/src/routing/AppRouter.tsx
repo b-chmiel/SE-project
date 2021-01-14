@@ -4,6 +4,7 @@ import AuthorizationView from '../modules/authorization/views/AuthorizationView/
 import CreateUserView from '../modules/authorization/views/CreateUserView/CreateUserView';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
 import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
+import {YourAppointmentsView} from '../modules/client/views/YourAppointmentsView/YourAppointmentsView';
 import {InsuranceClient} from '../modules/common/components/InsuranceClientData/InsuranceClientData';
 import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
 import Cars from '../views/Client/Cars';
@@ -36,6 +37,9 @@ export const AppRouter: React.FC = () => {
                 </RestrictedRoute>
                 <RestrictedRoute path={ClientRoutes.CLIENT_CASE}>
                     <ClientCaseView />
+                </RestrictedRoute>
+                <RestrictedRoute path={ClientRoutes.APPOINTMENTS}>
+                    <YourAppointmentsView />
                 </RestrictedRoute>
                 <AvailableRoute path={AuthenticationRoutes.SIGNIN}>
                     <AuthorizationView />
