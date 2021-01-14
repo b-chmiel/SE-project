@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {API_BASE_PATH, AuthenticationRoutes} from '../../../routing/routes';
-import {MockedPhoneNumber, MockedUserType} from './AuthService.mocks';
 import {UserSignIn, UserSignUp} from './AuthService.types';
 
 export async function authorize(userCreds: UserSignIn): Promise<boolean> {
@@ -28,15 +27,15 @@ export function logout(): void {
     localStorage.removeItem('client_uuid');
 }
 
-export function createUser(username: string, password: string): void {
-    const userType = MockedUserType;
-    const phoneNumber = MockedPhoneNumber;
+export function createUser(name: string, surname: string, username: string, password: string, type: string, telphone: string): void {
+    const userType = type;
+    const phoneNumber = telphone;
     var user: UserSignUp = {
         username,
         password,
         userType,
-        name: username,
-        surname: username,
+        name,
+        surname,
         phoneNumber,
     };
     axios
