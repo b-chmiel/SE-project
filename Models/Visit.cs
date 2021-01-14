@@ -21,8 +21,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace se_project.Models
-{ 
-    
+{
     public enum VisitPriority {
         LOW,
         MEDIUM,

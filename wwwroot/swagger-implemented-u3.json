@@ -14,6 +14,9 @@
   }, {
     "name" : "cars",
     "description" : "Operations on cars"
+  }, {
+    "name" : "visits",
+    "description" : "Operations on cars"
   } ],
   "paths" : {
     "/users" : {
@@ -55,7 +58,7 @@
               },
               "phoneNumber" : {
                 "type" : "string",
-                "example" : +48123456789
+                "example" : "+48123456789"
               },
               "email" : {
                 "type" : "string",
@@ -124,7 +127,7 @@
               },
               "phoneNumber" : {
                 "type" : "string",
-                "example" : +48123456789
+                "example" : "+48123456789"
               },
               "email" : {
                 "type" : "string",
@@ -424,6 +427,307 @@
           "GuidAuth" : [ ]
         } ]
       }
+    },
+    "/visit" : {
+      "post" : {
+        "tags" : [ "visits" ],
+        "summary" : "Schedule a visit",
+        "operationId" : "addVisit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Information about scheduled visit. Required actions can be modified later on by an employee.",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "licensePlate" ],
+            "properties" : {
+              "licencePlate" : {
+                "type" : "string",
+                "example" : "DDZ 18N0"
+              },
+              "date" : {
+                "type" : "string",
+                "format" : "date-time",
+                "example" : "2020-12-24T12:00:00+01"
+              },
+              "requiredActions" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "example" : [ "oil change" ]
+                }
+              },
+              "priority" : {
+                "type" : "string",
+                "enum" : [ "LOW", "MEDIUM", "HIGH", "EMERGENCY" ],
+                "example" : "EMERGENCY"
+              },
+              "type" : {
+                "type" : "string",
+                "enum" : [ "PREVENTIVE_MAINTENANCE_SERVICE", "RUNNING_REPAIRS", "BODY_REPAIR", "AIR_CONDITIONING_SYSTEM", "CAR_CARE", "WARRANTY_REPAIRS", "WHEEL_CARE", "ACCIDENT_REPAIR" ],
+                "example" : "AIR_CONDITIONING_SYSTEM"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Update a visit",
+        "operationId" : "updateVisit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Visit"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visit/find_by_status" : {
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Find visits by Status",
+        "description" : "Multiple status values can be provided with comma separated strings",
+        "operationId" : "findVisits",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status values that need to be considered for filter",
+          "required" : true,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "planned", "atService", "repaired", "checkedIn" ],
+            "default" : "planned"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "carId" : {
+                    "type" : "integer",
+                    "format" : "int32",
+                    "example" : 1552
+                  },
+                  "visit" : {
+                    "$ref" : "#/definitions/Visit"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid status value"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visit/{visitId}" : {
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Find visit by Id",
+        "operationId" : "getVisit",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "carId" : {
+                    "type" : "integer",
+                    "format" : "int32",
+                    "example" : 1552
+                  },
+                  "visit" : {
+                    "$ref" : "#/definitions/Visit"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visit/{visitId}/repair" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Marks repairment as finished",
+        "operationId" : "repair",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visit/{visitId}/maintain" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Marks maintenance as finished",
+        "operationId" : "maintain",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visit/{visitId}/diagnose" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Marks diagnostic as finished",
+        "operationId" : "diagnose",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
     }
   },
   "definitions" : {
@@ -458,7 +762,7 @@
         },
         "phoneNumber" : {
           "type" : "string",
-          "example" : +48123456789
+          "example" : "+48123456789"
         },
         "email" : {
           "type" : "string",
@@ -490,6 +794,71 @@
           "enum" : [ "sedan", "hatchback" ]
         },
         "username" : {
+          "type" : "string",
+          "example" : "myUser"
+        }
+      }
+    },
+    "Visit" : {
+      "type" : "object",
+      "required" : [ "visitId", "date", "licensePlate" ],
+      "properties" : {
+        "visitId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 5512
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-24T12:00:00+01"
+        },
+        "price" : {
+          "type" : "number",
+          "example" : 100.5
+        },
+        "requiredActions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "example" : [ "oil change", "breaks checking" ]
+        },
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "priority" : {
+          "type" : "string",
+          "enum" : [ "LOW", "MEDIUM", "HIGH", "EMERGENCY" ],
+          "example" : "EMERGENCY"
+        },
+        "type" : {
+          "type" : "string",
+          "enum" : [ "PREVENTIVE_MAINTENANCE_SERVICE", "RUNNING_REPAIRS", "BODY_REPAIR", "AIR_CONDITIONING_SYSTEM", "CAR_CARE", "WARRANTY_REPAIRS", "WHEEL_CARE", "ACCIDENT_REPAIR" ],
+          "example" : "AIR_CONDITIONING_SYSTEM"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "atService",
+          "enum" : [ "atService", "repaired", "checkedIn" ]
+        },
+        "assignedEmployees" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/User"
+          },
+          "example" : [ {
+            "employeeId" : 12,
+            "name" : "Bolesław",
+            "surname" : "Nowak"
+          }, {
+            "employeeId" : 13,
+            "name" : "Katarzyna",
+            "surname" : "Nowak"
+          } ]
+        },
+        "carOwnerUsername" : {
           "type" : "string",
           "example" : "myUser"
         }
