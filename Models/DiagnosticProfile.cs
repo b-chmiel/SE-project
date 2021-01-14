@@ -79,10 +79,10 @@ namespace se_project.Models
         public List<string> Miscellaneous { get; set; }
 
         /// <summary>
-        /// Gets or Sets Conditionig
+        /// Gets or Sets Conditioning
         /// </summary>
-        [DataMember(Name="conditionig")]
-        public string Conditionig { get; set; }
+        [DataMember(Name="conditioning")]
+        public string Conditioning { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -100,7 +100,7 @@ namespace se_project.Models
             sb.Append("  Brakes: ").Append(Brakes).Append("\n");
             sb.Append("  Sensors: ").Append(Sensors).Append("\n");
             sb.Append("  Miscellaneous: ").Append(Miscellaneous).Append("\n");
-            sb.Append("  Conditionig: ").Append(Conditionig).Append("\n");
+            sb.Append("  Conditioning: ").Append(Conditioning).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -178,9 +178,9 @@ namespace se_project.Models
                     Miscellaneous.SequenceEqual(other.Miscellaneous)
                 ) && 
                 (
-                    Conditionig == other.Conditionig ||
-                    Conditionig != null &&
-                    Conditionig.Equals(other.Conditionig)
+                    Conditioning == other.Conditioning ||
+                    Conditioning != null &&
+                    Conditioning.Equals(other.Conditioning)
                 );
         }
 
@@ -210,8 +210,8 @@ namespace se_project.Models
                     hashCode = hashCode * 59 + Sensors.GetHashCode();
                     if (Miscellaneous != null)
                     hashCode = hashCode * 59 + Miscellaneous.GetHashCode();
-                    if (Conditionig != null)
-                    hashCode = hashCode * 59 + Conditionig.GetHashCode();
+                    if (Conditioning != null)
+                    hashCode = hashCode * 59 + Conditioning.GetHashCode();
                 return hashCode;
             }
         }

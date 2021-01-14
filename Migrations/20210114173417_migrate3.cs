@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace se_project.Migrations
 {
-    public partial class migrate : Migration
+    public partial class migrate3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -35,6 +35,7 @@ namespace se_project.Migrations
                     LicensePlate = table.Column<string>(type: "text", nullable: false),
                     Model = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: true),
                     OwnerUsername = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -43,29 +44,6 @@ namespace se_project.Migrations
                     table.ForeignKey(
                         name: "FK_Cars_Users_OwnerUsername",
                         column: x => x.OwnerUsername,
-                        principalTable: "Users",
-                        principalColumn: "Username",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Visits",
-                columns: table => new
-                {
-                    VisitId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: true),
-                    RequiredActions = table.Column<List<string>>(type: "text[]", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: true),
-                    CarOwnerUsername = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Visits", x => x.VisitId);
-                    table.ForeignKey(
-                        name: "FK_Visits_Users_CarOwnerUsername",
-                        column: x => x.CarOwnerUsername,
                         principalTable: "Users",
                         principalColumn: "Username",
                         onDelete: ReferentialAction.Restrict);
@@ -83,7 +61,7 @@ namespace se_project.Migrations
                     Brakes = table.Column<string>(type: "text", nullable: true),
                     Sensors = table.Column<string>(type: "text", nullable: true),
                     Miscellaneous = table.Column<List<string>>(type: "text[]", nullable: true),
-                    Conditionig = table.Column<string>(type: "text", nullable: true)
+                    Conditioning = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,11 +75,45 @@ namespace se_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Visits",
+                columns: table => new
+                {
+                    VisitId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: true),
+                    RequiredActions = table.Column<List<string>>(type: "text[]", nullable: true),
+                    LicensePlate = table.Column<string>(type: "text", nullable: false),
+                    CarLicensePlate = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: true),
+                    Priority = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    CarOwnerUsername = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Visits", x => x.VisitId);
+                    table.ForeignKey(
+                        name: "FK_Visits_Cars_CarLicensePlate",
+                        column: x => x.CarLicensePlate,
+                        principalTable: "Cars",
+                        principalColumn: "LicensePlate",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Visits_Users_CarOwnerUsername",
+                        column: x => x.CarOwnerUsername,
+                        principalTable: "Users",
+                        principalColumn: "Username",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeesVisits",
                 columns: table => new
                 {
                     Username = table.Column<string>(type: "text", nullable: false),
                     VisitId = table.Column<long>(type: "bigint", nullable: false),
+                    VisitId1 = table.Column<int>(type: "integer", nullable: true),
                     EmployeeUsername = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -114,11 +126,11 @@ namespace se_project.Migrations
                         principalColumn: "Username",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EmployeesVisits_Visits_VisitId",
-                        column: x => x.VisitId,
+                        name: "FK_EmployeesVisits_Visits_VisitId1",
+                        column: x => x.VisitId1,
                         principalTable: "Visits",
                         principalColumn: "VisitId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -132,9 +144,14 @@ namespace se_project.Migrations
                 column: "EmployeeUsername");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeesVisits_VisitId",
+                name: "IX_EmployeesVisits_VisitId1",
                 table: "EmployeesVisits",
-                column: "VisitId");
+                column: "VisitId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Visits_CarLicensePlate",
+                table: "Visits",
+                column: "CarLicensePlate");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Visits_CarOwnerUsername",
@@ -151,10 +168,10 @@ namespace se_project.Migrations
                 name: "EmployeesVisits");
 
             migrationBuilder.DropTable(
-                name: "Cars");
+                name: "Visits");
 
             migrationBuilder.DropTable(
-                name: "Visits");
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "Users");
