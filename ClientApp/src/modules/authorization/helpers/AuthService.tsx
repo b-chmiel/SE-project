@@ -30,7 +30,7 @@ export function logout(): void {
 export function createUser(name: string, surname: string, username: string, password: string, type: string, telephone: string): void {
     const userType = type;
     const phoneNumber = telephone;
-    var user: UserSignUp = {
+    const user: UserSignUp = {
         username,
         password,
         userType,
