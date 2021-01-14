@@ -5,6 +5,7 @@ export enum ClientRoutes {
     APPOINTMENTS = '/appointments',
     HISTORY = '/history',
     CLIENT_CASE = '/client-case/:caseId',
+    APPOINTMENT_DETAILS = '/appointment-details',
 }
 
 export enum WorkshopEmployeeRoutes {
@@ -25,7 +26,7 @@ export enum InsuranceEmployeeRoutes {
 export enum AuthenticationRoutes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
-    USER = '/user',
+    USER = '/users',
 }
 
 export const API_BASE_PATH = '/api/0.1.1';

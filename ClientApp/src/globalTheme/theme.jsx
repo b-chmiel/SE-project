@@ -10,6 +10,7 @@ export const colors = {
     purpleHeart: '#7627C5',
     mediumPurple: '#A96BE7',
     windsor: '#470B84',
+    silver: '#C7C3C3',
 };
 
 export const Container = {
@@ -21,14 +22,14 @@ export const Container = {
             borderRadius: '8px',
             margin: '20px',
         },
-        'authorization': {
+        authorization: {
             border: '2px',
             borderColor: colors.electricViolet,
             padding: '10px',
             borderRadius: '8px',
-            width: "400px",
+            width: '400px',
             margin: '20px',
-        }
+        },
     },
 };
 
