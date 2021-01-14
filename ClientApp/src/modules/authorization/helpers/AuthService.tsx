@@ -3,26 +3,20 @@ import {API_BASE_PATH, AuthenticationRoutes} from '../../../routing/routes';
 import {MockedPhoneNumber, MockedUserType} from './AuthService.mocks';
 import {UserSignIn, UserSignUp} from './AuthService.types';
 
-export async function authorize(): Promise<boolean> {
-    const creds = localStorage.getItem('creds');
+export async function authorize(userCreds: UserSignIn): Promise<boolean> {
     try {
-        const res = await axios.post(API_BASE_PATH + AuthenticationRoutes.USER + AuthenticationRoutes.SIGNIN, JSON.parse(creds || '{}'));
+        const res = await axios.post(API_BASE_PATH + AuthenticationRoutes.USER + AuthenticationRoutes.SIGNIN, userCreds);
         localStorage.setItem('client_uuid', res.data.guid);
-        localStorage.setItem('authorized', 'true');
         return true;
     } catch (error) {
         localStorage.setItem('client_uuid', '');
-        localStorage.setItem('authorized', 'false');
         return false;
     }
 }
 
-export function saveCreds(username: string, password: string): void {
-    var user: UserSignIn = {
-        username: username,
-        password: password,
-    };
-    localStorage.setItem('creds', JSON.stringify(user));
+
+export async function isAuthenticated(): Promise<boolean>{
+    return localStorage.getItem('client_uuid')===null? false:true;
 }
 
 export function getClientID(): string {
@@ -32,8 +26,6 @@ export function getClientID(): string {
 
 export function logout(): void {
     localStorage.removeItem('client_uuid');
-    localStorage.removeItem('creds');
-    localStorage.setItem('authorized', 'false');
 }
 
 export function createUser(username: string, password: string): void {
@@ -47,9 +39,11 @@ export function createUser(username: string, password: string): void {
         surname: username,
         phoneNumber,
     };
-    saveCreds(username, password);
     axios
         .post(API_BASE_PATH + AuthenticationRoutes.USER, user)
-        .then((res) => res.status) //400 exist, 200 success
+        .then((res) => {
+                localStorage.setItem('client_uuid', res.data.guid)
+            }
+        ) //400 exist, 200 success
         .catch((err) => console.log(err));
 }

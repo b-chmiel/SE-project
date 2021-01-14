@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route, useHistory} from 'react-router-dom';
 import {ClientRoutes} from '../routes';
+import {isAuthenticated} from "../../modules/authorization/helpers/AuthService"
 
 type Props = {
     path: string;
@@ -8,13 +9,12 @@ type Props = {
 
 const AvailableRoute: React.FC<Props> = ({children, path}) => {
     const history = useHistory();
-    const isAuthenticated = localStorage.getItem('authorized') === 'true';
 
     function getContent() {
-        if (isAuthenticated) {
-            history.push(ClientRoutes.CARS);
-        }
-
+        isAuthenticated().then(r=> {if(r===true)
+            history.push(ClientRoutes.CARS)
+            }
+        )
         return children;
     }
 

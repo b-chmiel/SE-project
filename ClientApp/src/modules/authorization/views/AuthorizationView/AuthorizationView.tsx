@@ -2,9 +2,9 @@ import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthenticationRoutes, ClientRoutes} from '../../../../routing/routes';
-import {authorize, saveCreds} from '../../helpers/AuthService';
+import {authorize} from '../../helpers/AuthService';
 import {button, errormsg, input} from './AuthorizationView.styles';
-
+import {UserSignIn} from "./../../helpers/AuthService.types"
 const AuthorizationView: React.FC = ({children}) => {
     const history = useHistory();
 
@@ -24,8 +24,12 @@ const AuthorizationView: React.FC = ({children}) => {
     }
 
     function submitLogin(username: string, password: string) {
-        saveCreds(username, password);
-        authorize().then((res) => {
+        var user: UserSignIn = {
+            username: username,
+            password: password
+        }
+
+        authorize(user).then((res) => {
             if (res === true) {
                 history.push(ClientRoutes.CARS);
             } else {

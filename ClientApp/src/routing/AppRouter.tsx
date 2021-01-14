@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import AuthorizationView from '../modules/authorization/views/AuthorizationView/AuthorizationView';
 import CreateUserView from '../modules/authorization/views/CreateUserView/CreateUserView';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
@@ -15,14 +15,10 @@ import {AuthenticationRoutes, ClientRoutes, WorkshopEmployeeRoutes} from './rout
 
 export const AppRouter: React.FC = () => {
     const basename = getBaseName();
-    const isAuthenticated = localStorage.getItem('authorized') === 'true';
 
     return (
         <BrowserRouter basename={basename}>
             <Switch>
-                <Route path={'/'} exact>
-                    {isAuthenticated ? <Redirect to={ClientRoutes.REPORT_ACCIDENT} /> : <AuthorizationView />}
-                </Route>
                 <Route path={'/insurance'}>
                     <InsuranceClient personInfo={{name: 'Jan', surname: 'Kowalski', serviceId: 'AX123555', pesel: '90801199662'}} />
                 </Route>

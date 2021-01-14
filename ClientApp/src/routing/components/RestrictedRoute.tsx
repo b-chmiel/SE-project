@@ -4,19 +4,19 @@ import {Route, useHistory} from 'react-router-dom';
 import {Menu} from '../../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../../modules/common/components/Menu/Menu.constants';
 import {AuthenticationRoutes} from '../routes';
-
+import {isAuthenticated} from "../../modules/authorization/helpers/AuthService"
 type Props = {
     path: string;
 };
 
 const RestrictedRoute: React.FC<Props> = ({children, path}) => {
     const history = useHistory();
-    const isAuthenticated = localStorage.getItem('authorized') === 'true';
 
     function getContent() {
-        if (!isAuthenticated) {
-            history.push(AuthenticationRoutes.SIGNIN);
-        }
+        isAuthenticated().then(r=> {if(r===false)
+                history.push(AuthenticationRoutes.SIGNIN)
+            }
+        )
         return children;
     }
 
