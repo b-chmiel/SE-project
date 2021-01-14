@@ -27,7 +27,7 @@ export function logout(): void {
     localStorage.removeItem('client_uuid');
 }
 
-export function createUser(name: string, surname: string, username: string, password: string, type: string, telphone: string): void {
+export function createUser(name: string, surname: string, username: string, password: string, type: string, telephone: string): void {
     const userType = type;
     const phoneNumber = telphone;
     var user: UserSignUp = {
