@@ -14,10 +14,6 @@ export const ClientLinks: Link<ClientRoutes>[] = [
         title: 'YOUR APPOINTMENTS',
         path: ClientRoutes.APPOINTMENTS,
     },
-    {
-        title: 'APPOINTMENTS HISTORY',
-        path: ClientRoutes.HISTORY,
-    },
 ];
 
 export const EmployeeLinks: Link<WorkshopEmployeeRoutes>[] = [

@@ -16,7 +16,7 @@
     "description" : "Operations on cars"
   } ],
   "paths" : {
-    "/user" : {
+    "/users" : {
       "post" : {
         "tags" : [ "users" ],
         "summary" : "Add new user to the system",
@@ -144,19 +144,41 @@
             "description" : "Validation exception"
           }
         }
-      }
-    },
-    "/user/{guid}" : {
+      },
       "get" : {
         "tags" : [ "users" ],
-        "summary" : "Find user by GUID",
+        "summary" : "Find user by guid of current user",
         "operationId" : "getUserByGuid",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "401" : {
+            "description" : "Improper GUID"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/users/{username}" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Find user by username",
+        "description" : "<b>!Available only for account owner and employee!</b>",
+        "operationId" : "getUserByUsername",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
         "parameters" : [ {
-          "name" : "guid",
+          "name" : "username",
           "in" : "path",
-          "description" : "GUID of user to return",
+          "description" : "Username of user to return",
           "required" : true,
           "type" : "string"
         } ],
@@ -167,16 +189,52 @@
               "$ref" : "#/definitions/User"
             }
           },
-          "400" : {
-            "description" : "Invalid GUID supplied"
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
           },
           "404" : {
             "description" : "User not found"
           }
-        }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
       }
     },
-    "/user/signin" : {
+    "/users/allClients" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Get all clients",
+        "description" : "<b>!Available only for insurance company employee!</b>",
+        "operationId" : "getClients",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/User"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/users/signin" : {
       "post" : {
         "tags" : [ "users" ],
         "summary" : "Obtain GUID using login and password",
@@ -227,11 +285,10 @@
         }
       }
     },
-    "/car" : {
+    "/cars" : {
       "post" : {
         "tags" : [ "cars" ],
         "summary" : "Add new car to the system",
-        "description" : "<b>!Available only for car owner and employee!</b>",
         "operationId" : "addCar",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -256,13 +313,43 @@
         "security" : [ {
           "GuidAuth" : [ ]
         } ]
+      },
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Get cars assigned to current user",
+        "description" : "<b>!Available only for logged in users!</b></br>– For client: returns owned cars,</br>– For workshop employee: returns assigned cars,</br>– For insurance company employee: returns all cars.",
+        "operationId" : "getCars",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Car"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
       }
     },
-    "/car/{licensePlate}" : {
+    "/cars/{licensePlate}" : {
       "get" : {
         "tags" : [ "cars" ],
         "summary" : "Find car by the license plate",
-        "description" : "<b>!Available only for car owner and employee!</b>",
         "operationId" : "getCar",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -298,7 +385,7 @@
         } ]
       }
     },
-    "/car/{licensePlate}/profile" : {
+    "/cars/{licensePlate}/profile" : {
       "get" : {
         "tags" : [ "cars" ],
         "summary" : "Find car diagnostic profile by license plate",
