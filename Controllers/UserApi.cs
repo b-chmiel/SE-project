@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using se_project.Attributes;
+using se_project.Functions;
 using se_project.Models;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -27,7 +28,7 @@ namespace se_project.Controllers
         /// <param name="body">New user attributes</param>
         /// <response code="400">Validation exception</response>
         [HttpPost]
-        [Route("/api/0.1.1/user")]
+        [Route("/api/0.1.1/users")]
         [ValidateModelState]
         [SwaggerOperation("AddUser")]
         public virtual IActionResult AddUser([FromBody] User body)
@@ -55,29 +56,80 @@ namespace se_project.Controllers
         /// <response code="400">Invalid GUID supplied</response>
         /// <response code="404">User not found</response>
         [HttpGet]
-        [Route("/api/0.1.1/user/{guid}")]
+        [Route("/api/0.1.1/users/{username}")]
+        [ValidateModelState]
+        [SwaggerOperation("GetUserByLogin")]
+        [SwaggerResponse(statusCode: 200, type: typeof(User), description: "Successful operation")]
+        public virtual IActionResult GetUserByUsername([FromRoute] string username)
+        {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if(!username.Equals(sender.Item1)&&!(sender.Item2==UserType.INSURANCE_EMPLOYEE||sender.Item2==UserType.WORKSHOP_EMPLOYEE))
+                return StatusCode(403);
+            var user = _context.Users.First(x => x.Username.Equals(username));
+            if (user is null)
+                return StatusCode(404);
+            user.Password = null;
+            user.Guid = null;
+            return new ObjectResult(user);
+        }
+        [HttpGet]
+        [Route("/api/0.1.1/users")]
         [ValidateModelState]
         [SwaggerOperation("GetUserByGuid")]
         [SwaggerResponse(statusCode: 200, type: typeof(User), description: "Successful operation")]
-        public virtual IActionResult GetUserByGuid([FromRoute] [Required] string guid)
+        public virtual IActionResult GetUserByGuid([FromRoute] string username)
         {
-            if (string.IsNullOrEmpty(guid))
+            (string, UserType) sender;
+            try
             {
-                return StatusCode(400);
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
             }
-
-            var user = _context.Users.FirstOrDefault(x => x.Guid.Equals(guid));
-            if (user is null)
+            catch (Exception e)
             {
-                return StatusCode(404);
+                return StatusCode(401, e.Message);
             }
+            var user = _context.Users.First(x => x.Username.Equals(sender.Item1));
+            user.Password = null;
             return new ObjectResult(user);
+        }
+        [HttpGet]
+        [Route("/api/0.1.1/users/allClients")]
+        [ValidateModelState]
+        [SwaggerOperation("GetAllClients")]
+        [SwaggerResponse(statusCode: 200, type: typeof(User), description: "Successful operation")]
+        public virtual IActionResult GetAllClients([FromRoute] string username)
+        {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if(sender.Item2!=UserType.INSURANCE_EMPLOYEE) return StatusCode(403);
+            var users = _context.Users.Where(x => x.UserType==UserType.CLIENT).ToList();
+            foreach (User user in users)
+            {
+                user.Guid = null;
+                user.Password = null;
+            }
+            return new ObjectResult(users);
         }
 
         /// <param name="body">New user attributes</param>
         /// <response code="400">Validation exception</response>
         [HttpPost]
-        [Route("/api/0.1.1/user/signin")]
+        [Route("/api/0.1.1/users/signin")]
         [ValidateModelState]
         [SwaggerOperation("SignIn")]
         public virtual IActionResult SignIn([FromBody] Authentication body)
@@ -95,7 +147,7 @@ namespace se_project.Controllers
         /// <response code="400">Validation exception</response>
         /// <response code="404">User not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/user")]
+        [Route("/api/0.1.1/users")]
         [ValidateModelState]
         [SwaggerOperation("UpdateUser")]
         public virtual IActionResult UpdateUser([FromBody] User body)
@@ -155,7 +207,7 @@ namespace se_project.Controllers
         /// <response code="200">Successful operation</response>
         /// <response code="404">Client not found</response>
         [HttpGet]
-        [Route("/api/0.1.1/user/{guid}/visits")]
+        [Route("/api/0.1.1/users/{guid}/visits")]
         [ValidateModelState]
         [SwaggerOperation("GetUserVisits")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Visit>), description: "Successful operation")]
@@ -199,7 +251,7 @@ namespace se_project.Controllers
         /// <response code="400">Validation exception</response>
         /// <response code="404">Client not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/user/{guid}/set_discount")]
+        [Route("/api/0.1.1/users/{guid}/set_discount")]
         [ValidateModelState]
         [SwaggerOperation("SetDiscount")]
         public virtual IActionResult SetDiscount([FromRoute][Required]int guid, [FromBody]Body2 body)
