@@ -15,8 +15,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, {RefObject} from 'react';
-import { useHistory } from 'react-router-dom';
-import { ClientRoutes } from '../../../../routing/routes';
+
 
 type Car = {
       licensePlate: string,

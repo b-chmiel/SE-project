@@ -1,10 +1,7 @@
 import {
     Box,
     Button,
-    FormControl,
-    FormLabel,
     GridItem,
-    Input,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -12,13 +9,10 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Select,
     useDisclosure,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { type } from 'os';
 import React, {RefObject, useEffect} from 'react';
-import { getCardState } from '../CarCard/CarCard.helpers';
 import { DiagnosticProfileType } from './DiagnosticProfileType';
 
 interface Props {
@@ -41,7 +35,7 @@ export const DiagnosticProfileButton: React.FC<Props> = ({licensePlate}) => {
             setDiagnostics(res.data)
         }
        )
-    },[])
+    },[licensePlate])
 
 
     return (
