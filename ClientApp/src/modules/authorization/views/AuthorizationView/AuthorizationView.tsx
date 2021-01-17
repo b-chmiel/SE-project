@@ -1,10 +1,10 @@
 import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import {AuthenticationRoutes, ClientRoutes} from '../../../../routing/routes';
-import {authorize, saveCreds} from '../../helpers/AuthService';
+import {AuthenticationRoutes, ClientRoutes, WorkshopEmployeeRoutes} from '../../../../routing/routes';
+import {authorize} from '../../helpers/AuthService';
 import {button, errormsg, input} from './AuthorizationView.styles';
-
+import {CLIENT_TYPE, UserSignIn, WORKSHOP_EMPLOYEE} from "./../../helpers/AuthService.types"
 const AuthorizationView: React.FC = ({children}) => {
     const history = useHistory();
 
@@ -24,10 +24,19 @@ const AuthorizationView: React.FC = ({children}) => {
     }
 
     function submitLogin(username: string, password: string) {
-        saveCreds(username, password);
-        authorize().then((res) => {
+        var user: UserSignIn = {
+            username: username,
+            password: password
+        }
+
+        authorize(user).then((res) => {
             if (res === true) {
-                history.push(ClientRoutes.CARS);
+                let ac = localStorage.getItem("account_type");
+                if(ac===WORKSHOP_EMPLOYEE){
+                    history.push(WorkshopEmployeeRoutes.CASE);
+                }else if(ac===CLIENT_TYPE){
+                    history.push(ClientRoutes.CARS);
+                }
             } else {
                 setError(true);
             }
