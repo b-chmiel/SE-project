@@ -63,14 +63,23 @@ namespace se_project.Controllers
             {
                 return StatusCode(400);
             }
+            
+            var client = _context.Users.FirstOrDefault(x => x.Username == car.Username);
+            if (client is null)
+            {
+                return StatusCode(400);
+            }
 
             var visit = new Visit
             {
                 Date = body.Date,
                 Car = car,
-                CarOwnerUsername = body.LicensePlate,
+                LicensePlate = body.LicensePlate,
                 RequiredActions = body.RequiredActions,
-                Status = 0
+                Type = body.Type,
+                Priority = body.Priority,
+                Status = 0,
+                CarOwnerUsername = client.Username
             };
 
             _context.Visits.Add(visit);
