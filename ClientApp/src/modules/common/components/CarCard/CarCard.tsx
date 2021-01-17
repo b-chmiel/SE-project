@@ -16,7 +16,7 @@ export const CarCard: React.FC<Props> = ({ model, type, licensePlate, showAppoin
     const history = useHistory();
 
     function makeAppointment(licensePlate: string) {
-        history.push('/appointment?car_id="' + licensePlate + '"'); //CHANGE to appropiate car id
+        history.push('/appointment?license_plate=' + licensePlate );
     }
     return (
         <Container variant={'car-card'}>
@@ -47,12 +47,12 @@ export const CarCard: React.FC<Props> = ({ model, type, licensePlate, showAppoin
                 
                 
                 <GridItem colSpan={3} rowSpan={1}>
-                <DiagnosticProfileButton licensePlate={''}>
+                <DiagnosticProfileButton licensePlate={licensePlate}>
                 </DiagnosticProfileButton>
                 </GridItem>
                 <GridItem colSpan={3} rowSpan={1}>
                     {showAppointmentButton ? (
-                        <Button onClick={() => makeAppointment('1')} float="right">
+                        <Button onClick={() => makeAppointment(licensePlate)} float="right">
                             APPOINTMENT
                         </Button>
                     ) : (

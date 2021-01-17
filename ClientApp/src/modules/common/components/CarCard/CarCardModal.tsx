@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, {RefObject} from 'react';
+import { useHistory } from 'react-router-dom';
+import { ClientRoutes } from '../../../../routing/routes';
 
 type Car = {
       licensePlate: string,
@@ -53,6 +55,7 @@ export const CarCardModal: React.FC = () => {
         }).then((res)=>{
             console.log(res.status) //TODO change to inform user about success/failure 
         })
+        window.location.reload(); 
     }
 
     function onChangeType(e: React.ChangeEvent<HTMLSelectElement>) {

@@ -21,6 +21,7 @@ export const Container = {
             padding: '10px',
             borderRadius: '8px',
             margin: '20px',
+            width: '500px'
         },
         authorization: {
             border: '2px',
