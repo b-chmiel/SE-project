@@ -11,8 +11,8 @@ using se_project;
 namespace se_project.Migrations
 {
     [DbContext(typeof(CompanyDBEntities))]
-    [Migration("20210114173417_migrate3")]
-    partial class migrate3
+    [Migration("20210117205456_migration4")]
+    partial class migration4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

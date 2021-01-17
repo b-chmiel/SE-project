@@ -49,17 +49,20 @@ namespace se_project.Models
         public enum TypeEnum
         {
             
-            /// <summary>
-            /// Enum SedanEnum for sedan
-            /// </summary>
             [EnumMember(Value = "sedan")]
             SedanEnum = 1,
             
-            /// <summary>
-            /// Enum HatchbackEnum for hatchback
-            /// </summary>
             [EnumMember(Value = "hatchback")]
-            HatchbackEnum = 2
+            HatchbackEnum = 2,
+
+            [EnumMember(Value = "SUV")]
+            SuvEnum = 3,
+
+            [EnumMember(Value = "truck")]
+            TruckEnum = 4,
+
+            [EnumMember(Value = "compact")]
+            CompactEnum = 5
         }
 
         /// <summary>
@@ -69,7 +72,7 @@ namespace se_project.Models
         [DataMember(Name="type")]
         public TypeEnum? Type { get; set; }
 
-        public virtual DiagnosticProfile DiagnosticProfile { get; set; }
+        public DiagnosticProfile DiagnosticProfile { get; set; }
         [DataMember(Name = "username")]
         public string Username { get; set; }
         public virtual User Owner { get; set; }

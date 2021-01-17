@@ -788,7 +788,7 @@
         "type" : {
           "type" : "string",
           "example" : "hatchback",
-          "enum" : [ "sedan", "hatchback" ]
+          "enum" : [ "sedan", "hatchback", "SUV", "truck", "compact"  ]
         },
         "username" : {
           "type" : "string",
