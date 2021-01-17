@@ -13,7 +13,14 @@ import {
     Select,
     useDisclosure,
 } from '@chakra-ui/react';
+import axios from 'axios';
 import React, {RefObject} from 'react';
+
+type Car = {
+      licensePlate: string,
+      model: string,
+      type: string
+} 
 
 export const CarCardModal: React.FC = () => {
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -23,9 +30,29 @@ export const CarCardModal: React.FC = () => {
 
     const [model, setModel] = React.useState('');
     const [type, setType] = React.useState('');
+    const [licensePlate, setLicensePlate] = React.useState('');
+
+    function onChangeLicensePlate(e: React.FormEvent<HTMLInputElement>) {
+        setLicensePlate(e.currentTarget.value)
+    }
 
     function onChangeModel(e: React.FormEvent<HTMLInputElement>) {
         setModel(e.currentTarget.value);
+    }
+
+    function onSave(){
+        var car: Car = {
+            licensePlate: licensePlate,
+            model: model,
+            type: type
+        }
+        axios.post('/api/0.1.1/cars', car, {
+            headers: {
+                'Guid': localStorage.getItem('client_uuid')
+            }
+        }).then((res)=>{
+            console.log(res.status) //TODO change to inform user about success/failure 
+        })
     }
 
     function onChangeType(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -44,10 +71,17 @@ export const CarCardModal: React.FC = () => {
                     <ModalHeader>Add Car</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
+
+                        <FormControl>
+                            <FormLabel>License Plate</FormLabel>
+                            <Input value={licensePlate} onChange={onChangeLicensePlate} ref={initialRef} placeholder="DWR 12N4" />
+                        </FormControl>
                         <FormControl>
                             <FormLabel>Model</FormLabel>
                             <Input value={model} onChange={onChangeModel} ref={initialRef} placeholder="model" />
                         </FormControl>
+
+                        
 
                         <FormControl mt={4}>
                             <FormLabel>Type</FormLabel>
@@ -62,7 +96,7 @@ export const CarCardModal: React.FC = () => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button isDisabled={model === '' || type === ''} colorScheme="teal" mr={3}>
+                        <Button onClick={onSave} sDisabled={model === '' || type === ''} colorScheme="teal" mr={3}>
                             Save
                         </Button>
                         <Button onClick={onClose}>Cancel</Button>

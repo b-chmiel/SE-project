@@ -4,22 +4,17 @@ import {Route, useHistory} from 'react-router-dom';
 import {Menu} from '../../modules/common/components/Menu/Menu';
 import {MENU_HEIGHT, MENU_WIDTH} from '../../modules/common/components/Menu/Menu.constants';
 import {AuthenticationRoutes} from '../routes';
-import {getRole, isAuthenticated} from "../../modules/authorization/helpers/AuthService"
-
+import {getRole} from "../../modules/authorization/helpers/AuthService"
 type Props = {
     path: string;
-    accountType: string
 };
 
-const RestrictedRoute: React.FC<Props> = ({children, path, accountType}) => {
+const RestrictedRouteClient: React.FC<Props> = ({children, path}) => {
     const history = useHistory();
 
     function getContent() {
-        isAuthenticated().then(r=>{if(r===false){
-            history.push(AuthenticationRoutes.SIGNIN)
-       }})
-        getRole().then(r=>{if(r!==accountType){
-             history.push('/noaccess')
+        getRole().then(r=>{if(r!=='WORKSHOP_EMPLOYEE'){
+             history.push(AuthenticationRoutes.SIGNIN)
         }})
         return children;
     }
@@ -33,4 +28,4 @@ const RestrictedRoute: React.FC<Props> = ({children, path, accountType}) => {
         </>
     );
 };
-export default RestrictedRoute;
+export default RestrictedRouteClient;
