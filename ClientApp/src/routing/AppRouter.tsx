@@ -5,11 +5,11 @@ import AuthorizationView from '../modules/authorization/views/AuthorizationView/
 import CreateUserView from '../modules/authorization/views/CreateUserView/CreateUserView';
 import NoAccessView from '../modules/authorization/views/NoAccesView';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
+import CarsView from '../modules/client/views/CarsView/CarsView';
 import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
 import {YourAppointmentsView} from '../modules/client/views/YourAppointmentsView/YourAppointmentsView';
 import {InsuranceClient} from '../modules/common/components/InsuranceClientData/InsuranceClientData';
 import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
-import Cars from '../views/Client/Cars';
 import {getBaseName} from './AppRouter.helpers';
 import AvailableRoute from './components/AvailableRoute';
 import RestrictedRoute from './components/RestrictedRoute';
@@ -27,7 +27,7 @@ export const AppRouter: React.FC = () => {
                     <AppointmentView />
                 </RestrictedRoute>
                 <RestrictedRoute path={ClientRoutes.CARS} accountType={CLIENT_TYPE} >
-                    <Cars props={''}></Cars>
+                    <CarsView props={''}></CarsView>
                 </RestrictedRoute>
                 <RestrictedRoute path={WorkshopEmployeeRoutes.CASE} accountType={WORKSHOP_EMPLOYEE} >
                     <CaseView />
