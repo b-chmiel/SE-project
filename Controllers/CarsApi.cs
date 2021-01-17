@@ -54,13 +54,14 @@ namespace se_project.Controllers
             {
                 return StatusCode(400, e.Message);
             }
-            car.Owner = _context.Users.First(x => x.Username.Equals(car.Username));
+            car.Owner = _context.Users.FirstOrDefault(x => x.Username.Equals(car.Username));
 
             DiagnosticProfile diagnosticProfile = new DiagnosticProfile
             {
                 LicensePlate = car.LicensePlate
             };
             car.DiagnosticProfile = diagnosticProfile;
+            diagnosticProfile.Car = car;
 
             _context.Add(car);
             _context.Add(diagnosticProfile);
@@ -95,8 +96,8 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
-            var car = _context.Cars.First(x => x.LicensePlate.Equals(licensePlate));
-            if ((!car.Username.Equals(sender.Item1))&&!(sender.Item2==UserType.WORKSHOP_EMPLOYEE||sender.Item2==UserType.INSURANCE_EMPLOYEE))
+            var car = _context.Cars.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate));
+            if ((car!=null && !car.Username.Equals(sender.Item1))&&!(sender.Item2==UserType.WORKSHOP_EMPLOYEE||sender.Item2==UserType.INSURANCE_EMPLOYEE))
                 return StatusCode(403);
             if (car is null)
             {
@@ -125,7 +126,7 @@ namespace se_project.Controllers
             if (sender.Item2 == UserType.CLIENT)
                 cars = _context.Cars.Where(x => x.Username.Equals(sender.Item1)).ToList();
             else if (sender.Item2 == UserType.WORKSHOP_EMPLOYEE) {
-                var visits = _context.Users.First(x => x.Username.Equals(sender.Item1)).AssignedVisits;
+                var visits = _context.Users.FirstOrDefault(x => x.Username.Equals(sender.Item1)).AssignedVisits;
                 if (visits != null || visits.Count != 0) cars = new List<Car>();
                 else cars = visits.Select(x => x.Visit.Car).ToList();
             }
@@ -181,9 +182,13 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
-            var diagnosticProfile = _context.DiagnosticProfiles.First(x => x.LicensePlate.Equals(licensePlate));
-            if ((!diagnosticProfile.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
-                return StatusCode(403);
+            var diagnosticProfile = _context.DiagnosticProfiles.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate));
+            //Due to problem with diagnosticProfile.car = null:
+                Car car = _context.Cars.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate));
+                if ((car!=null && !car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+                    return StatusCode(403);
+            //if ((!diagnosticProfile.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+            //return StatusCode(403);
             if (diagnosticProfile is null)
             {
                 return StatusCode(404);
