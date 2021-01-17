@@ -17,7 +17,7 @@ export async function authorize(userCreds: UserSignIn): Promise<boolean> {
 
 
 export async function isAuthenticated(): Promise<boolean>{
-    return localStorage.getItem('client_uuid')===null? false:true;
+    return localStorage.getItem('client_uuid') !== null;
 }
 
 export async function getRole(): Promise<string>{
