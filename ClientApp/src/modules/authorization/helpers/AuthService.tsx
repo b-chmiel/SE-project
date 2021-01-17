@@ -34,10 +34,10 @@ export function logout(): void {
     localStorage.removeItem('account_type');
 }
 
-export async function createUser(name: string, surname: string, username: string, password: string, type: string, telphone: string): Promise<boolean> {
+export async function createUser(name: string, surname: string, username: string, password: string, type: string, telephone: string): Promise<boolean> {
     const userType = type;
-    const phoneNumber = telphone;
-    var user: UserSignUp = {
+    const phoneNumber = telephone;
+    const user: UserSignUp = {
         username,
         password,
         userType,
