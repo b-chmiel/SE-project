@@ -81,5 +81,5 @@ export function useVisit() {
         return false;
     }
 
-    return {isFetching, visits, visit, fetchVisits, fetchVisit, updateVisit, diagnoseVisit: repairVisit};
+    return {isFetching, visits, visit, fetchVisits, fetchVisit, updateVisit, diagnoseVisit, maintainVisit, repairVisit};
 }

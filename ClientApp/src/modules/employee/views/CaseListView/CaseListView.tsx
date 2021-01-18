@@ -1,16 +1,24 @@
-import {Box} from '@chakra-ui/react';
+import {Box, Skeleton, Text} from '@chakra-ui/react';
 import React from 'react';
 import {WorkshopEmployeeRoutes} from '../../../../routing/routes';
 import {VisitsList} from '../../../common/components/AppointmentList/AppointmentList';
-import {MockedAppointmentItems} from './CaseListView.mocks';
+import {useInit} from '../../../common/hooks/useInit';
+import {useVisit} from '../../hooks/useVisit';
 
 export const CaseListView: React.FC = () => {
-    const visits = MockedAppointmentItems;
-    // const {visits, fetchVisits, isFetching} = useVisit();
-    // useInit(fetchVisits);
+    const {visits, fetchVisits} = useVisit();
+    const isLoaded = visits !== null;
+    useInit(fetchVisits);
+
     return (
         <Box margin={8} marginTop={4}>
-            <VisitsList visits={visits} detailsPath={WorkshopEmployeeRoutes.CASE_DETAILS} />
+            <Skeleton isLoaded={isLoaded}>
+                {visits !== null ? (
+                    <VisitsList visits={visits} detailsPath={WorkshopEmployeeRoutes.CASE_DETAILS} />
+                ) : (
+                    <Text fontSize={'lg'}>Please wait for fetch.</Text>
+                )}
+            </Skeleton>
         </Box>
     );
 };
