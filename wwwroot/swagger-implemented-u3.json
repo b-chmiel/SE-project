@@ -425,7 +425,7 @@
         } ]
       }
     },
-    "/visit" : {
+    "/visits" : {
       "post" : {
         "tags" : [ "visits" ],
         "summary" : "Schedule a visit",
@@ -485,6 +485,47 @@
           "GuidAuth" : [ ]
         } ]
       },
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Get all visits connected to this user",
+        "description" : "Gets guid from header and searches for username. For client returns visits on cars that the user is owner of, for employee return assigned visits, for insurance company employee returns 403",
+        "operationId" : "findVisits",
+        "produces" : [ "application/json" ],
+        "parameters" : [  ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "carId" : {
+                    "type" : "integer",
+                    "format" : "int32",
+                    "example" : 1552
+                  },
+                  "visit" : {
+                    "$ref" : "#/definitions/Visit"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid status value"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
       "put" : {
         "tags" : [ "visits" ],
         "summary" : "Update a visit",
@@ -518,7 +559,7 @@
         } ]
       }
     },
-    "/visit/find_by_status" : {
+    "/visits/find_by_status" : {
       "get" : {
         "tags" : [ "visits" ],
         "summary" : "Find visits by Status",
@@ -573,7 +614,7 @@
         } ]
       }
     },
-    "/visit/{visitId}" : {
+    "/visits/{visitId}" : {
       "get" : {
         "tags" : [ "visits" ],
         "summary" : "Find visit by Id",
@@ -624,7 +665,7 @@
         } ]
       }
     },
-    "/visit/{visitId}/repair" : {
+    "/visits/{visitId}/repair" : {
       "put" : {
         "tags" : [ "visits" ],
         "summary" : "Marks repairment as finished",
@@ -658,7 +699,7 @@
         } ]
       }
     },
-    "/visit/{visitId}/maintain" : {
+    "/visits/{visitId}/maintain" : {
       "put" : {
         "tags" : [ "visits" ],
         "summary" : "Marks maintenance as finished",
@@ -692,7 +733,7 @@
         } ]
       }
     },
-    "/visit/{visitId}/diagnose" : {
+    "/visits/{visitId}/diagnose" : {
       "put" : {
         "tags" : [ "visits" ],
         "summary" : "Marks diagnostic as finished",
