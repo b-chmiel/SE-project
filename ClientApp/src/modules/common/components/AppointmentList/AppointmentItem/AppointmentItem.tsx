@@ -1,26 +1,26 @@
 import {Box, Button, Center, Flex, Text} from '@chakra-ui/react';
-import {format} from 'date-fns';
+import {format, parseISO} from 'date-fns';
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import {colors} from '../../../../../globalTheme/theme';
-import {ClientRoutes} from '../../../../../routing/routes';
+import {Visit} from '../../../../employee/api/visitAPI.types';
 import {CarIcon} from '../../CarCard/CarCard.icons';
 import {Dot} from '../../Dot/Dot';
-import {Appointment} from '../AppointmentList.types';
 import {dateFormat} from './AppointmentItem.constants';
 import {getStatusColor} from './AppointmentItem.helpers';
 
 interface Props {
-    appointment: Appointment;
+    visit: Visit;
+    detailsPath: string;
 }
 
-export const AppointmentItem: React.FC<Props> = ({appointment}) => {
-    const {carName, appointmentDate, appointmentStatus} = appointment;
-    const date = format(appointmentDate, dateFormat);
+export const VisitItem: React.FC<Props> = ({visit, detailsPath}) => {
+    const {date: visitDate, licensePlate, status, visitId} = visit;
+    const date = format(parseISO(visitDate), dateFormat);
     const history = useHistory();
 
     const handleDetailsClick = () => {
-        history.push(ClientRoutes.APPOINTMENT_DETAILS);
+        history.push(detailsPath.replace(':caseId', visitId.toString()));
     };
 
     return (
@@ -32,7 +32,7 @@ export const AppointmentItem: React.FC<Props> = ({appointment}) => {
                         <CarIcon boxSize={8} />
                     </Box>
                     <Text fontSize={'lg'} color={colors.windsor} marginRight={6}>
-                        {carName}
+                        {licensePlate}
                     </Text>
                     <Text fontSize={'lg'} color={colors.mediumPurple}>
                         {date}
@@ -41,8 +41,8 @@ export const AppointmentItem: React.FC<Props> = ({appointment}) => {
             </Flex>
             <Flex>
                 <Center>
-                    <Text fontSize={'lg'} color={getStatusColor(appointmentStatus)} textTransform={'uppercase'} marginRight={6}>
-                        {appointmentStatus}
+                    <Text fontSize={'lg'} color={getStatusColor(status)} textTransform={'uppercase'} marginRight={6}>
+                        {status}
                     </Text>
                     <Button onClick={handleDetailsClick}>DETAILS</Button>
                 </Center>

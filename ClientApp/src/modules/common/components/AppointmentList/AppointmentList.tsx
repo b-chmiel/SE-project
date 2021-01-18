@@ -1,15 +1,16 @@
 import React from 'react';
-import {AppointmentItem} from './AppointmentItem/AppointmentItem';
-import {Appointment} from './AppointmentList.types';
+import {Visit} from '../../../employee/api/visitAPI.types';
+import {VisitItem} from './AppointmentItem/AppointmentItem';
 
 interface Props {
-    appointments: Appointment[];
+    visits: Visit[];
+    detailsPath: string;
 }
-export const AppointmentList: React.FC<Props> = ({appointments}) => {
+export const VisitsList: React.FC<Props> = ({visits, detailsPath}) => {
     return (
         <>
-            {appointments?.map((appointment, i) => (
-                <AppointmentItem appointment={appointment} key={i} />
+            {visits?.map((visit, i) => (
+                <VisitItem visit={visit} key={i} detailsPath={detailsPath} />
             ))}
         </>
     );

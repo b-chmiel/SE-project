@@ -24,8 +24,17 @@ export enum InsuranceEmployeeRoutes {
 export enum AuthenticationRoutes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
-    USER = '/users',
     FORBIDDEN = '/forbidden',
 }
 
 export const API_BASE_PATH = '/api/0.1.1';
+
+export enum ApiRoutes {
+    CARS = '/cars',
+    USERS = '/users',
+    VISITS = '/visit',
+    DIAGNOSTIC_PROFILE = '/cars/{licensePlate}/profile',
+    VISIT_REPAIR = '/visit/{visitId}/repair',
+    VISIT_MAINTAIN = '/visit/{visitId}/maintain',
+    VISIT_DIAGNOSE = '/visit/{visitId}/diagnose',
+}
