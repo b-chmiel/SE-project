@@ -9,12 +9,10 @@ export enum ClientRoutes {
 }
 
 export enum WorkshopEmployeeRoutes {
-    CASE = '/case/:caseId',
+    CASE_DETAILS = '/case/:caseId',
     SCHEDULE = '/schedule',
-    ORDERS = '/orders',
-    PARTS_SHOP = '/parts-shop',
     CLIENTS = '/clients',
-    HISTORY = '/history',
+    CASES = '/case',
 }
 
 export enum InsuranceEmployeeRoutes {
@@ -27,6 +25,7 @@ export enum AuthenticationRoutes {
     SIGNUP = '/signup',
     SIGNIN = '/signin',
     USER = '/users',
+    FORBIDDEN = '/forbidden',
 }
 
 export const API_BASE_PATH = '/api/0.1.1';

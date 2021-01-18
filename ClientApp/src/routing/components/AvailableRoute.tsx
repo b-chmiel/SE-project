@@ -1,8 +1,9 @@
 import React from 'react';
 import {Route, useHistory} from 'react-router-dom';
+import {useAuth} from '../../modules/authorization/context/AuthProvider';
+import {isAuthenticated} from '../../modules/authorization/helpers/AuthService';
+import {UserType} from '../../modules/authorization/helpers/AuthService.types';
 import {ClientRoutes, WorkshopEmployeeRoutes} from '../routes';
-import {getRole, isAuthenticated} from "../../modules/authorization/helpers/AuthService"
-import { CLIENT_TYPE, WORKSHOP_EMPLOYEE } from '../../modules/authorization/helpers/AuthService.types';
 
 type Props = {
     path: string;
@@ -10,17 +11,17 @@ type Props = {
 
 const AvailableRoute: React.FC<Props> = ({children, path}) => {
     const history = useHistory();
+    const {getRole} = useAuth();
 
     function getContent() {
-        isAuthenticated().then(r=> {
-            if(r===true){
-                getRole().then(a=>{
-                    if(a===WORKSHOP_EMPLOYEE){
-                        history.push(WorkshopEmployeeRoutes.CASE)
-                    }else if(a===CLIENT_TYPE){
-                        history.push(ClientRoutes.CARS)
-                    }
-                });
+        isAuthenticated().then((response) => {
+            if (response === true) {
+                const role = getRole();
+                if (role === UserType.WORKSHOP_EMPLOYEE) {
+                    history.push(WorkshopEmployeeRoutes.CASES);
+                } else if (role === UserType.CLIENT) {
+                    history.push(ClientRoutes.CARS);
+                }
             }
         });
         return children;
@@ -28,4 +29,5 @@ const AvailableRoute: React.FC<Props> = ({children, path}) => {
 
     return <Route path={path}>{getContent()}</Route>;
 };
+
 export default AvailableRoute;
