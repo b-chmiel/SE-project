@@ -1,11 +1,10 @@
-import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
+import {Box, Button, Center, Container, Heading, Input, Switch} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthenticationRoutes} from '../../../../routing/routes';
 import {createUser} from '../../helpers/AuthService';
-import {button, boxswt, errormsg, input, swt} from '../AuthorizationView/AuthorizationView.styles';
-import { Switch } from "@chakra-ui/react"
-import { CLIENT_TYPE, WORKSHOP_EMPLOYEE } from '../../helpers/AuthService.types';
+import {boxswt, button, errormsg, input, swt} from '../AuthorizationView/AuthorizationView.styles';
+import {getUserType} from './CreateUserView.helpers';
 
 const CreateUserView: React.FC = ({children}) => {
     const history = useHistory();
@@ -15,8 +14,8 @@ const CreateUserView: React.FC = ({children}) => {
     const [surname, setSurname] = useState('');
     const [first, setFirst] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [type, setType] = useState(false) // CLIENT = true
-    const [telephone, setTelephone] = useState('')
+    const [type, setType] = useState(false); // CLIENT = false
+    const [telephone, setTelephone] = useState('');
     const [alreadyExists, setAlreadyExists] = useState(false);
 
     function onChangeUsername(e: React.FormEvent<HTMLInputElement>) {
@@ -32,7 +31,6 @@ const CreateUserView: React.FC = ({children}) => {
         setSurname(e.currentTarget.value);
         setFirst(true);
     }
-    
 
     function onChangePassword(e: React.FormEvent<HTMLInputElement>) {
         setPassword(e.currentTarget.value);
@@ -47,31 +45,27 @@ const CreateUserView: React.FC = ({children}) => {
         setTelephone(e.currentTarget.value);
         setFirst(true);
     }
-    function toggleType(){
+    function toggleType() {
         setType(!type);
     }
 
     function submitLogin(username: string, password: string) {
-        console.log("type: " + type)
-        createUser(name, surname, username, password, type===false?CLIENT_TYPE:WORKSHOP_EMPLOYEE, telephone).then((r)=>{
-                if(r===true){
-                    history.push(AuthenticationRoutes.SIGNIN)
-                }else{
-                    setAlreadyExists(true);
-                }              
+        createUser(name, surname, username, password, getUserType(type), telephone).then((r) => {
+            if (r === true) {
+                history.push(AuthenticationRoutes.SIGNIN);
+            } else {
+                setAlreadyExists(true);
             }
-        )
+        });
     }
     function showErrorMatching() {
         return password === confirmPassword ? <></> : <Box style={errormsg}>Password must match!</Box>;
     }
-    function showTelphoneError(){
-        
-        return telephone.length!==9&&first ? <Box style={errormsg}>Telphone number must be 9 digts!</Box>: <></> 
+    function showTelphoneError() {
+        return telephone.length !== 9 && first ? <Box style={errormsg}>Telphone number must be 9 digts!</Box> : <></>;
     }
-    function showAlreadyExistsError(){
-        
-        return alreadyExists===true&&first ? <Box style={errormsg}>User already exists</Box>: <></> 
+    function showAlreadyExistsError() {
+        return alreadyExists === true && first ? <Box style={errormsg}>User already exists</Box> : <></>;
     }
     function showErrorNotNull() {
         return (password === '' || username === '' || confirmPassword === '') && first ? (
@@ -88,8 +82,8 @@ const CreateUserView: React.FC = ({children}) => {
                         Sign up
                     </Heading>
                 </Center>
-                <Input value={name} onChange={onChangeName}  placeholder="Jan" style={input} />
-                <Input value={surname} onChange={onChangeSurname}  placeholder="Kowalski" style={input} />
+                <Input value={name} onChange={onChangeName} placeholder="Jan" style={input} />
+                <Input value={surname} onChange={onChangeSurname} placeholder="Kowalski" style={input} />
                 <Input value={username} onChange={onChangeUsername} placeholder="username" style={input} />
                 <Input value={password} onChange={onChangePassword} type="password" placeholder="password" style={input} />
                 <Input
@@ -102,13 +96,21 @@ const CreateUserView: React.FC = ({children}) => {
                 <Input value={telephone} onChange={onChangeTelephone} type="tel" placeholder="500500500" style={input} />
 
                 <Box style={boxswt} mb="0">
-                    <Switch onChange={toggleType} id="type" style={swt}/>
+                    <Switch onChange={toggleType} id="type" style={swt} />
                     Are you employee?
                 </Box>
 
                 <Center>
                     <Button
-                        disabled={password !== confirmPassword || password === '' || username === '' || confirmPassword === '' || telephone.length !== 9 || name==='' || surname===''}
+                        disabled={
+                            password !== confirmPassword ||
+                            password === '' ||
+                            username === '' ||
+                            confirmPassword === '' ||
+                            telephone.length !== 9 ||
+                            name === '' ||
+                            surname === ''
+                        }
                         onClick={() => submitLogin(username, password)}
                         style={button}
                     >

@@ -1,5 +1,5 @@
-import {ClientLinks, EmployeeLinks, InsuranceEmployeeLinks} from './MenuNav.constants';
-import {UserType} from './MenuNav.mocks';
+import {UserType} from '../../../../authorization/helpers/AuthService.types';
+import {ClientLinks, EmployeeLinks} from './MenuNav.constants';
 
 export function getMenuEntries(user: UserType) {
     switch (user) {
@@ -7,8 +7,6 @@ export function getMenuEntries(user: UserType) {
             return ClientLinks;
         case UserType.WORKSHOP_EMPLOYEE:
             return EmployeeLinks;
-        case UserType.INSURANCE_EMPLOYEE:
-            return InsuranceEmployeeLinks;
         default:
             console.log('Undefined user type!');
             console.log(user);

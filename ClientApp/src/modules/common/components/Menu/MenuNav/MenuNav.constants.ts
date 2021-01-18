@@ -1,4 +1,4 @@
-import {ClientRoutes, InsuranceEmployeeRoutes, WorkshopEmployeeRoutes} from '../../../../../routing/routes';
+import {ClientRoutes, WorkshopEmployeeRoutes} from '../../../../../routing/routes';
 import {Link} from './MenuNav.types';
 
 export const ClientLinks: Link<ClientRoutes>[] = [
@@ -22,34 +22,7 @@ export const EmployeeLinks: Link<WorkshopEmployeeRoutes>[] = [
         path: WorkshopEmployeeRoutes.SCHEDULE,
     },
     {
-        title: 'ORDERS',
-        path: WorkshopEmployeeRoutes.ORDERS,
-    },
-    {
-        title: 'PARTS SHOP',
-        path: WorkshopEmployeeRoutes.PARTS_SHOP,
-    },
-    {
-        title: 'CLIENTS',
-        path: WorkshopEmployeeRoutes.CLIENTS,
-    },
-    {
-        title: 'HISTORY',
-        path: WorkshopEmployeeRoutes.HISTORY,
-    },
-];
-
-export const InsuranceEmployeeLinks: Link<InsuranceEmployeeRoutes>[] = [
-    {
-        title: 'CLIENTS',
-        path: InsuranceEmployeeRoutes.CLIENTS,
-    },
-    {
-        title: 'OFFERS',
-        path: InsuranceEmployeeRoutes.OFFERS,
-    },
-    {
-        title: 'INSURANCES',
-        path: InsuranceEmployeeRoutes.INSURANCES,
+        title: 'CASES',
+        path: WorkshopEmployeeRoutes.CASES,
     },
 ];
