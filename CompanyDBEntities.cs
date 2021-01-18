@@ -35,6 +35,10 @@ namespace se_project
                 .HasForeignKey(p => p.CarOwnerUsername);
             //employee-visit
             modelBuilder.Entity<EmployeeVisit>().HasKey(e => new { e.Username, e.VisitId });
+                // .HasOne(x => x.Visit)
+                // .WithMany(x => x.AssignedEmployees)
+                // .HasForeignKey(e => new { e.Username, e.VisitId });
+                // ???????????
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

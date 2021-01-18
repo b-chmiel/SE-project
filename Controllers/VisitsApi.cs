@@ -71,6 +71,16 @@ namespace se_project.Controllers
                 return StatusCode(400);
             }
 
+            var employees = _context.Users
+                .Include(x => x.AssignedVisits);
+            var min = employees.Where(x => x.UserType == UserType.WORKSHOP_EMPLOYEE)
+                .Min(x => x.AssignedVisits.Count);
+            var employee = employees.FirstOrDefault(x => x.AssignedVisits.Count == min && x.UserType == UserType.WORKSHOP_EMPLOYEE);
+            if (employee is null)
+            {
+                return StatusCode(400);
+            }
+
             var visit = new Visit
             {
                 Date = body.Date,
@@ -80,10 +90,17 @@ namespace se_project.Controllers
                 Type = body.Type,
                 Priority = body.Priority,
                 Status = 0,
-                CarOwnerUsername = client.Username
+                CarOwnerUsername = client.Username,
+            };
+
+            var ev = new EmployeeVisit
+            {
+                VisitId = _context.Visits.Max(x => x.VisitId)+1,
+                Username = employee.Username
             };
 
             _context.Visits.Add(visit);
+            _context.EmployeesVisits.Add(ev);
             try
             {
                 _context.SaveChanges();
@@ -120,10 +137,13 @@ namespace se_project.Controllers
             }
             else if (sender.Item2 == UserType.WORKSHOP_EMPLOYEE)
             {
-                visits = _context.EmployeesVisits
-                    .Include(x => x.Visit)
+                var visitIds = _context.EmployeesVisits
+                    //.Include(x => x.Visit)
+                    //todo fix relation and use include
                     .Where(x => x.Username.Equals(sender.Item1))
-                    .Select(x => x.Visit).ToList();
+                    .Select(x => x.VisitId).ToList();
+
+                visits = _context.Visits.Where(x => visitIds.Contains(x.VisitId)).ToList();
             }
             else
             {
