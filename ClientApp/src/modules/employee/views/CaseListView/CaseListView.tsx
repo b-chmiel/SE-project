@@ -1,9 +1,9 @@
 import {Box} from '@chakra-ui/react';
 import React from 'react';
 import {AppointmentList} from '../../../common/components/AppointmentList/AppointmentList';
-import {MockedAppointmentItems} from './YourAppointmentsView.mocks';
+import {MockedAppointmentItems} from './CaseListView.mocks';
 
-export const YourAppointmentsView: React.FC = () => {
+export const CaseListView: React.FC = () => {
     const appointments = MockedAppointmentItems;
     return (
         <Box margin={8} marginTop={4}>

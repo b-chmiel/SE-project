@@ -10,7 +10,8 @@ import {AppointmentView} from '../modules/client/views/AppointmentView/Appointme
 import CarsView from '../modules/client/views/CarsView/CarsView';
 import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
 import {YourAppointmentsView} from '../modules/client/views/YourAppointmentsView/YourAppointmentsView';
-import {CaseView} from '../modules/employee/views/CaseView.tsx/CaseView';
+import {CaseListView} from '../modules/employee/views/CaseListView/CaseListView';
+import {CaseView} from '../modules/employee/views/CaseView/CaseView';
 import {getBaseName, getDefaultRoute} from './AppRouter.helpers';
 import AvailableRoute from './components/AvailableRoute';
 import RestrictedRoute from './components/RestrictedRoute';
@@ -42,6 +43,9 @@ export const AppRouter: React.FC = () => {
 
                 <RestrictedRoute path={WorkshopEmployeeRoutes.CASE_DETAILS} accountType={UserType.WORKSHOP_EMPLOYEE}>
                     <CaseView />
+                </RestrictedRoute>
+                <RestrictedRoute path={WorkshopEmployeeRoutes.CASES} accountType={UserType.WORKSHOP_EMPLOYEE}>
+                    <CaseListView />
                 </RestrictedRoute>
 
                 <AvailableRoute path={AuthenticationRoutes.SIGNIN}>
