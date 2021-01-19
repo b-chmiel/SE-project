@@ -35,6 +35,13 @@ namespace se_project
                 .HasForeignKey(p => p.CarOwnerUsername);
             //employee-visit
             modelBuilder.Entity<EmployeeVisit>().HasKey(e => new { e.Username, e.VisitId });
+            //insurance
+            modelBuilder.Entity<Insurance>()
+                .HasOne(i => i.Car)
+                .WithMany(c => c.Insurances)
+                .HasForeignKey(c => c.LicensePlate);
+            modelBuilder.Entity<Insurance>()
+                .HasKey(i => new { i.LicensePlate, i.Type });
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
@@ -45,8 +52,7 @@ namespace se_project
         public DbSet<DiagnosticProfile> DiagnosticProfiles { get; set; }
         public DbSet<EmployeeVisit> EmployeesVisits { get; set; }
         //public DbSet<AutoPart> AutoParts { get; set; }
-        // public DbSet<Employee> Employees { get; set; }
-        // public DbSet<Insurance> Insurances { get; set; }
-        // public DbSet<Payment> Payments { get; set; }
+        public DbSet<Insurance> Insurances { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }

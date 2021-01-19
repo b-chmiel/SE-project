@@ -30,7 +30,6 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets Amount
         /// </summary>
-        [Required]
         [DataMember(Name="amount")]
         public decimal? Amount { get; set; }
 
@@ -43,9 +42,13 @@ namespace se_project.Models
         /// <summary>
         /// Gets or Sets IsFulfilled
         /// </summary>
-        [Required]
         [DataMember(Name="isFulfilled")]
         public bool? IsFulfilled { get; set; }
+
+        [Key]
+        [DataMember(Name = "visitId")]
+        public int VisitId { get; set; }
+        public Visit Visit{ get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

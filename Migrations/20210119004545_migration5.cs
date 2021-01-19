@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace se_project.Migrations
 {
-    public partial class migration4 : Migration
+    public partial class migration5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,6 +75,26 @@ namespace se_project.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Insurances",
+                columns: table => new
+                {
+                    LicensePlate = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    DateOfExpiry = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Coverage = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Insurances", x => new { x.LicensePlate, x.Type });
+                    table.ForeignKey(
+                        name: "FK_Insurances_Cars_LicensePlate",
+                        column: x => x.LicensePlate,
+                        principalTable: "Cars",
+                        principalColumn: "LicensePlate",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Visits",
                 columns: table => new
                 {
@@ -133,6 +153,26 @@ namespace se_project.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    VisitId = table.Column<int>(type: "integer", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: true),
+                    Advance = table.Column<decimal>(type: "numeric", nullable: true),
+                    IsFulfilled = table.Column<bool>(type: "boolean", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.VisitId);
+                    table.ForeignKey(
+                        name: "FK_Payments_Visits_VisitId",
+                        column: x => x.VisitId,
+                        principalTable: "Visits",
+                        principalColumn: "VisitId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_OwnerUsername",
                 table: "Cars",
@@ -166,6 +206,12 @@ namespace se_project.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmployeesVisits");
+
+            migrationBuilder.DropTable(
+                name: "Insurances");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Visits");

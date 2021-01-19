@@ -122,6 +122,8 @@ namespace se_project.Models
         [DataMember(Name="type")]
         public VisitType Type { get; set; }
 
+        public Payment Payment { get; set; }
+
         /// <summary>
         /// Gets or Sets AssignedEmployees
         /// </summary>
