@@ -365,7 +365,7 @@ namespace se_project.Controllers
         }
 
         [HttpPut]
-        [Route("/api/0.1.1/visit/{visitId}/pay")]
+        [Route("/api/0.1.1/visits/{visitId}/pay")]
         [ValidateModelState]
         [SwaggerOperation("Diagnose")]
         public virtual IActionResult Pay([FromRoute][Required] int visitId)

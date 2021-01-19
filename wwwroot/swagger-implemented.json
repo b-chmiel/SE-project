@@ -677,7 +677,7 @@
         ]
       }
     },
-    "/visit": {
+    "/visits": {
       "post": {
         "tags": [ "visits" ],
         "summary": "Schedule a visit",
@@ -778,7 +778,7 @@
         ]
       }
     },
-    "/visit/find_by_status": {
+    "/visits/find_by_status": {
       "get": {
         "tags": [ "visits" ],
         "summary": "Find visits by Status",
@@ -837,7 +837,7 @@
         ]
       }
     },
-    "/visit/{visitId}": {
+    "/visits/{visitId}": {
       "get": {
         "tags": [ "visits" ],
         "summary": "Find visit by Id",
@@ -892,7 +892,7 @@
         ]
       }
     },
-    "/visit/{visitId}/repair": {
+    "/visits/{visitId}/repair": {
       "put": {
         "tags": [ "visits" ],
         "summary": "Marks repairment as finished",
@@ -930,7 +930,7 @@
         ]
       }
     },
-    "/visit/{visitId}/maintain": {
+    "/visits/{visitId}/maintain": {
       "put": {
         "tags": [ "visits" ],
         "summary": "Marks repair as pending",
@@ -968,7 +968,7 @@
         ]
       }
     },
-    "/visit/{visitId}/diagnose": {
+    "/visits/{visitId}/diagnose": {
       "put": {
         "tags": [ "visits" ],
         "summary": "Mark as checked in",
@@ -1006,7 +1006,7 @@
         ]
       }
     },
-    "/visit/{visitId}/pay": {
+    "/visits/{visitId}/pay": {
       "put": {
         "tags": [ "visits" ],
         "summary": "Marks visit as paid",
