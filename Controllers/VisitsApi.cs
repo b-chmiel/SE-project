@@ -75,7 +75,8 @@ namespace se_project.Controllers
                 .Include(x => x.AssignedVisits);
             var min = employees.Where(x => x.UserType == UserType.WORKSHOP_EMPLOYEE)
                 .Min(x => x.AssignedVisits.Count);
-            var employee = employees.FirstOrDefault(x => x.AssignedVisits.Count == min && x.UserType == UserType.WORKSHOP_EMPLOYEE);
+            var employee = employees.FirstOrDefault(x =>
+                x.AssignedVisits.Count == min && x.UserType == UserType.WORKSHOP_EMPLOYEE);
             if (employee is null)
             {
                 return StatusCode(400);
@@ -95,7 +96,7 @@ namespace se_project.Controllers
 
             var ev = new EmployeeVisit
             {
-                VisitId = _context.Visits.Max(x => x.VisitId)+1,
+                VisitId = _context.Visits.Max(x => x.VisitId) + 1,
                 Username = employee.Username
             };
 
@@ -394,8 +395,12 @@ namespace se_project.Controllers
                 return StatusCode(404);
             }
 
-            visit = body;
-
+            if (body.Date != null) visit.Date = body.Date;
+            if (body.Payment != null) visit.Payment = body.Payment;
+            if (body.Price != null) visit.Price = body.Price;
+            if (body.Priority != visit.Priority) visit.Priority = body.Priority;
+            if (body.Type != visit.Type) visit.Type = body.Type;
+            return new ObjectResult(visit);
             try
             {
                 _context.SaveChanges();
