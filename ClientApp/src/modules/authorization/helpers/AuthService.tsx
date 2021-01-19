@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {API_BASE_PATH, AuthenticationRoutes} from '../../../routing/routes';
+import {ApiRoutes, API_BASE_PATH, AuthenticationRoutes} from '../../../routing/routes';
 import {UserSignIn, UserSignUp, UserType} from './AuthService.types';
 
 export async function authorize(userCreds: UserSignIn): Promise<boolean> {
     try {
-        const res = await axios.post(API_BASE_PATH + AuthenticationRoutes.USER + AuthenticationRoutes.SIGNIN, userCreds);
+        const res = await axios.post(API_BASE_PATH + ApiRoutes.USERS + AuthenticationRoutes.SIGNIN, userCreds);
         localStorage.setItem('client_uuid', res.data.guid);
         localStorage.setItem('account_type', res.data.role);
         return true;
@@ -48,7 +48,7 @@ export async function createUser(
         phoneNumber,
     };
     return axios
-        .post(API_BASE_PATH + AuthenticationRoutes.USER, user)
+        .post(API_BASE_PATH + ApiRoutes.USERS, user)
         .then((res) => {
             return true;
         })
