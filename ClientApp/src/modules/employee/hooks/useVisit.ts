@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {getVisit, getVisits, putVisit, putVisitDiagnose, putVisitMaintain, putVisitRepair} from '../api/visitAPI';
 import {Visit} from '../api/visitAPI.types';
+import {normalizeVisit} from '../helpers/normalizeVisit';
 
 export function useVisit() {
     const [visits, setVisits] = useState<Visit[] | null>(null);
@@ -25,7 +26,7 @@ export function useVisit() {
 
         const response = await getVisit(visitId);
         if (response !== null) {
-            setVisit(response);
+            setVisit(normalizeVisit(response));
             setFetching(false);
             return true;
         }

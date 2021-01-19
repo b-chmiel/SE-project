@@ -1,4 +1,4 @@
-import {Box, Skeleton, Text} from '@chakra-ui/react';
+import {Box, Skeleton} from '@chakra-ui/react';
 import React from 'react';
 import {WorkshopEmployeeRoutes} from '../../../../routing/routes';
 import {VisitsList} from '../../../common/components/AppointmentList/AppointmentList';
@@ -13,11 +13,7 @@ export const CaseListView: React.FC = () => {
     return (
         <Box margin={8} marginTop={4}>
             <Skeleton isLoaded={isLoaded}>
-                {visits !== null ? (
-                    <VisitsList visits={visits} detailsPath={WorkshopEmployeeRoutes.CASE_DETAILS} />
-                ) : (
-                    <Text fontSize={'lg'}>Please wait for fetch.</Text>
-                )}
+                {visits !== null && <VisitsList visits={visits} detailsPath={WorkshopEmployeeRoutes.CASE_DETAILS} />}
             </Skeleton>
         </Box>
     );

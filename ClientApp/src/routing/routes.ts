@@ -34,7 +34,7 @@ export enum ApiRoutes {
     USERS = '/users',
     VISITS = '/visits',
     DIAGNOSTIC_PROFILE = '/cars/{licensePlate}/profile',
-    VISIT_REPAIR = '/visit/{visitId}/repair',
-    VISIT_MAINTAIN = '/visit/{visitId}/maintain',
-    VISIT_DIAGNOSE = '/visit/{visitId}/diagnose',
+    VISIT_REPAIR = '/visits/{visitId}/repair',
+    VISIT_MAINTAIN = '/visits/{visitId}/maintain',
+    VISIT_DIAGNOSE = '/visits/{visitId}/diagnose',
 }

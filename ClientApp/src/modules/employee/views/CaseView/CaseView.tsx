@@ -1,23 +1,46 @@
-import {Box, Button, createStandaloneToast, Grid, GridItem, ListItem, Text, UnorderedList} from '@chakra-ui/react';
+import {Box, Button, createStandaloneToast, Flex, Grid, GridItem, ListItem, Text, UnorderedList, useDisclosure} from '@chakra-ui/react';
+import {format, parseISO} from 'date-fns';
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {WorkshopEmployeeRoutes} from '../../../../routing/routes';
 import {CarCard} from '../../../common/components/CarCard/CarCard';
 import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
 import {TextInfoBadge} from '../../../common/components/TextInfoBadge/TextInfoBadge';
+import {VisitStatus} from '../../api/visitAPI.types';
+import {ChangeStatusModal} from '../../components/ChangeStatusModal/ChangeStatusModal';
 import {useCar} from '../../hooks/useCar';
 import {useVisit} from '../../hooks/useVisit';
+import {dateFormat} from './CaseView.constants';
 
 export const CaseView: React.FC = () => {
     //@ts-ignore
     const {caseId} = useParams();
-    const {visit, fetchVisit} = useVisit();
+    const {visit, fetchVisit, diagnoseVisit, maintainVisit, repairVisit} = useVisit();
     const {car, fetchCar} = useCar();
+    const history = useHistory();
+    const {isOpen, onOpen, onClose} = useDisclosure();
 
     const [isFound, setFound] = useState<boolean | undefined>(undefined);
 
-    const history = useHistory();
     const toast = createStandaloneToast();
+
+    const parsedDate = visit !== null ? parseISO(visit.date) : new Date();
+
+    const handleStatusChange = async (newStatus: VisitStatus) => {
+        if (visit !== null) {
+            switch (newStatus) {
+                case VisitStatus.ATSERVICE:
+                    diagnoseVisit(caseId);
+                    return await fetchVisit(caseId);
+                case VisitStatus.CHECKEDIN:
+                    maintainVisit(caseId);
+                    return await fetchVisit(caseId);
+                case VisitStatus.REPAIRED:
+                    repairVisit(caseId);
+                    return await fetchVisit(caseId);
+            }
+        }
+    };
 
     useEffect(() => {
         if (car === null) {
@@ -42,19 +65,22 @@ export const CaseView: React.FC = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isFound, setFound]);
-    console.log(visit);
 
     return (
         <>
+            {visit !== null && (
+                <ChangeStatusModal isOpen={isOpen} onClose={onClose} currentStatus={visit?.status} onStatusChange={handleStatusChange} />
+            )}
+
             <Grid templateColumns="repeat(4, 1fr)" templateRows="repeat(2, 1fr)" h="420px" gap={4} marginRight={8}>
                 <GridItem rowSpan={1} colSpan={2}>
                     <CarCard licensePlate={car?.licensePlate ?? ''} model={car?.model ?? ''} type={car?.type ?? ''} />
                 </GridItem>
-                <GridItem rowSpan={2} colSpan={1} marginTop={4}>
-                    <DatePicker name={'date'} value={new Date()} onChange={() => {}} showPopperArrow disabled={true} />
+                <GridItem rowSpan={1} colSpan={1} marginTop={4}>
+                    <DatePicker name={'date'} value={parsedDate} onChange={() => {}} showPopperArrow disabled={true} />
                 </GridItem>
-                <GridItem rowSpan={2} colSpan={1} marginTop={2}>
-                    <Button width="242px" margin={2}>
+                <GridItem rowSpan={1} colSpan={1} marginTop={2}>
+                    <Button width="242px" margin={2} onClick={onOpen}>
                         CHANGE STATUS
                     </Button>
                     <Button width="242px" margin={2}>
@@ -64,12 +90,13 @@ export const CaseView: React.FC = () => {
                         DIAGNOSTIC
                     </Button>
                 </GridItem>
-                <GridItem rowSpan={1} colSpan={1} rowStart={2}>
-                    <TextInfoBadge title={'TYPE'} value={visit?.type ?? ''} />
-                    <TextInfoBadge title={'PRIORITY'} value={visit?.priority ?? ''} />
-                </GridItem>
-                <GridItem rowSpan={2} colSpan={1} rowStart={2} colStart={2}>
-                    <TextInfoBadge title={'CURRENT STATUS'} value={visit?.status ?? ''} />
+                <GridItem rowSpan={1} colSpan={4} rowStart={2}>
+                    <Flex justifyContent={'space-between'} paddingRight={12}>
+                        <TextInfoBadge title={'TYPE'} value={visit?.type ?? ''} />
+                        <TextInfoBadge title={'PRIORITY'} value={visit?.priority ?? ''} />
+                        <TextInfoBadge title={'CURRENT STATUS'} value={visit?.status ?? ''} />
+                        <TextInfoBadge title={'EXACT DATE'} value={format(parsedDate, dateFormat)} />
+                    </Flex>
                 </GridItem>
             </Grid>
             <Box margin={4} marginRight={16}>
@@ -77,9 +104,11 @@ export const CaseView: React.FC = () => {
                     REQUIRED ACTIONS
                 </Text>
                 <UnorderedList>
-                    {visit?.requiredActions?.map((action) => (
-                        <ListItem>{action}</ListItem>
-                    ))}
+                    {visit?.requiredActions.length !== 0 ? (
+                        visit?.requiredActions?.map((action) => <ListItem>{action}</ListItem>)
+                    ) : (
+                        <Text>No assigned actions</Text>
+                    )}
                 </UnorderedList>
             </Box>
             <Box margin={4} marginRight={16}>
@@ -87,7 +116,7 @@ export const CaseView: React.FC = () => {
                     ASSIGNED EMPLOYEES
                 </Text>
                 <UnorderedList>
-                    {visit?.assignedEmployees !== undefined ? (
+                    {visit?.assignedEmployees.length !== 0 ? (
                         visit?.assignedEmployees?.map((action) => <ListItem>{action}</ListItem>)
                     ) : (
                         <Text>No assigned employees</Text>

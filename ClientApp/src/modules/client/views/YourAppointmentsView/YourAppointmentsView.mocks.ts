@@ -9,7 +9,7 @@ export const MockedAppointmentItems: Visit[] = [
         licensePlate: 'DDZ 18N0',
         priority: VisitPriority.EMERGENCY,
         type: VisitType.AIR_CONDITIONING_SYSTEM,
-        status: VisitStatus.atService,
+        status: VisitStatus.ATSERVICE,
         assignedEmployees: [
             {
                 employeeId: 12,

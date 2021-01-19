@@ -33,21 +33,21 @@ export function putVisit(visitInfo: Visit): Promise<any | null> {
 
 export function putVisitRepair(visitId: number): Promise<any | null> {
     return axios
-        .put(API_BASE_PATH + ApiRoutes.VISIT_REPAIR.replace('{visitId}', visitId.toString()), authHeader)
+        .put(API_BASE_PATH + ApiRoutes.VISIT_REPAIR.replace('{visitId}', visitId.toString()), undefined, authHeader)
         .then((response) => response.data)
         .catch(() => null);
 }
 
 export function putVisitMaintain(visitId: number): Promise<any | null> {
     return axios
-        .put(API_BASE_PATH + ApiRoutes.VISIT_MAINTAIN.replace('{visitId}', visitId.toString()), authHeader)
+        .put(API_BASE_PATH + ApiRoutes.VISIT_MAINTAIN.replace('{visitId}', visitId.toString()), undefined, authHeader)
         .then((response) => response.data)
         .catch(() => null);
 }
 
 export function putVisitDiagnose(visitId: number): Promise<any | null> {
     return axios
-        .put(API_BASE_PATH + ApiRoutes.VISIT_DIAGNOSE.replace('{visitId}', visitId.toString()), authHeader)
+        .put(API_BASE_PATH + ApiRoutes.VISIT_DIAGNOSE.replace('{visitId}', visitId.toString()), undefined, authHeader)
         .then((response) => response.data)
         .catch(() => null);
 }
