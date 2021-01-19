@@ -64,9 +64,10 @@ namespace se_project.Controllers
                 return StatusCode(403);
             if (visit is null)
                 return StatusCode(404);
-            if (visit.Payment is null)
+            Payment payment = _context.Payments.FirstOrDefault(v => v.VisitId == visitId);
+            if (payment is null)
                 return new ObjectResult(new Payment() { Amount = visit.Price, Advance = 0, IsFulfilled = visit.Price is null || visit.Price == 0 });
-            return new ObjectResult(visit.Payment);
+            return new ObjectResult(payment);
         }
 
         /// <summary>
@@ -104,7 +105,6 @@ namespace se_project.Controllers
                 if (body.Advance is null) body.Advance = 0;
                 if (body.IsFulfilled is null) body.IsFulfilled = body.Amount <= body.Advance;
                 body.Visit = visit;
-                visit.Payment = body;
                 _context.Add(body);
             }
             else

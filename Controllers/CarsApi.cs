@@ -162,7 +162,7 @@ namespace se_project.Controllers
                 return StatusCode(403);
             if (car is null)
                 return StatusCode(404);
-            return new ObjectResult(car.Insurances);
+            return new ObjectResult(_context.Insurances.Where(x => x.LicensePlate.Equals(licensePlate)).ToArray());
         }
 
         [HttpGet]
@@ -219,13 +219,20 @@ namespace se_project.Controllers
                 return StatusCode(401, e.Message);
             }
             var insurance = _context.Insurances.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate) && x.Type == body.Type);
-            if ((insurance != null && !insurance.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+            //Due to problem with diagnosticProfile.car = null:
+            Car car = _context.Cars.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate));
+            if ((car != null && !car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
                 return StatusCode(403);
+            //if ((insurance != null && !insurance.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+            //    return StatusCode(403);
             body.LicensePlate = licensePlate;
             if (insurance is null)
                 _context.Add(body);
             else
-                insurance = body;
+            {
+                insurance.Coverage = body.Coverage;
+                insurance.DateOfExpiry = body.DateOfExpiry;
+            }
             try
             {
                 _context.SaveChanges();
@@ -234,7 +241,7 @@ namespace se_project.Controllers
             {
                 return StatusCode(400);
             }
-            return new ObjectResult(insurance.Car.Insurances);
+            return new ObjectResult(_context.Insurances.Where(x => x.LicensePlate.Equals(licensePlate)).ToArray());
         }
 
         [HttpPut]
