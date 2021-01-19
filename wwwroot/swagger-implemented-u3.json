@@ -1251,7 +1251,8 @@
           "type" : "string",
           "example" : "full"
         }
-      },
+      }
+    },
     "Payment" : {
       "type" : "object",
       "required" : [ "visitId", "amount", "advance", "isFulfilled" ],
