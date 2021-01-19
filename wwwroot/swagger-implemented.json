@@ -1259,6 +1259,6 @@
     }
   },
   "schemes": [ "https" ],
-  "host": "localhost:44389",
+  "host": "se-project-2020.herokuapp.com",
   "basePath": "/api/0.1.1"
 }
