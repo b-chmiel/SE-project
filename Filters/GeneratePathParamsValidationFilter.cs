@@ -1,9 +1,8 @@
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Swashbuckle.AspNetCore.Swagger;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Microsoft.OpenApi.Models;
 
 namespace se_project.Filters
 {

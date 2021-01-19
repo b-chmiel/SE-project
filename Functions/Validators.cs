@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using se_project.Models;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
-using se_project.Models;
 namespace se_project.Functions
 {
     public class ValidationException : Exception
     {
-        public ValidationException(){}
+        public ValidationException() { }
 
-        public ValidationException(string message): base(message){}
+        public ValidationException(string message) : base(message) { }
 
-        public ValidationException(string message, Exception inner): base(message, inner){}
+        public ValidationException(string message, Exception inner) : base(message, inner) { }
     }
     public static class Validator
     {
