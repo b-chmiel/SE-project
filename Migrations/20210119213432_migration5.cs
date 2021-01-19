@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using System;
+using System.Collections.Generic;
 
 namespace se_project.Migrations
 {
@@ -153,26 +153,6 @@ namespace se_project.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    VisitId = table.Column<int>(type: "integer", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: true),
-                    Advance = table.Column<decimal>(type: "numeric", nullable: true),
-                    IsFulfilled = table.Column<bool>(type: "boolean", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.VisitId);
-                    table.ForeignKey(
-                        name: "FK_Payments_Visits_VisitId",
-                        column: x => x.VisitId,
-                        principalTable: "Visits",
-                        principalColumn: "VisitId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_OwnerUsername",
                 table: "Cars",
@@ -209,9 +189,6 @@ namespace se_project.Migrations
 
             migrationBuilder.DropTable(
                 name: "Insurances");
-
-            migrationBuilder.DropTable(
-                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Visits");

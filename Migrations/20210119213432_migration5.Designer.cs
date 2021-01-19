@@ -11,7 +11,7 @@ using se_project;
 namespace se_project.Migrations
 {
     [DbContext(typeof(CompanyDBEntities))]
-    [Migration("20210119004545_migration5")]
+    [Migration("20210119213432_migration5")]
     partial class migration5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,25 +122,6 @@ namespace se_project.Migrations
                     b.HasKey("LicensePlate", "Type");
 
                     b.ToTable("Insurances");
-                });
-
-            modelBuilder.Entity("se_project.Models.Payment", b =>
-                {
-                    b.Property<int>("VisitId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("Advance")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal?>("Amount")
-                        .HasColumnType("numeric");
-
-                    b.Property<bool?>("IsFulfilled")
-                        .HasColumnType("boolean");
-
-                    b.HasKey("VisitId");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("se_project.Models.User", b =>
@@ -271,17 +252,6 @@ namespace se_project.Migrations
                     b.Navigation("Car");
                 });
 
-            modelBuilder.Entity("se_project.Models.Payment", b =>
-                {
-                    b.HasOne("se_project.Models.Visit", "Visit")
-                        .WithOne("Payment")
-                        .HasForeignKey("se_project.Models.Payment", "VisitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Visit");
-                });
-
             modelBuilder.Entity("se_project.Models.Visit", b =>
                 {
                     b.HasOne("se_project.Models.Car", "Car")
@@ -314,8 +284,6 @@ namespace se_project.Migrations
             modelBuilder.Entity("se_project.Models.Visit", b =>
                 {
                     b.Navigation("AssignedEmployees");
-
-                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }

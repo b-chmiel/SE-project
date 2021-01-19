@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using se_project.Attributes;
 using se_project.Functions;
 using se_project.Models;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace se_project.Controllers
 {
@@ -71,7 +71,7 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
-            if(!username.Equals(sender.Item1)&&!(sender.Item2==UserType.INSURANCE_EMPLOYEE||sender.Item2==UserType.WORKSHOP_EMPLOYEE))
+            if (!username.Equals(sender.Item1) && !(sender.Item2 == UserType.INSURANCE_EMPLOYEE || sender.Item2 == UserType.WORKSHOP_EMPLOYEE))
                 return StatusCode(403);
             var user = _context.Users.First(x => x.Username.Equals(username));
             if (user is null)
@@ -116,8 +116,8 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
-            if(sender.Item2!=UserType.INSURANCE_EMPLOYEE) return StatusCode(403);
-            var users = _context.Users.Where(x => x.UserType==UserType.CLIENT).ToList();
+            if (sender.Item2 != UserType.INSURANCE_EMPLOYEE) return StatusCode(403);
+            var users = _context.Users.Where(x => x.UserType == UserType.CLIENT).ToList();
             foreach (User user in users)
             {
                 user.Guid = null;
@@ -210,8 +210,8 @@ namespace se_project.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetUserVisits")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Visit>), description: "Successful operation")]
-        public virtual IActionResult GetClientVisits([FromRoute][Required]string username)
-        { 
+        public virtual IActionResult GetClientVisits([FromRoute][Required] string username)
+        {
             (string, UserType) sender;
             try
             {
@@ -237,7 +237,7 @@ namespace se_project.Controllers
 
             return new ObjectResult(visits);
         }
-        
+
         /// <summary>
         /// Set client&#39;s discount
         /// </summary>
@@ -250,8 +250,8 @@ namespace se_project.Controllers
         [Route("/api/0.1.1/users/{guid}/set_discount")]
         [ValidateModelState]
         [SwaggerOperation("SetDiscount")]
-        public virtual IActionResult SetDiscount([FromRoute][Required]string username, [FromBody]Body2 body)
-        { 
+        public virtual IActionResult SetDiscount([FromRoute][Required] string username, [FromBody] Body2 body)
+        {
             var user = _context.Users.FirstOrDefault(x => x.Username.Equals(username));
             if (user is null)
             {
