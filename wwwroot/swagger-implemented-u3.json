@@ -14,6 +14,9 @@
   }, {
     "name" : "visits",
     "description" : "Operations on cars"
+  }, {
+    "name" : "payments",
+    "description" : "Payments operations"
   } ],
   "paths" : {
     "/users" : {
@@ -285,10 +288,12 @@
         }
       }
     },
+    ,
     "/cars" : {
       "post" : {
         "tags" : [ "cars" ],
         "summary" : "Add new car to the system",
+        "description" : "<b>!Available only for car owner and employee</b> (additional parameter – username)<b>!</b>",
         "operationId" : "addCar",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
@@ -296,7 +301,23 @@
           "name" : "body",
           "in" : "body",
           "schema" : {
-            "$ref" : "#/definitions/Car"
+            "type" : "object",
+            "required" : [ "licencePlate", "model", "type" ],
+            "properties" : {
+              "licencePlate" : {
+                "type" : "string",
+                "example" : "DDZ 18N0"
+              },
+              "model" : {
+                "type" : "string",
+                "example" : "Škoda Fabia 2012"
+              },
+              "type" : {
+                "type" : "string",
+                "example" : "hatchback",
+                "enum" : [ "sedan", "hatchback" ]
+              }
+            }
           }
         } ],
         "responses" : {
@@ -409,6 +430,295 @@
           },
           "400" : {
             "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "cars" ],
+        "summary" : "Update car diagnostic profile",
+        "description" : "<b>!Available only for car workshop employee!</b>",
+        "operationId" : "updateProfile",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car to return",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "diagnosticProfile",
+          "in" : "body",
+          "description" : "New parameters for diagnostic profile",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "properties" : {
+              "engine" : {
+                "type" : "string",
+                "example" : "2120.00cm3"
+              },
+              "body" : {
+                "type" : "string",
+                "example" : "black"
+              },
+              "lowVoltage" : {
+                "type" : "string",
+                "example" : "12V"
+              },
+              "lighting" : {
+                "type" : "string"
+              },
+              "brakes" : {
+                "type" : "string"
+              },
+              "sensors" : {
+                "type" : "string",
+                "example" : "parking sensors"
+              },
+              "miscellaneous" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "conditionig" : {
+                "type" : "string",
+                "example" : "full"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DiagnosticProfile"
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/cars/{licensePlate}/insurances" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car insurances by license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "getInsurances",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car assigned to insurance",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Insurance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "cars" ],
+        "summary" : "Add/update car insurance",
+        "description" : "<b>!Available only for car owner and employee!</b></br>If insurance of given type is assigned to car it will be overwritten, otherwise it will be created.",
+        "operationId" : "addUpdateInsurance",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car assigned to insurance",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "insurance",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "type" ],
+            "properties" : {
+              "type" : {
+                "type" : "string",
+                "example" : "liability insurance",
+                "enum" : [ "liability insurance", "comprehensive cover" ]
+              },
+              "dateOfExpiry" : {
+                "type" : "string",
+                "format" : "date-time",
+                "example" : "2020-12-30T23:59:59.999+01"
+              },
+              "coverage" : {
+                "type" : "integer",
+                "format" : "int32",
+                "example" : 100000
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Insurance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/payments/{visitId}" : {
+      "get" : {
+        "tags" : [ "payments" ],
+        "summary" : "Get payment.",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "getPayment",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation (default values for nonexistent payment)",
+            "schema" : {
+              "$ref" : "#/definitions/Payment"
+            }
+          },
+          "400" : {
+            "description" : "Invalid visit id"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "payments" ],
+        "summary" : "Update payment.",
+        "description" : "<b>!Available only for car workshop employee!</b>",
+        "operationId" : "updatePayment",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "payment",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "properties" : {
+              "amount" : {
+                "type" : "number",
+                "example" : 123.99,
+                "default" : "Visit.Price"
+              },
+              "advance" : {
+                "type" : "number",
+                "example" : 0.0,
+                "default" : 0.0
+              },
+              "isFulfilled" : {
+                "type" : "boolean",
+                "example" : false,
+                "default" : "amount <= advance"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Payment"
+            }
+          },
+          "400" : {
+            "description" : "Invalid visit id"
           },
           "401" : {
             "description" : "Authorization failed"
@@ -941,6 +1251,54 @@
         "conditioning" : {
           "type" : "string",
           "example" : "full"
+        }
+      },
+    "Payment" : {
+      "type" : "object",
+      "required" : [ "visitId", "amount", "advance", "isFulfilled" ],
+      "properties" : {
+        "visitId" : {
+          "type" : "integer",
+          "example" : 1
+        },
+        "amount" : {
+          "type" : "number",
+          "example" : 123.99,
+          "default" : "Visit.Price"
+        },
+        "advance" : {
+          "type" : "number",
+          "example" : 0.0,
+          "default" : 0.0
+        },
+        "isFulfilled" : {
+          "type" : "boolean",
+          "default" : "amount <= advance"
+        }
+      }
+    },
+    "Insurance" : {
+      "type" : "object",
+      "required" : [ "licensePlate", "dateOfExpiry", "coverage", "type" ],
+      "properties" : {
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "dateOfExpiry" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-30T23:59:59.999+01"
+        },
+        "coverage" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 100000
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "liability insurance",
+          "enum" : [ "liability insurance", "comprehensive cover" ]
         }
       }
     }

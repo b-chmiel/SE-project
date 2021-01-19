@@ -18,6 +18,9 @@ using System.ComponentModel.DataAnnotations;
 using se_project.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using se_project.Models;
+using se_project.Functions;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace se_project.Controllers
 { 
@@ -26,39 +29,44 @@ namespace se_project.Controllers
     /// </summary>
     [ApiController]
     public class PaymentsApiController : ControllerBase
-    { 
+    {
+        private readonly CompanyDBEntities _context;
+        public PaymentsApiController(CompanyDBEntities context)
+        {
+            _context = context;
+        }
         /// <summary>
         /// Read payment information
         /// </summary>
-        
+
         /// <param name="visitId"></param>
         /// <response code="200">Successful operation</response>
         /// <response code="400">Invalid visit id supplied</response>
         /// <response code="404">Visit not found</response>
         [HttpGet]
-        [Route("/api/0.1.1/payment/{visitId}")]
+        [Route("/api/0.1.1/payments/{visitId}")]
         [ValidateModelState]
         [SwaggerOperation("PaymentVisitIdGet")]
         [SwaggerResponse(statusCode: 200, type: typeof(Payment), description: "Successful operation")]
-        public virtual IActionResult PaymentVisitIdGet([FromRoute][Required]int? visitId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(Payment));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "{\n  \"isFulfilled\" : false,\n  \"amount\" : 123.99,\n  \"advance\" : 0.0\n}";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<Payment>(exampleJson)
-            : default(Payment);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult PaymentVisitIdGet([FromRoute][Required]int visitId)
+        {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            Visit visit = _context.Visits.FirstOrDefault(v => v.VisitId == visitId);
+            if ((visit != null && !visit.CarOwnerUsername.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
+            if (visit is null)
+                return StatusCode(404);
+            if (visit.Payment is null)
+                return new ObjectResult(new Payment() { Amount = visit.Price, Advance = 0, IsFulfilled = visit.Price is null || visit.Price == 0 });
+            return new ObjectResult(visit.Payment);
         }
 
         /// <summary>
@@ -70,19 +78,51 @@ namespace se_project.Controllers
         /// <response code="400">Validation exception</response>
         /// <response code="404">Visit not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/payment/{visitId}")]
+        [Route("/api/0.1.1/payments/{visitId}")]
         [ValidateModelState]
         [SwaggerOperation("PaymentVisitIdPut")]
-        public virtual IActionResult PaymentVisitIdPut([FromRoute][Required]int? visitId, [FromBody]Payment body)
-        { 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+        public virtual IActionResult PaymentVisitIdPut([FromRoute][Required]int visitId, [FromBody]Payment body)
+        {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403);
+            Visit visit = _context.Visits.FirstOrDefault(v => v.VisitId == visitId);
+            if (visit is null)
+                return StatusCode(404);
+            body.VisitId = visitId;
+            if (visit.Payment is null)
+            {
+                if (body.Amount is null) body.Amount = visit.Price is null ? 0 : visit.Price;
+                if (body.Advance is null) body.Advance = 0;
+                if (body.IsFulfilled is null) body.IsFulfilled = body.Amount <= body.Advance;
+                body.Visit = visit;
+                visit.Payment = body;
+                _context.Add(body);
+            }
+            else
+            {
+                Payment payment = visit.Payment;
+                payment.Amount = body.Amount is null ? payment.Amount : body.Amount;
+                payment.Advance = body.Advance is null ? payment.Advance : body.Advance;
+                payment.IsFulfilled = body.IsFulfilled is null ? payment.IsFulfilled : body.IsFulfilled;
+            }
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            return new ObjectResult(visit.Payment);
         }
     }
 }

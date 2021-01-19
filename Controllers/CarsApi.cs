@@ -62,6 +62,7 @@ namespace se_project.Controllers
             };
             car.DiagnosticProfile = diagnosticProfile;
             diagnosticProfile.Car = car;
+            car.Insurances = new List<Insurance>();
 
             _context.Add(car);
             _context.Add(diagnosticProfile);
@@ -137,29 +138,31 @@ namespace se_project.Controllers
         }
 
         [HttpGet]
-        [Route("/api/0.1.1/cars/{licensePlate}/insurance")]
+        [Route("/api/0.1.1/cars/{licensePlate}/insurances")]
         [ValidateModelState]
         [SwaggerOperation("GetInsurance")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<Insurance>), description: "Successful operation")]
-        public virtual IActionResult GetInsurance([FromRoute][Required]int? licensePlate)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<Insurance>));
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"coverage\" : 100000,\n  \"dateOfExpiry\" : \"2020-12-30T23:59:59.999+01\",\n  \"type\" : \"liability insurance\"\n}, {\n  \"coverage\" : 100000,\n  \"dateOfExpiry\" : \"2020-12-30T23:59:59.999+01\",\n  \"type\" : \"liability insurance\"\n} ]";
-            
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<List<Insurance>>(exampleJson)
-            : default(List<Insurance>);
-            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult GetInsurance([FromRoute][Required]string licensePlate)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                return StatusCode(400);
+            }
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            var car = _context.Cars.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate));
+            if ((car != null && !car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
+            if (car is null)
+                return StatusCode(404);
+            return new ObjectResult(car.Insurances);
         }
 
         [HttpGet]
@@ -197,39 +200,84 @@ namespace se_project.Controllers
         }
 
         [HttpPut]
-        [Route("/api/0.1.1/cars/{licensePlate}/insurance")]
+        [Route("/api/0.1.1/cars/{licensePlate}/insurances")]
         [ValidateModelState]
         [SwaggerOperation("PutInsurance")]
-        public virtual IActionResult PutInsurance([FromRoute][Required]int? licensePlate, [FromBody]Client insurance)
-        { 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+        public virtual IActionResult PutInsurance([FromRoute][Required]string licensePlate, [FromBody]Insurance body)
+        {
+            if (string.IsNullOrEmpty(licensePlate))
+            {
+                return StatusCode(400);
+            }
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            var insurance = _context.Insurances.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate) && x.Type == body.Type);
+            if ((insurance != null && !insurance.Car.Username.Equals(sender.Item1)) && !(sender.Item2 == UserType.WORKSHOP_EMPLOYEE || sender.Item2 == UserType.INSURANCE_EMPLOYEE))
+                return StatusCode(403);
+            body.LicensePlate = licensePlate;
+            if (insurance is null)
+                _context.Add(body);
+            else
+                insurance = body;
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            return new ObjectResult(insurance.Car.Insurances);
         }
 
         [HttpPut]
         [Route("/api/0.1.1/cars/{licensePlate}/profile")]
         [ValidateModelState]
         [SwaggerOperation("SetProfile")]
-        public virtual IActionResult SetProfile([FromRoute][Required]string licensePlate, [FromBody]DiagnosticProfile profile)
+        public virtual IActionResult SetProfile([FromRoute][Required]string licensePlate, [FromBody]DiagnosticProfile body)
         {
-            if (string.IsNullOrWhiteSpace(licensePlate))
+            if (string.IsNullOrEmpty(licensePlate))
             {
-                throw new ArgumentException($"'{nameof(licensePlate)}' cannot be null or whitespace", nameof(licensePlate));
+                return StatusCode(400);
             }
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-
-            throw new NotImplementedException();
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            var diagnosticProfile = _context.DiagnosticProfiles.FirstOrDefault(x => x.LicensePlate.Equals(licensePlate));
+            if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403);
+            if (diagnosticProfile is null)
+                return StatusCode(404);
+            if (body.Engine!=null) diagnosticProfile.Engine = body.Engine;
+            if (body.Body != null) diagnosticProfile.Body = body.Body;
+            if (body.LowVoltage!=null) diagnosticProfile.LowVoltage = body.LowVoltage;
+            if (body.Lighting != null) diagnosticProfile.Lighting = body.Lighting;
+            if (body.Brakes != null) diagnosticProfile.Brakes = body.Brakes;
+            if (body.Sensors != null) diagnosticProfile.Sensors = body.Sensors;
+            if (body.Miscellaneous != null) diagnosticProfile.Miscellaneous = body.Miscellaneous;
+            if (body.Conditioning != null) diagnosticProfile.Conditioning = body.Conditioning;
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return StatusCode(400);
+            }
+            return new ObjectResult(diagnosticProfile);
         }
     }
 }

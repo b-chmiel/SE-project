@@ -29,7 +29,6 @@ namespace se_project.Models
     public partial class DiagnosticProfile : IEquatable<DiagnosticProfile>
     {
         [Key]
-        [Required]
         [DataMember(Name = "licensePlate")]
         public string LicensePlate { get; set; }
         [ForeignKey("LicensePlate")]

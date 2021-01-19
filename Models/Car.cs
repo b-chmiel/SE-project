@@ -76,6 +76,8 @@ namespace se_project.Models
         [DataMember(Name = "username")]
         public string Username { get; set; }
         public virtual User Owner { get; set; }
+
+        public virtual ICollection<Insurance> Insurances { get; set; }
         /// <summary>
         /// Returns the string presentation of the object
         /// </summary>

@@ -27,19 +27,23 @@ namespace se_project.Models
     [DataContract]
     public partial class Insurance : IEquatable<Insurance>
     { 
+        [DataMember(Name ="licensePlate")]
+        public string LicensePlate { get; set; }
         /// <summary>
         /// Gets or Sets DateOfExpiry
         /// </summary>
         [Required]
         [DataMember(Name="dateOfExpiry")]
-        public DateTime? DateOfExpiry { get; set; }
+        public DateTime DateOfExpiry { get; set; }
 
         /// <summary>
         /// Gets or Sets Coverage
         /// </summary>
         [Required]
         [DataMember(Name="coverage")]
-        public int? Coverage { get; set; }
+        public int Coverage { get; set; }
+
+        public Car Car { get; set; }
 
         /// <summary>
         /// Gets or Sets Type
