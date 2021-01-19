@@ -301,9 +301,9 @@
           "in" : "body",
           "schema" : {
             "type" : "object",
-            "required" : [ "licencePlate", "model", "type" ],
+            "required" : [ "licensePlate", "model", "type" ],
             "properties" : {
-              "licencePlate" : {
+              "licensePlate" : {
                 "type" : "string",
                 "example" : "DDZ 18N0"
               },
@@ -750,7 +750,7 @@
             "type" : "object",
             "required" : [ "licensePlate" ],
             "properties" : {
-              "licencePlate" : {
+              "licensePlate" : {
                 "type" : "string",
                 "example" : "DDZ 18N0"
               },
