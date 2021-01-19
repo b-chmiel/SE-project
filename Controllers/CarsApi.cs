@@ -128,7 +128,7 @@ namespace se_project.Controllers
                 cars = _context.Cars.Where(x => x.Username.Equals(sender.Item1)).ToList();
             else if (sender.Item2 == UserType.WORKSHOP_EMPLOYEE) {
                 var visits = _context.Users.FirstOrDefault(x => x.Username.Equals(sender.Item1)).AssignedVisits;
-                if (visits != null || visits.Count != 0) cars = new List<Car>();
+                if (visits == null) cars = new List<Car>();
                 else cars = visits.Select(x => x.Visit.Car).ToList();
             }
             else if (sender.Item2 == UserType.INSURANCE_EMPLOYEE)
