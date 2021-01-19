@@ -1,12 +1,15 @@
 import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
-import {AuthenticationRoutes, ClientRoutes} from '../../../../routing/routes';
-import {authorize, saveCreds} from '../../helpers/AuthService';
+import {AuthenticationRoutes, ClientRoutes, WorkshopEmployeeRoutes} from '../../../../routing/routes';
+import {useAuth} from '../../context/AuthProvider';
+import {authorize} from '../../helpers/AuthService';
+import {UserSignIn as UserSignInCredentials, UserType} from './../../helpers/AuthService.types';
 import {button, errormsg, input} from './AuthorizationView.styles';
 
-const AuthorizationView: React.FC = ({children}) => {
+const AuthorizationView: React.FC = () => {
     const history = useHistory();
+    const {getRole} = useAuth();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -24,10 +27,19 @@ const AuthorizationView: React.FC = ({children}) => {
     }
 
     function submitLogin(username: string, password: string) {
-        saveCreds(username, password);
-        authorize().then((res) => {
+        var user: UserSignInCredentials = {
+            username: username,
+            password: password,
+        };
+
+        authorize(user).then((res) => {
             if (res === true) {
-                history.push(ClientRoutes.CARS);
+                const role = getRole();
+                if (role === UserType.WORKSHOP_EMPLOYEE) {
+                    history.push(WorkshopEmployeeRoutes.CASES);
+                } else if (role === UserType.CLIENT) {
+                    history.push(ClientRoutes.CARS);
+                }
             } else {
                 setError(true);
             }

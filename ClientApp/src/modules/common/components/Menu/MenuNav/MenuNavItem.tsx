@@ -2,7 +2,6 @@ import {Flex, Text} from '@chakra-ui/react';
 import React from 'react';
 import {useHistory, useRouteMatch} from 'react-router-dom';
 import {colors} from '../../../../../globalTheme/theme';
-
 interface Props {
     title: string;
     path: string;

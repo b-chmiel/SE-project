@@ -13,7 +13,7 @@ export const ClientCaseView: React.FC = () => {
         <>
             <Grid templateColumns="repeat(4, 1fr)" templateRows="repeat(2, 1fr)" h="420px" gap={4} marginRight={8}>
                 <GridItem rowSpan={1} colSpan={2}>
-                    <CarCard diagnostics={carInfo.diagnostics} state={carInfo.state} model={carInfo.model} type={carInfo.type} />
+                    <CarCard licensePlate={carInfo.licensePlate} model={carInfo.model} type={carInfo.type} />
                 </GridItem>
                 <GridItem rowSpan={2} colSpan={1} marginTop={4}>
                     <Button width="242px" margin={2}>
