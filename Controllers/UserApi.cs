@@ -152,6 +152,16 @@ namespace se_project.Controllers
         [SwaggerOperation("UpdateUser")]
         public virtual IActionResult UpdateUser([FromBody] User body)
         {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+            
             var user = _context.Users.FirstOrDefault(x => x.Guid.Equals(body.Guid));
             if (user is null)
             {

@@ -1,24 +1,27 @@
-import {Appointment} from '../../components/AppointmentList/AppointmentList.types';
+import {Visit, VisitPriority, VisitStatus, VisitType} from '../../../employee/api/visitAPI.types';
 
-export const MockedAppointmentItems: Appointment[] = [
+export const MockedAppointmentItems: Visit[] = [
     {
-        carName: 'OPEL ASTRA',
-        appointmentDate: new Date(),
-        appointmentStatus: 'planned',
-    },
-    {
-        carName: 'OPEL ASTRA',
-        appointmentDate: new Date(),
-        appointmentStatus: 'atService',
-    },
-    {
-        carName: 'OPEL ASTRA',
-        appointmentDate: new Date(),
-        appointmentStatus: 'repaired',
-    },
-    {
-        carName: 'OPEL ASTRA',
-        appointmentDate: new Date(),
-        appointmentStatus: 'checkedIn',
+        visitId: 5512,
+        date: '2020-12-24T12:00:00+01',
+        price: 100.5,
+        requiredActions: ['oil change', 'breaks checking'],
+        licensePlate: 'DDZ 18N0',
+        priority: VisitPriority.EMERGENCY,
+        type: VisitType.AIR_CONDITIONING_SYSTEM,
+        status: VisitStatus.ATSERVICE,
+        assignedEmployees: [
+            {
+                employeeId: 12,
+                name: 'Bolesław',
+                surname: 'Nowak',
+            },
+            {
+                employeeId: 13,
+                name: 'Katarzyna',
+                surname: 'Nowak',
+            },
+        ],
+        carOwnerUsername: 'myUser',
     },
 ];

@@ -34,14 +34,14 @@ namespace se_project.Controllers
         {
             _context = context;
         }
+
         /// <summary>
         /// Schedule a visit
         /// </summary>
-
         /// <param name="body">Information about scheduled visit. Required actions can be modified later on by an employee.</param>
         /// <response code="400">Validation exception</response>
         [HttpPost]
-        [Route("/api/0.1.1/visit")]
+        [Route("/api/0.1.1/visits")]
         [ValidateModelState]
         [SwaggerOperation("AddVisit")]
         public virtual IActionResult AddVisit([FromBody] Body3 body)
@@ -62,17 +62,43 @@ namespace se_project.Controllers
                 return StatusCode(404);
             }
 
+            var client = _context.Users.FirstOrDefault(x => x.Username == car.Username);
+            if (client is null)
+            {
+                return StatusCode(400);
+            }
+
+            var employees = _context.Users
+                .Include(x => x.AssignedVisits);
+            var min = employees.Where(x => x.UserType == UserType.WORKSHOP_EMPLOYEE)
+                .Min(x => x.AssignedVisits.Count);
+            var employee = employees.FirstOrDefault(x =>
+                x.AssignedVisits.Count == min && x.UserType == UserType.WORKSHOP_EMPLOYEE);
+            if (employee is null)
+            {
+                return StatusCode(400);
+            }
+
             var visit = new Visit
             {
                 Date = body.Date,
                 Car = car,
                 LicensePlate = body.LicensePlate,
-                CarOwnerUsername = sender.Item1,
                 RequiredActions = body.RequiredActions,
-                Status = 0
+                Type = body.Type,
+                Priority = body.Priority,
+                Status = 0,
+                CarOwnerUsername = client.Username,
+            };
+
+            var ev = new EmployeeVisit
+            {
+                VisitId = _context.Visits.Max(x => x.VisitId) + 1,
+                Username = employee.Username
             };
 
             _context.Visits.Add(visit);
+            _context.EmployeesVisits.Add(ev);
             try
             {
                 _context.SaveChanges();
@@ -85,6 +111,46 @@ namespace se_project.Controllers
             return new ObjectResult(visit);
         }
 
+        [HttpGet]
+        [Route("/api/0.1.1/visits")]
+        [ValidateModelState]
+        [SwaggerOperation("GetVisits")]
+        [SwaggerResponse(statusCode: 200, type: typeof(List<Visit>), description: "Successful operation")]
+        public virtual IActionResult GetVisits()
+        {
+            (string, UserType) sender;
+            try
+            {
+                sender = Security.SolveGUID(_context, Request.Headers["Guid"]);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(401, e.Message);
+            }
+
+            List<Visit> visits;
+            if (sender.Item2 == UserType.CLIENT)
+            {
+                visits = _context.Visits.Where(x => x.CarOwnerUsername.Equals(sender.Item1)).ToList();
+            }
+            else if (sender.Item2 == UserType.WORKSHOP_EMPLOYEE)
+            {
+                var visitIds = _context.EmployeesVisits
+                    //.Include(x => x.Visit)
+                    //todo fix relation and use include
+                    .Where(x => x.Username.Equals(sender.Item1))
+                    .Select(x => x.VisitId).ToList();
+
+                visits = _context.Visits.Where(x => visitIds.Contains(x.VisitId)).ToList();
+            }
+            else
+            {
+                return StatusCode(403);
+            }
+
+            return new ObjectResult(visits);
+        }
+
         /// <summary>
         /// Find visits by Status
         /// </summary>
@@ -93,7 +159,7 @@ namespace se_project.Controllers
         /// <response code="200">Successful operation</response>
         /// <response code="400">Invalid status value</response>
         [HttpGet]
-        [Route("/api/0.1.1/visit/find_by_status")]
+        [Route("/api/0.1.1/visits/find_by_status")]
         [ValidateModelState]
         [SwaggerOperation("FindVisits")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse200>), description: "Successful operation")]
@@ -122,13 +188,13 @@ namespace se_project.Controllers
         /// <summary>
         /// Find visit by Id
         /// </summary>
-
+        
         /// <param name="visitId"></param>
         /// <response code="200">Successful operation</response>
         /// <response code="400">Invalid id supplied</response>
         /// <response code="404">Visit not found</response>
         [HttpGet]
-        [Route("/api/0.1.1/visit/{visitId}")]
+        [Route("/api/0.1.1/visits/{visitId}")]
         [ValidateModelState]
         [SwaggerOperation("GetVisit")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse200>), description: "Successful operation")]
@@ -161,13 +227,13 @@ namespace se_project.Controllers
         /// <summary>
         /// Marks diagnostic as finished
         /// </summary>
-
+        
         /// <param name="visitId"></param>
         /// <response code="200">Successful operation</response>
         /// <response code="400">Invalid visit id supplied</response>
         /// <response code="404">Visit not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/visit/{visitId}/diagnose")]
+        [Route("/api/0.1.1/visits/{visitId}/diagnose")]
         [ValidateModelState]
         [SwaggerOperation("Diagnose")]
         public virtual IActionResult Diagnose([FromRoute][Required] int? visitId)
@@ -213,7 +279,7 @@ namespace se_project.Controllers
         /// <response code="400">Invalid visit id supplied</response>
         /// <response code="404">Visit not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/visit/{visitId}/maintain")]
+        [Route("/api/0.1.1/visits/{visitId}/maintain")]
         [ValidateModelState]
         [SwaggerOperation("Maintain")]
         public virtual IActionResult Maintain([FromRoute][Required] int? visitId)
@@ -227,6 +293,7 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
+
             if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
                 return StatusCode(403);
 
@@ -259,7 +326,7 @@ namespace se_project.Controllers
         /// <response code="400">Invalid visit id supplied</response>
         /// <response code="404">Visit not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/visit/{visitId}/repair")]
+        [Route("/api/0.1.1/visits/{visitId}/repair")]
         [ValidateModelState]
         [SwaggerOperation("Repair")]
         public virtual IActionResult Repair([FromRoute][Required] int? visitId)
@@ -273,6 +340,7 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
+
             if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
                 return StatusCode(403);
 
@@ -338,7 +406,7 @@ namespace se_project.Controllers
         /// <response code="400">Validation exception</response>
         /// <response code="404">Visit not found</response>
         [HttpPut]
-        [Route("/api/0.1.1/visit")]
+        [Route("/api/0.1.1/visits")]
         [ValidateModelState]
         [SwaggerOperation("UpdateVisit")]
         public virtual IActionResult UpdateVisit([FromBody] Visit body)
@@ -360,9 +428,10 @@ namespace se_project.Controllers
             {
                 return StatusCode(404);
             }
-
-            visit = body;
-
+            if (body.Date != null) visit.Date = body.Date;
+            if (body.Price != null) visit.Price = body.Price;
+            if (body.Priority != visit.Priority) visit.Priority = body.Priority;
+            if (body.Type != visit.Type) visit.Type = body.Type;
             try
             {
                 _context.SaveChanges();

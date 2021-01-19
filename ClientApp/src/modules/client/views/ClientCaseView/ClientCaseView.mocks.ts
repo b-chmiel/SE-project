@@ -30,4 +30,5 @@ export const MockedClientCarInfo = {
     state: 2,
     model: 'OPEL ASTRA',
     type: 'SEDAN',
+    licensePlate: "DWR 1235"
 };

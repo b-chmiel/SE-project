@@ -1,28 +1,26 @@
 import {Box, Button, Center, Container, Grid, GridItem} from '@chakra-ui/react';
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import {DiagnosticProfileType} from '../DiagnosticProfile/DiagnosticProfileType';
-import {getCardState} from './CarCard.helpers';
+import { DiagnosticProfileButton } from '../DiagnosticProfile/DiagnosticProfile';
+
 import {CarIcon} from './CarCard.icons';
 
 interface Props {
-    state: number;
     model: string;
     type: string;
-    diagnostics: DiagnosticProfileType;
+    licensePlate: string;
     showAppointmentButton?: boolean;
 }
 
-export const CarCard: React.FC<Props> = ({state, model, type, diagnostics, showAppointmentButton = false}) => {
+export const CarCard: React.FC<Props> = ({ model, type, licensePlate, showAppointmentButton = false}) => {
     const history = useHistory();
 
-    function makeAppointment(carid: number) {
-        history.push('/appointment?car_id=' + carid); //CHANGE to appropiate car id
+    function makeAppointment(licensePlate: string) {
+        history.push('/appointment?license_plate=' + licensePlate );
     }
-
     return (
         <Container variant={'car-card'}>
-            <Grid h="200px" templateRows="repeat(5, 1fr)" templateColumns="repeat(5, 1fr)" gap={4}>
+            <Grid h="200px" templateRows="repeat(5, 1fr)" templateColumns="repeat(4, 1fr)" gap={4}>
                 <GridItem colSpan={1} rowSpan={5}>
                     <Center paddingTop="20px">
                         <CarIcon boxSize={16} />
@@ -38,25 +36,29 @@ export const CarCard: React.FC<Props> = ({state, model, type, diagnostics, showA
                         </Box>
                     </Center>
                 </GridItem>
-                <GridItem colSpan={4} rowSpan={4}>
-                    {getCardState(state)}
-                    <Box color="darkgray" paddingTop="5px">
-                        breaks: {diagnostics.breaks}
-                    </Box>
-                    <Box color="darkgray">engine: {diagnostics.engine}</Box>
-                    <Box color="darkgray">body: {diagnostics.body}</Box>
-                    <Box color="darkgray">lighting: {diagnostics.lighting}</Box>
-                    <Box color="darkgray">battery: {diagnostics.battery}</Box>
-                    <Box color="darkgray">sensors: {diagnostics.sensors}</Box>
+
+                <GridItem colSpan={2} rowSpan={1}>
+                    LICENSE PLATE
                 </GridItem>
-                <GridItem colSpan={4} rowSpan={1}>
+                <GridItem colSpan={2} rowSpan={1}>
+                    {licensePlate}
+                </GridItem>
+
+                
+                
+                <GridItem colSpan={3} rowSpan={1}>
+                <DiagnosticProfileButton licensePlate={licensePlate}>
+                </DiagnosticProfileButton>
+                </GridItem>
+                <GridItem colSpan={3} rowSpan={1}>
                     {showAppointmentButton ? (
-                        <Button onClick={() => makeAppointment(1)} float="right">
+                        <Button onClick={() => makeAppointment(licensePlate)} float="right">
                             APPOINTMENT
                         </Button>
                     ) : (
                         <></>
                     )}
+                    
                 </GridItem>
             </Grid>
         </Container>

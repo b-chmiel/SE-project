@@ -1,10 +1,13 @@
-import * as React from 'react';
 import {ChakraProvider} from '@chakra-ui/react';
-import {AppRouter} from './routing/AppRouter';
+import * as React from 'react';
 import {theme} from './globalTheme/theme';
+import {AuthProvider} from './modules/authorization/context/AuthProvider';
+import {AppRouter} from './routing/AppRouter';
 
 export const App = () => (
     <ChakraProvider theme={theme}>
-        <AppRouter />
+        <AuthProvider>
+            <AppRouter />
+        </AuthProvider>
     </ChakraProvider>
 );
