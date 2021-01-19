@@ -763,7 +763,7 @@
                 "type" : "array",
                 "items" : {
                   "type" : "string",
-                  "example" : [ "oil change" ]
+                  "example" : "oil change"
                 }
               },
               "priority" : {

@@ -62,7 +62,7 @@ namespace se_project.Controllers
             var car = _context.Cars.FirstOrDefault(x => x.LicensePlate.Equals(body.LicensePlate));
             if (car is null)
             {
-                return StatusCode(400);
+                return StatusCode(404);
             }
 
             var client = _context.Users.FirstOrDefault(x => x.Username == car.Username);
