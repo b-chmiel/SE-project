@@ -4,12 +4,12 @@ export enum ClientRoutes {
     CARS = '/cars',
     APPOINTMENTS = '/appointments',
     HISTORY = '/history',
-    CLIENT_CASE = '/client-case/:caseId',
+    CLIENT_CASE = '/client-case/:visitId',
     APPOINTMENT_DETAILS = '/appointment-details',
 }
 
 export enum WorkshopEmployeeRoutes {
-    CASE_DETAILS = '/case/:caseId',
+    CASE_DETAILS = '/case/:visitId',
     SCHEDULE = '/schedule',
     CLIENTS = '/clients',
     CASES = '/case',
