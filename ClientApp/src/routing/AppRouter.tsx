@@ -6,6 +6,7 @@ import {UserType} from '../modules/authorization/helpers/AuthService.types';
 import AuthorizationView from '../modules/authorization/views/AuthorizationView/AuthorizationView';
 import CreateUserView from '../modules/authorization/views/CreateUserView/CreateUserView';
 import NoAccessView from '../modules/authorization/views/NoAccessView/NoAccesView';
+import { AppointmentDetailView } from '../modules/client/views/AppointmentDetailView/AppointmentDetailView';
 import {AppointmentView} from '../modules/client/views/AppointmentView/AppointmentView';
 import CarsView from '../modules/client/views/CarsView/CarsView';
 import {ClientCaseView} from '../modules/client/views/ClientCaseView/ClientCaseView';
@@ -30,6 +31,9 @@ export const AppRouter: React.FC = () => {
 
                 <RestrictedRoute path={ClientRoutes.REPORT_ACCIDENT} accountType={UserType.CLIENT}>
                     <AppointmentView />
+                </RestrictedRoute>
+                <RestrictedRoute path={"/appointment"} accountType={UserType.CLIENT}>
+                    <AppointmentDetailView/>
                 </RestrictedRoute>
                 <RestrictedRoute path={ClientRoutes.CARS} accountType={UserType.CLIENT}>
                     <CarsView props={''}></CarsView>
