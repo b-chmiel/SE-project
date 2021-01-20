@@ -20,7 +20,7 @@ export const VisitItem: React.FC<Props> = ({visit, detailsPath}) => {
     const history = useHistory();
 
     const handleDetailsClick = () => {
-        history.push(detailsPath.replace(':caseId', visitId.toString()));
+        history.push(detailsPath.replace(':visitId', visitId.toString()));
     };
 
     return (

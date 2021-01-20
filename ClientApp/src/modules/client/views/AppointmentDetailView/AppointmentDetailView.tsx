@@ -1,4 +1,4 @@
-import { Button, Grid, GridItem, Text, FormControl } from '@chakra-ui/react';
+import { Button, Grid, GridItem, Text } from '@chakra-ui/react';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, } from "@chakra-ui/react"
 import { useDisclosure } from "@chakra-ui/react"
 import * as React from 'react';
@@ -16,6 +16,7 @@ import { API_BASE_PATH } from '../../../../routing/routes';
 import { Car } from '../../../employee/api/carAPI.types';
 import { Visit } from '../../../employee/api/visitAPI.types';
 import { useLocation } from 'react-router-dom';
+import {useParams} from "react-router-dom";
 
 
 function useQuery() {
@@ -23,29 +24,36 @@ function useQuery() {
 }
 
 export const AppointmentDetailView: React.FC = () => {
-    let query = useQuery();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const carInfo = MockedClientCarInfo;
     const mockedCost = MockedServicePrice;
-    const mockedDate = MockedDate;
+    //@ts-ignore
+    const {visitId} = useParams();
 
-    const [c, setC] = React.useState<Car>();
+    const [car, setCar] = React.useState<Car>();
     const [visit, setVisit] = React.useState<Visit>();
-
-    const visitId = query.get("visitId");
+    const [licensePlate, setLicensePlate ] = React.useState<string>('');
 
     useEffect(()=>{
+        console.log(API_BASE_PATH+'/visits/'+visitId)
         axios.get(API_BASE_PATH+'/visits/'+visitId, {
             headers: {
                 'Guid': localStorage.getItem('client_uuid')
             }
         }).then((res)=>{
+            console.log(res.data)
             setVisit(res.data)
             axios.get(API_BASE_PATH+"/cars/"+res.data.licensePlate)
             .then((r)=>{
-                setC(r.data);
+                console.log(r.data)
+                setLicensePlate(r.data.licensePlate)
+                setCar(r.data);
+            }).catch((er)=>{
+                console.log(er)
             });
+        }).catch((er)=>{
+            console.log(er)
         })
     },[visitId])
 
@@ -75,9 +83,9 @@ export const AppointmentDetailView: React.FC = () => {
                 <GridItem rowSpan={2} colSpan={2}>
                     <GridItem rowSpan={1} colSpan={2}>
                         <CarCard
-                            licensePlate={c?.licensePlate!}
-                            model={c?.model!}
-                            type={c?.type!}
+                            licensePlate={licensePlate}
+                            model={car?.model!}
+                            type={car?.type!}
                             showAppointmentButton
                         ></CarCard>
                     </GridItem>
