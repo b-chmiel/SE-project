@@ -1,5 +1,6 @@
 import {
     Button,
+    createStandaloneToast,
     Flex,
     FormControl,
     FormErrorMessage,
@@ -13,16 +14,40 @@ import {
 } from '@chakra-ui/react';
 import {Field, Formik, FormikHelpers} from 'formik';
 import * as React from 'react';
+import {useHistory, useParams} from 'react-router-dom';
+import {ClientRoutes} from '../../../../routing/routes';
 import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
 import {TodoList} from '../../components/TodoList/TodoList';
+import {visitPriorities, visitTypes} from '../../helpers/enumHelpers';
+import {useVisit} from '../../hooks/useVisit';
 import {AvailableHours, initialFormValues} from './AppointmentView.constants';
-import {checkIfHourIsAvailable, validate} from './AppointmentView.helpers';
-import {AppointmentPriorityNames, AppointmentTypeNames, MakeAppointmentData} from './AppointmentView.types';
+import {checkIfHourIsAvailable, formatVisit, validate} from './AppointmentView.helpers';
+import {VisitSubmitionType} from './AppointmentView.types';
 
 export const AppointmentView: React.FC = () => {
-    const handleSubmit = (values: MakeAppointmentData, {setSubmitting}: FormikHelpers<MakeAppointmentData>) => {
-        console.log(values);
-        setSubmitting(false);
+    //@ts-ignore
+    const {licensePlate} = useParams();
+    const {createVisit} = useVisit();
+    const history = useHistory();
+    const toast = createStandaloneToast();
+
+    const handleSubmit = (values: VisitSubmitionType, {setSubmitting}: FormikHelpers<VisitSubmitionType>) => {
+        setSubmitting(true);
+        createVisit(formatVisit(values, licensePlate)).then((success) => {
+            console.log(formatVisit(values, licensePlate));
+            if (success) {
+                history.push(ClientRoutes.APPOINTMENTS);
+            } else {
+                setSubmitting(false);
+                toast({
+                    title: 'An error occurred.',
+                    description: 'Unable to post visit info.',
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                });
+            }
+        });
     };
 
     return (
@@ -39,9 +64,9 @@ export const AppointmentView: React.FC = () => {
                                         <FormLabel>PRIORITY</FormLabel>
                                         <InputGroup>
                                             <Select name={'priority'} value={values.priority} onChange={handleChange} onBlur={handleBlur}>
-                                                {AppointmentPriorityNames.map((name, i) => (
-                                                    <option key={name} value={i}>
-                                                        {name}
+                                                {visitPriorities.map((name, i) => (
+                                                    <option key={name} value={name}>
+                                                        {name.replace('_', ' ')}
                                                     </option>
                                                 ))}
                                             </Select>
@@ -54,9 +79,9 @@ export const AppointmentView: React.FC = () => {
                                         <FormLabel>APPOINTMENT TYPE</FormLabel>
                                         <InputGroup>
                                             <Select name={'type'} value={values.type} onChange={handleChange} onBlur={handleBlur}>
-                                                {AppointmentTypeNames.map((name, i) => (
-                                                    <option value={i} key={name}>
-                                                        {name}
+                                                {visitTypes.map((name, i) => (
+                                                    <option value={name} key={name}>
+                                                        {name.replace('_', ' ')}
                                                     </option>
                                                 ))}
                                             </Select>
@@ -101,6 +126,7 @@ export const AppointmentView: React.FC = () => {
                                                 ))}
                                             </Grid>
                                         </RadioGroup>
+                                        <FormErrorMessage>{errors.time}</FormErrorMessage>
                                     </FormControl>
                                 </GridItem>
                                 <GridItem colSpan={3} h={'200px'}>
