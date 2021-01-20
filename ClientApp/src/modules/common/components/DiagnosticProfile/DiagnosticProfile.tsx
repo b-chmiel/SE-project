@@ -28,14 +28,16 @@ export const DiagnosticProfileButton: React.FC<Props> = ({licensePlate}) => {
 
     useEffect(()=>{
         console.log(licensePlate)
-       axios.get('/api/0.1.1/cars/'+ licensePlate + '/profile',{
-        headers: {
-            'Guid': localStorage.getItem('client_uuid')
+        if(licensePlate!==''){
+            axios.get('/api/0.1.1/cars/'+ licensePlate + '/profile',{
+                headers: {
+                    'Guid': localStorage.getItem('client_uuid')
+                }
+            }).then((res)=>{
+                    setDiagnostics(res.data)
+                }
+            )
         }
-    }).then((res)=>{
-            setDiagnostics(res.data)
-        }
-       )
     },[licensePlate])
 
 
