@@ -105,7 +105,7 @@ export const CaseView: React.FC = () => {
                 </Text>
                 <UnorderedList>
                     {visit?.requiredActions.length !== 0 ? (
-                        visit?.requiredActions?.map((action) => <ListItem>{action}</ListItem>)
+                        visit?.requiredActions?.map((action, i) => <ListItem key={i}>{action}</ListItem>)
                     ) : (
                         <Text>No assigned actions</Text>
                     )}
@@ -117,7 +117,7 @@ export const CaseView: React.FC = () => {
                 </Text>
                 <UnorderedList>
                     {visit?.assignedEmployees.length !== 0 ? (
-                        visit?.assignedEmployees?.map((action) => <ListItem>{action}</ListItem>)
+                        visit?.assignedEmployees?.map((action, i) => <ListItem key={i}>{action}</ListItem>)
                     ) : (
                         <Text>No assigned employees</Text>
                     )}

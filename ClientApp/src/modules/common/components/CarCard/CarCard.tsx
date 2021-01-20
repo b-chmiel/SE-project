@@ -1,8 +1,8 @@
 import {Box, Button, Center, Container, Grid, GridItem} from '@chakra-ui/react';
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import { DiagnosticProfileButton } from '../DiagnosticProfile/DiagnosticProfile';
-
+import {ClientRoutes} from '../../../../routing/routes';
+import {DiagnosticProfileButton} from '../DiagnosticProfile/DiagnosticProfile';
 import {CarIcon} from './CarCard.icons';
 
 interface Props {
@@ -12,11 +12,11 @@ interface Props {
     showAppointmentButton?: boolean;
 }
 
-export const CarCard: React.FC<Props> = ({ model, type, licensePlate, showAppointmentButton = false}) => {
+export const CarCard: React.FC<Props> = ({model, type, licensePlate, showAppointmentButton = false}) => {
     const history = useHistory();
 
     function makeAppointment(licensePlate: string) {
-        history.push('/appointment?license_plate=' + licensePlate );
+        history.push(ClientRoutes.MAKE_APPOINTMENT.replace(':licensePlate', licensePlate));
     }
     return (
         <Container variant={'car-card'}>
@@ -44,11 +44,8 @@ export const CarCard: React.FC<Props> = ({ model, type, licensePlate, showAppoin
                     {licensePlate}
                 </GridItem>
 
-                
-                
                 <GridItem colSpan={3} rowSpan={1}>
-                <DiagnosticProfileButton licensePlate={licensePlate}>
-                </DiagnosticProfileButton>
+                    <DiagnosticProfileButton licensePlate={licensePlate}></DiagnosticProfileButton>
                 </GridItem>
                 <GridItem colSpan={3} rowSpan={1}>
                     {showAppointmentButton ? (
@@ -58,7 +55,6 @@ export const CarCard: React.FC<Props> = ({ model, type, licensePlate, showAppoin
                     ) : (
                         <></>
                     )}
-                    
                 </GridItem>
             </Grid>
         </Container>

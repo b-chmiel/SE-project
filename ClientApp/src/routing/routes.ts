@@ -1,5 +1,5 @@
 export enum ClientRoutes {
-    REPORT_ACCIDENT = '/report-accident',
+    MAKE_APPOINTMENT = '/appointment/:licensePlate',
     PROFILE = '/profile',
     CARS = '/cars',
     APPOINTMENTS = '/appointments',
@@ -37,4 +37,5 @@ export enum ApiRoutes {
     VISIT_REPAIR = '/visits/{visitId}/repair',
     VISIT_MAINTAIN = '/visits/{visitId}/maintain',
     VISIT_DIAGNOSE = '/visits/{visitId}/diagnose',
+    VISIT_PAY = '/visits/{visitId}/pay',
 }
