@@ -29,7 +29,7 @@ export const AppRouter: React.FC = () => {
                     <Redirect to={isAuthenticated() ? defaultRoute : AuthenticationRoutes.SIGNIN} />
                 </Route>
 
-                <RestrictedRoute path={ClientRoutes.REPORT_ACCIDENT} accountType={UserType.CLIENT}>
+                <RestrictedRoute path={ClientRoutes.MAKE_APPOINTMENT} accountType={UserType.CLIENT}>
                     <AppointmentView />
                 </RestrictedRoute>
                 <RestrictedRoute path={ClientRoutes.CARS} accountType={UserType.CLIENT}>

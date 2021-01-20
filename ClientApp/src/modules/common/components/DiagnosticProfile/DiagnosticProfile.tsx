@@ -26,15 +26,17 @@ export const DiagnosticProfileButton: React.FC<Props> = ({licensePlate}) => {
     const initialRef: RefObject<any> = React.useRef();
     const finalRef: RefObject<any> = React.useRef();
 
-    useEffect(()=>{
-       axios.get('/api/0.1.1/cars/'+ licensePlate + '/profile',{
-        headers: {
-            'Guid': localStorage.getItem('client_uuid')
+    useEffect(()=> 
+       if(licensePlate!==''){
+            axios.get('/api/0.1.1/cars/'+ licensePlate + '/profile',{
+                headers: {
+                    'Guid': localStorage.getItem('client_uuid')
+                }
+            }).then((res)=>{
+                    setDiagnostics(res.data)
+                }
+            )
         }
-    }).then((res)=>{
-            setDiagnostics(res.data)
-        }
-       )
     },[licensePlate])
 
 
