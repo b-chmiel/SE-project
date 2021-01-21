@@ -73,7 +73,7 @@ namespace se_project.Controllers
             }
             if (!username.Equals(sender.Item1) && !(sender.Item2 == UserType.INSURANCE_EMPLOYEE || sender.Item2 == UserType.WORKSHOP_EMPLOYEE))
                 return StatusCode(403);
-            var user = _context.Users.First(x => x.Username.Equals(username));
+            var user = _context.Users.FirstOrDefault(x => x.Username.Equals(username));
             if (user is null)
                 return StatusCode(404);
             user.Password = null;
@@ -85,7 +85,7 @@ namespace se_project.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetUserByGuid")]
         [SwaggerResponse(statusCode: 200, type: typeof(User), description: "Successful operation")]
-        public virtual IActionResult GetUserByGuid([FromRoute] string username)
+        public virtual IActionResult GetUserByGuid()
         {
             (string, UserType) sender;
             try
