@@ -7,6 +7,10 @@ namespace se_project
 {
     public partial class CompanyDBEntities : DbContext
     {
+        public CompanyDBEntities()
+        {
+            //do not remove!
+        }
         public CompanyDBEntities(DbContextOptions<CompanyDBEntities> options)
             : base(options)
         {
@@ -34,11 +38,11 @@ namespace se_project
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Visit> Visits { get; set; }
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<DiagnosticProfile> DiagnosticProfiles { get; set; }
-        public DbSet<EmployeeVisit> EmployeesVisits { get; set; }
-        public DbSet<Insurance> Insurances { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Visit> Visits { get; set; }
+        public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<DiagnosticProfile> DiagnosticProfiles { get; set; }
+        public virtual DbSet<EmployeeVisit> EmployeesVisits { get; set; }
+        public virtual DbSet<Insurance> Insurances { get; set; }
     }
 }

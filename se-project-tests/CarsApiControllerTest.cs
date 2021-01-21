@@ -395,7 +395,7 @@ namespace se_project_tests
             Init(cars, users);
             var profileSet = MockDbSet(profiles);
             dbEntities.Setup(x => x.DiagnosticProfiles).Returns(profileSet.Object);
-            ObjectResult result = controller.GetProfile(TEST_LICENSE_PLATE) as ObjectResult;
+            StatusCodeResult result = controller.GetProfile(TEST_LICENSE_PLATE) as StatusCodeResult;
             Assert.NotNull(result);
             Assert.Equal(404, result.StatusCode);
         }
@@ -405,7 +405,10 @@ namespace se_project_tests
         {
             CarsApiController controller = new CarsApiController(null);
             DiagnosticProfile profile = new DiagnosticProfile();
-            Assert.Throws<ArgumentException>(() => controller.SetProfile(null, profile));
+            StatusCodeResult result = controller.SetProfile(null, profile) as StatusCodeResult;
+            Assert.NotNull(result);
+            Assert.Equal(400, result.StatusCode);
+
         }
     }
 }
