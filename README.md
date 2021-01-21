@@ -30,7 +30,7 @@ Service allows:
 - storing car diagnostic data and
 - administering visits.
 
-Currently used endpoints along with their documentation can be found [here](https://se-project-2020.herokuapp.com/swagger); prepared with OpenAPI – available [here](https://se-project-2020.herokuapp.com/swagger-implemented.json) and in [project files (*wwwroot/swagger-implemented.json*)](wwwroot\swagger-implemented.json).
+Currently used endpoints along with their documentation can be found [here](https://se-project-2020.herokuapp.com/swagger); prepared with OpenAPI – available [here](https://se-project-2020.herokuapp.com/swagger-implemented.json) and in [project files (*wwwroot/swagger-implemented.json*)](wwwroot/swagger-implemented.json).
 
 ### About database
 
