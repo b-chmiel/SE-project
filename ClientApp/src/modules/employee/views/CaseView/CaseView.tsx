@@ -1,5 +1,5 @@
 import {Box, Button, createStandaloneToast, Flex, Grid, GridItem, ListItem, Text, UnorderedList, useDisclosure} from '@chakra-ui/react';
-import {format, parseISO} from 'date-fns';
+import {format} from 'date-fns';
 import React, {useEffect, useState} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {WorkshopEmployeeRoutes} from '../../../../routing/routes';
@@ -11,6 +11,7 @@ import {ChangeStatusModal} from '../../components/ChangeStatusModal/ChangeStatus
 import {useCar} from '../../hooks/useCar';
 import {useVisit} from '../../hooks/useVisit';
 import {dateFormat} from './CaseView.constants';
+import {parsedDate} from './CaseView.helpers';
 
 export const CaseView: React.FC = () => {
     //@ts-ignore
@@ -23,8 +24,6 @@ export const CaseView: React.FC = () => {
     const [isFound, setFound] = useState<boolean | undefined>(undefined);
 
     const toast = createStandaloneToast();
-
-    const parsedDate = visit !== null ? parseISO(visit.date) : new Date();
 
     const handleStatusChange = async (newStatus: VisitStatus) => {
         if (visit !== null) {
@@ -77,7 +76,7 @@ export const CaseView: React.FC = () => {
                     <CarCard licensePlate={car?.licensePlate ?? ''} model={car?.model ?? ''} type={car?.type ?? ''} />
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={1} marginTop={4}>
-                    <DatePicker name={'date'} value={parsedDate} onChange={() => {}} showPopperArrow disabled={true} />
+                    <DatePicker name={'date'} value={parsedDate(visit)} onChange={() => {}} showPopperArrow disabled={true} />
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={1} marginTop={2}>
                     <Button width="242px" margin={2} onClick={onOpen}>
@@ -95,7 +94,7 @@ export const CaseView: React.FC = () => {
                         <TextInfoBadge title={'TYPE'} value={visit?.type ?? ''} />
                         <TextInfoBadge title={'PRIORITY'} value={visit?.priority ?? ''} />
                         <TextInfoBadge title={'CURRENT STATUS'} value={visit?.status ?? ''} />
-                        <TextInfoBadge title={'EXACT DATE'} value={format(parsedDate, dateFormat)} />
+                        <TextInfoBadge title={'EXACT DATE'} value={format(parsedDate(visit), dateFormat)} />
                     </Flex>
                 </GridItem>
             </Grid>
