@@ -247,8 +247,8 @@ namespace se_project.Controllers
             {
                 return StatusCode(401, e.Message);
             }
-            // if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
-            //     return StatusCode(403);
+            if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403);
 
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
@@ -294,8 +294,8 @@ namespace se_project.Controllers
                 return StatusCode(401, e.Message);
             }
 
-            // if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
-            //     return StatusCode(403);
+            if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403);
 
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
@@ -341,8 +341,8 @@ namespace se_project.Controllers
                 return StatusCode(401, e.Message);
             }
 
-            // if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
-            //     return StatusCode(403);
+            if (sender.Item2 != UserType.WORKSHOP_EMPLOYEE)
+                return StatusCode(403);
 
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
@@ -382,10 +382,10 @@ namespace se_project.Controllers
             var visit = _context.Visits.FirstOrDefault(x => x.VisitId.Equals(visitId));
             if (visit is null)
                 return StatusCode(404);
-            // if (sender.Item1 != visit.CarOwnerUsername)
-            //     return StatusCode(403);
-            // if (visit.Status != Visit.StatusEnum.RepairedEnum)
-            //     return StatusCode(403);
+            if (sender.Item1 != visit.CarOwnerUsername)
+                return StatusCode(403);
+            if (visit.Status != Visit.StatusEnum.RepairedEnum)
+                return StatusCode(403);
             visit.Status = Visit.StatusEnum.PaidEnum;
             try
             {
