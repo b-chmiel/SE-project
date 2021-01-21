@@ -20,6 +20,7 @@ namespace se_project_tests
         private const string TEST_USERNAME ="username";
         private Mock<CompanyDBEntities> dbEntities;
         private Mock<DbSet<Car>> carsDbSet;
+        private Mock<DbSet<DiagnosticProfile>> profileDbSet;
         private HeaderDictionary headers;
         private ControllerContext controllerContext;
         private CarsApiController controller;
@@ -71,8 +72,11 @@ namespace se_project_tests
         [Fact]
         public void TestGetCarEmptyLicensePlate()
         {
+            //arrange given
             CarsApiController controller = new CarsApiController(null);
+            //act when
             StatusCodeResult result = controller.GetCar(null) as StatusCodeResult;
+            //assert then
             Assert.NotNull(result);
             Assert.Equal(400, result.StatusCode);
         }
@@ -96,6 +100,7 @@ namespace se_project_tests
             dbEntities.Verify(x => x.Users, Times.Once());
             dbEntities.Verify(x => x.Cars, Times.Once());
             Assert.NotNull(result);
+            Assert.Equal(cars[0], result.Value);
         }
 
         [Fact]
@@ -233,6 +238,174 @@ namespace se_project_tests
             ObjectResult result = controller.GetCars() as ObjectResult;
             Assert.NotNull(result);
             Assert.Equal(401, result.StatusCode);
+        }
+
+        [Fact]
+        public void TestAddCarSuccessful()
+        {
+            List<User> users = new List<User>
+            {
+                new User() {Guid = TEST_GUID, Username = TEST_USERNAME, UserType = UserType.CLIENT }
+            };
+            Car car = new Car() { LicensePlate = TEST_LICENSE_PLATE, Username = TEST_USERNAME };
+            List<Car> cars = new List<Car>
+            {
+                car
+            };
+            DiagnosticProfile expectedDP = new DiagnosticProfile()
+            {
+                LicensePlate = car.LicensePlate
+            };
+
+            Init(cars, users);
+            ObjectResult result = controller.AddCar(car) as ObjectResult;
+            var actualCar = result.Value as Car;
+            var actualDP = actualCar.DiagnosticProfile;
+            
+            Assert.NotNull(result);
+            Assert.Equal(car, actualCar);
+            Assert.Equal(car, actualDP.Car);
+            Assert.Equal(expectedDP, actualDP);
+/*            dbEntities.Verify(x => x.Cars.Add(actualCar), Times.Once());
+            dbEntities.Verify(x => x.DiagnosticProfiles.Add(car.DiagnosticProfile), Times.Once);
+*/        }
+
+        [Fact]
+        public void TestAddCarEmptyLicense()
+        {
+            List<User> users = new List<User>
+            {
+                new User() {Guid = TEST_GUID, Username = TEST_USERNAME, UserType = UserType.CLIENT }
+            };
+            Car car = new Car() { LicensePlate = "", Username = TEST_USERNAME };
+            List<Car> cars = new List<Car>
+            {
+                car
+            };
+            Init(cars, users);
+            ObjectResult result = controller.AddCar(car) as ObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(400, result.StatusCode);
+        }
+
+        [Fact]
+        public void TestAddCarUserNotFound()
+        {
+            List<User> users = new List<User>
+            {
+                new User() {Guid = "Wrong Guid", Username = "Wrong user", UserType = UserType.CLIENT }
+            };
+            Car car = new Car() { LicensePlate = TEST_LICENSE_PLATE, Username = TEST_USERNAME };
+            List<Car> cars = new List<Car>
+            {
+                car
+            };
+            Init(cars, users);
+            ObjectResult result = controller.AddCar(car) as ObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(401, result.StatusCode);
+        }
+
+        [Fact] 
+        public void TestGetProfileSuccessful()
+        {
+            List<User> users = new List<User>
+            {
+                new User() {Guid = TEST_GUID, Username = TEST_USERNAME, UserType = UserType.CLIENT }
+            };
+            Car car = new Car() { LicensePlate = TEST_LICENSE_PLATE, Username = TEST_USERNAME };
+            List<Car> cars = new List<Car>
+            {
+                car
+            };
+            var expectedDP = new DiagnosticProfile()
+            {
+                LicensePlate = TEST_LICENSE_PLATE
+            };
+            List<DiagnosticProfile> profiles = new List<DiagnosticProfile>
+            {
+                expectedDP
+            };
+            Init(cars, users);
+            var profileSet = MockDbSet(profiles);
+            dbEntities.Setup(x => x.DiagnosticProfiles).Returns(profileSet.Object);
+            ObjectResult result = controller.GetProfile(TEST_LICENSE_PLATE) as ObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(expectedDP, result.Value);
+        }
+
+        [Fact]
+        public void TestGetProfileEmptyLicense()
+        {
+            CarsApiController controller = new CarsApiController(null);
+            StatusCodeResult result = controller.GetProfile(null) as StatusCodeResult;
+            Assert.NotNull(result);
+            Assert.Equal(400, result.StatusCode);
+        }
+
+        [Fact]
+        public void TestGetProfileWrongGuid()
+        {
+            List<User> users = new List<User>
+            {
+                new User() {Guid = "Wrong Guid", Username = TEST_USERNAME}
+            };
+            List<Car> cars = new List<Car>
+            {
+                new Car() { LicensePlate = TEST_LICENSE_PLATE, Username = TEST_USERNAME }
+            };
+
+            List<DiagnosticProfile> profiles = new List<DiagnosticProfile>
+            {
+                new DiagnosticProfile()
+                {
+                    LicensePlate = TEST_LICENSE_PLATE
+                }
+            };
+
+            Init(cars, users);
+            var profileSet = MockDbSet(profiles);
+            dbEntities.Setup(x => x.DiagnosticProfiles).Returns(profileSet.Object);
+
+            ObjectResult result = controller.GetProfile(TEST_LICENSE_PLATE) as ObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(401, result.StatusCode);
+        }
+
+        [Fact]
+        public void TestGetProfileNullDP()
+        {
+            List<User> users = new List<User>
+            {
+                new User() {Guid = TEST_GUID, Username = TEST_USERNAME}
+            };
+            List<Car> cars = new List<Car>
+            {
+                new Car() { LicensePlate = "1", Username = TEST_USERNAME }
+            };
+
+            List<DiagnosticProfile> profiles = new List<DiagnosticProfile>
+            {
+                new DiagnosticProfile()
+                {
+                    LicensePlate = "1"
+                }
+            };
+
+            Init(cars, users);
+            var profileSet = MockDbSet(profiles);
+            dbEntities.Setup(x => x.DiagnosticProfiles).Returns(profileSet.Object);
+            ObjectResult result = controller.GetProfile(TEST_LICENSE_PLATE) as ObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(404, result.StatusCode);
+        }
+
+        [Fact]
+        public void TestSetProfileEmptyLicense()
+        {
+            CarsApiController controller = new CarsApiController(null);
+            DiagnosticProfile profile = new DiagnosticProfile();
+            Assert.Throws<ArgumentException>(() => controller.SetProfile(null, profile));
         }
     }
 }
