@@ -1,16 +1,41 @@
-import {Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay} from '@chakra-ui/react';
+import {
+    Button,
+    createStandaloneToast,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+} from '@chakra-ui/react';
 import React from 'react';
+import {useHistory} from 'react-router-dom';
+import {ClientRoutes} from '../../../../routing/routes';
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
     onPay: (visitId: number) => Promise<boolean>;
     visitId: number;
+    price: number;
 }
-export const FinishTransactionModal: React.FC<Props> = ({isOpen, onClose, onPay, visitId}) => {
+export const FinishTransactionModal: React.FC<Props> = ({isOpen, onClose, onPay, visitId, price}) => {
+    const history = useHistory();
+    const toast = createStandaloneToast();
+
     const handleApprove = async () => {
-        await onPay(visitId);
-        await onPay(visitId).then((response) => onClose());
+        await onPay(visitId).then((response) => {
+            onClose();
+            toast({
+                title: 'Payment successful.',
+                description: `${price} PLN was withdrawn from your account`,
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+            });
+            history.push(ClientRoutes.APPOINTMENTS);
+        });
     };
 
     return (

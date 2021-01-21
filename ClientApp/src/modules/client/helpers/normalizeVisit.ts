@@ -14,7 +14,7 @@ export const normalizeVisit = ({
 }: Visit): Visit => ({
     visitId: visitId ?? 0,
     date: date ?? '',
-    price: price ?? 0,
+    price: price ?? generatePrice(),
     requiredActions: removeEmptyStringsFromArray(requiredActions) ?? [],
     licensePlate: licensePlate.toUpperCase() ?? '',
     priority: VisitPriority[priority.toUpperCase() as keyof typeof VisitPriority] ?? '',
@@ -25,3 +25,5 @@ export const normalizeVisit = ({
 });
 
 const removeEmptyStringsFromArray = (array: string[]) => array.filter((x) => x.length !== 0);
+
+const generatePrice = () => (Math.random() * 1000 + 100).toFixed(2);

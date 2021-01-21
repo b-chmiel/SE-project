@@ -15,7 +15,7 @@ import {parsedDate} from './CaseView.helpers';
 
 export const CaseView: React.FC = () => {
     //@ts-ignore
-    const {caseId} = useParams();
+    const {visitId} = useParams();
     const {visit, fetchVisit, diagnoseVisit, maintainVisit, repairVisit} = useVisit();
     const {car, fetchCar} = useCar();
     const history = useHistory();
@@ -29,21 +29,21 @@ export const CaseView: React.FC = () => {
         if (visit !== null) {
             switch (newStatus) {
                 case VisitStatus.ATSERVICE:
-                    diagnoseVisit(caseId);
-                    return await fetchVisit(caseId);
+                    diagnoseVisit(visitId);
+                    return await fetchVisit(visitId);
                 case VisitStatus.CHECKEDIN:
-                    maintainVisit(caseId);
-                    return await fetchVisit(caseId);
+                    maintainVisit(visitId);
+                    return await fetchVisit(visitId);
                 case VisitStatus.REPAIRED:
-                    repairVisit(caseId);
-                    return await fetchVisit(caseId);
+                    repairVisit(visitId);
+                    return await fetchVisit(visitId);
             }
         }
     };
 
     useEffect(() => {
         if (car === null) {
-            if (visit === null) fetchVisit(caseId).then((result) => setFound(result));
+            if (visit === null) fetchVisit(visitId).then((result) => setFound(result));
 
             if (isFound !== undefined) {
                 if (!isFound) {
