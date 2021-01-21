@@ -1,0 +1,1200 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "title" : "Car Workshop",
+    "version" : "0.1.1i",
+    "description" : "<h2>Test accounts</h2><table style=\"border-collapse:collapse;border-spacing:0\" class=\"tg\"><thead><tr><th style=\"border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">type</th><th style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">username</th><th style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">password</th><th style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">GUID</th></tr></thead><tbody><tr><td style=\"border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">CLIENT</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">client</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">pass</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">0</td></tr><tr><td style=\"border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">WORKSHOP_EMPLOYEE</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">w_employee</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">pass</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">1</td></tr><tr><td style=\"border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">INSURANCE_EMPLOYEE</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">i_employee</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">pass</td><td style=\"border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal\">2</td></tr></tbody></table><b>Do not invoke update user on these accounts.</b></br><h2>Additional info</h2><a href=\"https://1drv.ms/u/s!Aj9U8Dnh2AB9gYojtWPvZ0ViyQNXQw?e=h3t1Nl\">Notes</a>"
+  },
+  "tags" : [ {
+    "name" : "users",
+    "description" : "Operations about users"
+  }, {
+    "name" : "cars",
+    "description" : "Operations on cars"
+  }, {
+    "name" : "visits",
+    "description" : "Operations on cars"
+  } ],
+  "paths" : {
+    "/users" : {
+      "post" : {
+        "tags" : [ "users" ],
+        "summary" : "Add new user to the system",
+        "operationId" : "addClient",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "New user attributes",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "username", "password", "userType", "name", "surname" ],
+            "properties" : {
+              "username" : {
+                "type" : "string",
+                "example" : "myUser"
+              },
+              "password" : {
+                "type" : "string",
+                "example" : "myPass"
+              },
+              "userType" : {
+                "type" : "string",
+                "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+                "example" : "CLIENT"
+              },
+              "name" : {
+                "type" : "string",
+                "example" : "Jan"
+              },
+              "surname" : {
+                "type" : "string",
+                "example" : "Nowak"
+              },
+              "phoneNumber" : {
+                "type" : "string",
+                "example" : "+48123456789"
+              },
+              "email" : {
+                "type" : "string",
+                "example" : "mail@example.com"
+              },
+              "discount" : {
+                "type" : "integer",
+                "format" : "$int32",
+                "example" : 5,
+                "default" : 0
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "users" ],
+        "summary" : "Update an existing user",
+        "operationId" : "updateClient",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "New user attributes",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "guid" ],
+            "properties" : {
+              "guid" : {
+                "type" : "string",
+                "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+              },
+              "username" : {
+                "type" : "string",
+                "example" : "myUser"
+              },
+              "password" : {
+                "type" : "string",
+                "example" : "myPass"
+              },
+              "userType" : {
+                "type" : "string",
+                "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+                "example" : "CLIENT"
+              },
+              "name" : {
+                "type" : "string",
+                "example" : "Jan"
+              },
+              "surname" : {
+                "type" : "string",
+                "example" : "Nowak"
+              },
+              "phoneNumber" : {
+                "type" : "string",
+                "example" : "+48123456789"
+              },
+              "email" : {
+                "type" : "string",
+                "example" : "mail@example.com"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Find user by guid of current user",
+        "operationId" : "getUserByGuid",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "401" : {
+            "description" : "Improper GUID"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/users/{username}" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Find user by username",
+        "description" : "<b>!Available only for account owner and employee!</b>",
+        "operationId" : "getUserByUsername",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "path",
+          "description" : "Username of user to return",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/User"
+            }
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "User not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/users/allClients" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Get all clients",
+        "description" : "<b>!Available only for insurance company employee!</b>",
+        "operationId" : "getClients",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/User"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/users/signin" : {
+      "post" : {
+        "tags" : [ "users" ],
+        "summary" : "Obtain GUID using login and password",
+        "operationId" : "signIn",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Authorization data",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "username", "password" ],
+            "properties" : {
+              "username" : {
+                "type" : "string",
+                "example" : "myUser"
+              },
+              "password" : {
+                "type" : "string",
+                "example" : "myPass"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "guid" : {
+                  "type" : "string",
+                  "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+                },
+                "role" : {
+                  "type" : "string",
+                  "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+                  "example" : "CLIENT"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "User with such credentials does not exist"
+          }
+        }
+      }
+    },
+    "/cars" : {
+      "post" : {
+        "tags" : [ "cars" ],
+        "summary" : "Add new car to the system",
+        "description" : "<b>!Available only for car owner and employee</b> (additional parameter – username)<b>!</b>",
+        "operationId" : "addCar",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "type" : "object",
+            "required" : [ "licensePlate", "model", "type" ],
+            "properties" : {
+              "licensePlate" : {
+                "type" : "string",
+                "example" : "DDZ 18N0"
+              },
+              "model" : {
+                "type" : "string",
+                "example" : "Škoda Fabia 2012"
+              },
+              "type" : {
+                "type" : "string",
+                "example" : "hatchback",
+                "enum" : [ "sedan", "hatchback" ]
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Get cars assigned to current user",
+        "description" : "<b>!Available only for logged in users!</b></br>– For client: returns owned cars,</br>– For workshop employee: returns assigned cars,</br>– For insurance company employee: returns all cars.",
+        "operationId" : "getCars",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Car"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/cars/{licensePlate}" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car by the license plate",
+        "operationId" : "getCar",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car to return",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Car"
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/cars/{licensePlate}/profile" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car diagnostic profile by license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "getProfile",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car to return",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DiagnosticProfile"
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "cars" ],
+        "summary" : "Update car diagnostic profile",
+        "description" : "<b>!Available only for car workshop employee!</b>",
+        "operationId" : "updateProfile",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car to return",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "diagnosticProfile",
+          "in" : "body",
+          "description" : "New parameters for diagnostic profile",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "properties" : {
+              "engine" : {
+                "type" : "string",
+                "example" : "2120.00cm3"
+              },
+              "body" : {
+                "type" : "string",
+                "example" : "black"
+              },
+              "lowVoltage" : {
+                "type" : "string",
+                "example" : "12V"
+              },
+              "lighting" : {
+                "type" : "string"
+              },
+              "brakes" : {
+                "type" : "string"
+              },
+              "sensors" : {
+                "type" : "string",
+                "example" : "parking sensors"
+              },
+              "miscellaneous" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "conditionig" : {
+                "type" : "string",
+                "example" : "full"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DiagnosticProfile"
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/cars/{licensePlate}/insurances" : {
+      "get" : {
+        "tags" : [ "cars" ],
+        "summary" : "Find car insurances by license plate",
+        "description" : "<b>!Available only for car owner and employee!</b>",
+        "operationId" : "getInsurances",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car assigned to insurance",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Insurance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "cars" ],
+        "summary" : "Add/update car insurance",
+        "description" : "<b>!Available only for car owner and employee!</b></br>If insurance of given type is assigned to car it will be overwritten, otherwise it will be created.",
+        "operationId" : "addUpdateInsurance",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "licensePlate",
+          "in" : "path",
+          "description" : "License plate of car assigned to insurance",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "insurance",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "type" ],
+            "properties" : {
+              "type" : {
+                "type" : "string",
+                "example" : "liability insurance",
+                "enum" : [ "liability insurance", "comprehensive cover" ]
+              },
+              "dateOfExpiry" : {
+                "type" : "string",
+                "format" : "date-time",
+                "example" : "2020-12-30T23:59:59.999+01"
+              },
+              "coverage" : {
+                "type" : "integer",
+                "format" : "int32",
+                "example" : 100000
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Insurance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid license plate supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits" : {
+      "post" : {
+        "tags" : [ "visits" ],
+        "summary" : "Schedule a visit",
+        "operationId" : "addVisit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "description" : "Information about scheduled visit. Required actions can be modified later on by an employee.",
+          "required" : true,
+          "schema" : {
+            "type" : "object",
+            "required" : [ "licensePlate" ],
+            "properties" : {
+              "licensePlate" : {
+                "type" : "string",
+                "example" : "DDZ 18N0"
+              },
+              "date" : {
+                "type" : "string",
+                "format" : "date-time",
+                "example" : "2020-12-24T12:00:00+01"
+              },
+              "requiredActions" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string",
+                  "example" : "oil change"
+                }
+              },
+              "priority" : {
+                "type" : "string",
+                "enum" : [ "LOW", "MEDIUM", "HIGH", "EMERGENCY" ],
+                "example" : "EMERGENCY"
+              },
+              "type" : {
+                "type" : "string",
+                "enum" : [ "PREVENTIVE_MAINTENANCE_SERVICE", "RUNNING_REPAIRS", "BODY_REPAIR", "AIR_CONDITIONING_SYSTEM", "CAR_CARE", "WARRANTY_REPAIRS", "WHEEL_CARE", "ACCIDENT_REPAIR" ],
+                "example" : "AIR_CONDITIONING_SYSTEM"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Update a visit",
+        "operationId" : "updateVisit",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Visit"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      },
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Get all visits connected to this user",
+        "description" : "Gets guid from header and searches for username. For client returns visits on cars that the user is owner of, for employee return assigned visits, for insurance company employee returns 403",
+        "operationId" : "getVisits",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Visit"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits/find_by_status" : {
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Find visits by Status",
+        "description" : "Multiple status values can be provided with comma separated strings",
+        "operationId" : "findVisits",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status values that need to be considered for filter",
+          "required" : true,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "planned", "atService", "repaired", "checkedIn", "paid" ],
+            "default" : "planned"
+          },
+          "collectionFormat" : "multi"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Visit"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid status value"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits/{visitId}" : {
+      "get" : {
+        "tags" : [ "visits" ],
+        "summary" : "Find visit by Id",
+        "operationId" : "getVisit",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "type" : "object",
+                "properties" : {
+                  "carId" : {
+                    "type" : "integer",
+                    "format" : "int32",
+                    "example" : 1552
+                  },
+                  "visit" : {
+                    "$ref" : "#/definitions/Visit"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits/{visitId}/repair" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Marks repairment as finished",
+        "operationId" : "repair",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits/{visitId}/maintain" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Marks repair as pending",
+        "operationId" : "maintain",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits/{visitId}/diagnose" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Mark as checked in",
+        "operationId" : "diagnose",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Invalid visit id supplied"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    },
+    "/visits/{visitId}/pay" : {
+      "put" : {
+        "tags" : [ "visits" ],
+        "summary" : "Marks visit as paid",
+        "description" : "<b>!Available only for car owner when visit status is set as repaired!</b>",
+        "operationId" : "pay",
+        "parameters" : [ {
+          "name" : "visitId",
+          "in" : "path",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "401" : {
+            "description" : "Authorization failed"
+          },
+          "403" : {
+            "description" : "No right to perform operation"
+          },
+          "404" : {
+            "description" : "Visit not found"
+          }
+        },
+        "security" : [ {
+          "GuidAuth" : [ ]
+        } ]
+      }
+    }
+  },
+  "definitions" : {
+    "User" : {
+      "type" : "object",
+      "required" : [ "guid", "username", "password", "userType", "name", "surname" ],
+      "properties" : {
+        "guid" : {
+          "type" : "string",
+          "example" : "60fe8aa1-361c-4d12-a384-e247738dc450"
+        },
+        "username" : {
+          "type" : "string",
+          "example" : "myUser"
+        },
+        "password" : {
+          "type" : "string",
+          "example" : "myPass"
+        },
+        "userType" : {
+          "type" : "string",
+          "enum" : [ "WORKSHOP_EMPLOYEE", "CLIENT", "INSURANCE_EMPLOYEE", "UNAUTHORIZED" ],
+          "example" : "CLIENT"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Jan"
+        },
+        "surname" : {
+          "type" : "string",
+          "example" : "Nowak"
+        },
+        "phoneNumber" : {
+          "type" : "string",
+          "example" : "+48123456789"
+        },
+        "email" : {
+          "type" : "string",
+          "example" : "mail@example.com"
+        },
+        "discount" : {
+          "type" : "integer",
+          "format" : "$int32",
+          "example" : 5,
+          "default" : 0
+        }
+      }
+    },
+    "Car" : {
+      "type" : "object",
+      "required" : [ "licensePlate", "model", "type" ],
+      "properties" : {
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "model" : {
+          "type" : "string",
+          "example" : "Škoda Fabia 2012"
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "hatchback",
+          "enum" : [ "sedan", "hatchback", "SUV", "truck", "compact" ]
+        },
+        "username" : {
+          "type" : "string",
+          "example" : "myUser"
+        }
+      }
+    },
+    "Visit" : {
+      "type" : "object",
+      "required" : [ "visitId", "date", "licensePlate" ],
+      "properties" : {
+        "visitId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "example" : 5512
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-24T12:00:00+01"
+        },
+        "price" : {
+          "type" : "number",
+          "example" : 100.5
+        },
+        "requiredActions" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "example" : [ "oil change", "breaks checking" ]
+        },
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "priority" : {
+          "type" : "string",
+          "enum" : [ "LOW", "MEDIUM", "HIGH", "EMERGENCY" ],
+          "example" : "EMERGENCY"
+        },
+        "type" : {
+          "type" : "string",
+          "enum" : [ "PREVENTIVE_MAINTENANCE_SERVICE", "RUNNING_REPAIRS", "BODY_REPAIR", "AIR_CONDITIONING_SYSTEM", "CAR_CARE", "WARRANTY_REPAIRS", "WHEEL_CARE", "ACCIDENT_REPAIR" ],
+          "example" : "AIR_CONDITIONING_SYSTEM"
+        },
+        "status" : {
+          "type" : "string",
+          "example" : "atService",
+          "enum" : [ "atService", "repaired", "checkedIn" ]
+        },
+        "assignedEmployees" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/User"
+          },
+          "example" : [ {
+            "employeeId" : 12,
+            "name" : "Bolesław",
+            "surname" : "Nowak"
+          }, {
+            "employeeId" : 13,
+            "name" : "Katarzyna",
+            "surname" : "Nowak"
+          } ]
+        },
+        "carOwnerUsername" : {
+          "type" : "string",
+          "example" : "myUser"
+        }
+      }
+    },
+    "DiagnosticProfile" : {
+      "type" : "object",
+      "required" : [ "licensePlate" ],
+      "properties" : {
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "engine" : {
+          "type" : "string",
+          "example" : "2120.00cm3"
+        },
+        "body" : {
+          "type" : "string",
+          "example" : "black"
+        },
+        "lowVoltage" : {
+          "type" : "string",
+          "example" : "12V"
+        },
+        "lighting" : {
+          "type" : "string"
+        },
+        "brakes" : {
+          "type" : "string"
+        },
+        "sensors" : {
+          "type" : "string",
+          "example" : "parking sensors"
+        },
+        "miscellaneous" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "conditioning" : {
+          "type" : "string",
+          "example" : "full"
+        }
+      }
+    },
+    "Insurance" : {
+      "type" : "object",
+      "required" : [ "licensePlate", "dateOfExpiry", "coverage", "type" ],
+      "properties" : {
+        "licensePlate" : {
+          "type" : "string",
+          "example" : "DDZ 18N0"
+        },
+        "dateOfExpiry" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2020-12-30T23:59:59.999+01"
+        },
+        "coverage" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 100000
+        },
+        "type" : {
+          "type" : "string",
+          "example" : "liability insurance",
+          "enum" : [ "liability insurance", "comprehensive cover" ]
+        }
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "GuidAuth" : {
+      "type" : "apiKey",
+      "in" : "header",
+      "name" : "Guid"
+    }
+  },
+  "schemes" : [ "https" ],
+  "host" : "se-project-2020.herokuapp.com",
+  "basePath" : "/api/0.1.1"
+}
