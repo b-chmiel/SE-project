@@ -1,16 +1,16 @@
 ## Table of contents
 
-- [Service]: #service
+- [Service](#service)
 
-  - [General info]: #service
+  - [General info](#service)
 
-  - [Architecture]: #service-architecture
+  - [Architecture](#service-architecture)
 
-  - [Functionalities]: #service-functionality
+  - [Functionalities](#service-functionality)
 
-  - [Database]: #about-database
+  - [Database](#about-database)
 
-  - [Configuration files]: #service-configuration-files
+  - [Configuration files](#service-configuration-files)
 
 ## Service
 
