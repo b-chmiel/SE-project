@@ -1,14 +1,14 @@
 export interface Visit {
-    visitId?: number;
+    visitId: number;
     date: string;
-    price?: number;
+    price: number;
     requiredActions: string[];
     licensePlate: string;
     priority: VisitPriority;
     type: VisitType;
-    status?: VisitStatus;
-    assignedEmployees?: VisitEmployeeInfo[];
-    carOwnerUsername?: string;
+    status: VisitStatus;
+    assignedEmployees: VisitEmployeeInfo[];
+    carOwnerUsername: string;
 }
 
 export interface VisitToPost {

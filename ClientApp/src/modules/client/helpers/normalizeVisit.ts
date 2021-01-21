@@ -19,7 +19,7 @@ export const normalizeVisit = ({
     licensePlate: licensePlate.toUpperCase() ?? '',
     priority: VisitPriority[priority.toUpperCase() as keyof typeof VisitPriority] ?? '',
     type: VisitType[type.toUpperCase() as keyof typeof VisitType] ?? '',
-    status: status !== undefined ? VisitStatus[status.toUpperCase() as keyof typeof VisitStatus] : undefined,
+    status: status !== undefined ? VisitStatus[status.toUpperCase() as keyof typeof VisitStatus] : VisitStatus.ATSERVICE,
     assignedEmployees: assignedEmployees ?? [],
     carOwnerUsername: carOwnerUsername ?? '',
 });
