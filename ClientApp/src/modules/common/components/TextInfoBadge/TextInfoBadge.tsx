@@ -11,6 +11,6 @@ export const TextInfoBadge: React.FC<Props> = ({title, value}) => (
         <Text as="b" fontSize={'lg'}>
             {title}
         </Text>
-        <Text fontSize={'lg'}>{value}</Text>
+        <Text fontSize={'lg'}>{value.replaceAll('_', ' ')}</Text>
     </Flex>
 );

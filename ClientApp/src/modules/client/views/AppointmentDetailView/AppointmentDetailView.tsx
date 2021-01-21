@@ -69,7 +69,6 @@ export const AppointmentDetailView: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isFound, setFound]);
 
-    console.log(visit);
     return (
         <>
             {visit !== null && (

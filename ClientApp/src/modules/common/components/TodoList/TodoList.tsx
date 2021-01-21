@@ -1,10 +1,10 @@
 import {AddIcon} from '@chakra-ui/icons';
 import {Box, Button, Flex, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
-import {filterWithIndex} from '../../../common/helpers/filterWithIndex';
-import {isIterable} from '../../../common/helpers/isIterable';
-import {replaceAtIndex} from '../../../common/helpers/replaceItem';
-import {withField} from '../../../common/helpers/withField';
+import {filterWithIndex} from '../../helpers/filterWithIndex';
+import {isIterable} from '../../helpers/isIterable';
+import {replaceAtIndex} from '../../helpers/replaceItem';
+import {withField} from '../../helpers/withField';
 import {TodoListItem} from './TodoListItem/TodoListItem';
 
 interface Props {

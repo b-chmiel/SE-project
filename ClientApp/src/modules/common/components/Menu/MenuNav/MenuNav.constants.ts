@@ -18,10 +18,6 @@ export const ClientLinks: Link<ClientRoutes>[] = [
 
 export const EmployeeLinks: Link<WorkshopEmployeeRoutes>[] = [
     {
-        title: 'SCHEDULE',
-        path: WorkshopEmployeeRoutes.SCHEDULE,
-    },
-    {
         title: 'CASES',
         path: WorkshopEmployeeRoutes.CASES,
     },

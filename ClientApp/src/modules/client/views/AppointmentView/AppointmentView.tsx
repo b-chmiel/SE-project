@@ -17,7 +17,7 @@ import * as React from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import {ClientRoutes} from '../../../../routing/routes';
 import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
-import {TodoList} from '../../components/TodoList/TodoList';
+import {TodoList} from '../../../common/components/TodoList/TodoList';
 import {visitPriorities, visitTypes} from '../../helpers/enumHelpers';
 import {useVisit} from '../../hooks/useVisit';
 import {AvailableHours, initialFormValues} from './AppointmentView.constants';
