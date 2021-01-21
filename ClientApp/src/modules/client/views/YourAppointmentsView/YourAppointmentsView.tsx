@@ -1,15 +1,21 @@
-import {Box, Text} from '@chakra-ui/react';
+import {Box, Skeleton} from '@chakra-ui/react';
 import React from 'react';
 import {ClientRoutes} from '../../../../routing/routes';
 import {VisitsList} from '../../../common/components/AppointmentList/AppointmentList';
-import {MockedAppointmentItems} from './YourAppointmentsView.mocks';
+import {useInit} from '../../../common/hooks/useInit';
+import {useVisit} from '../../hooks/useVisit';
+import {sortedVisits} from './YourAppointments.helpers';
 
 export const YourAppointmentsView: React.FC = () => {
-    const appointments = MockedAppointmentItems;
+    const {visits, fetchVisits} = useVisit();
+    const isLoaded = visits !== null;
+    useInit(fetchVisits);
+
     return (
         <Box margin={8} marginTop={4}>
-            <VisitsList visits={appointments} detailsPath={ClientRoutes.CLIENT_CASE} />
-            <Text fontSize={'6xl'}>MOCKED</Text>
+            <Skeleton isLoaded={isLoaded}>
+                {visits !== null && <VisitsList visits={sortedVisits(visits ?? [])} detailsPath={ClientRoutes.CLIENT_CASE} />}
+            </Skeleton>
         </Box>
     );
 };

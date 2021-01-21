@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, {RefObject, useEffect} from 'react';
-import { DiagnosticProfileType } from './DiagnosticProfileType';
+import {DiagnosticProfileType} from './DiagnosticProfileType';
 
 interface Props {
     licensePlate: string;
@@ -26,19 +26,19 @@ export const DiagnosticProfileButton: React.FC<Props> = ({licensePlate}) => {
     const initialRef: RefObject<any> = React.useRef();
     const finalRef: RefObject<any> = React.useRef();
 
-    useEffect(()=> 
-       if(licensePlate!==''){
-            axios.get('/api/0.1.1/cars/'+ licensePlate + '/profile',{
-                headers: {
-                    'Guid': localStorage.getItem('client_uuid')
-                }
-            }).then((res)=>{
-                    setDiagnostics(res.data)
-                }
-            )
+    useEffect(() => {
+        if (licensePlate !== '') {
+            axios
+                .get('/api/0.1.1/cars/' + licensePlate + '/profile', {
+                    headers: {
+                        Guid: localStorage.getItem('client_uuid'),
+                    },
+                })
+                .then((res) => {
+                    setDiagnostics(res.data);
+                });
         }
-    },[licensePlate])
-
+    }, [licensePlate]);
 
     return (
         <>
@@ -53,15 +53,15 @@ export const DiagnosticProfileButton: React.FC<Props> = ({licensePlate}) => {
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <GridItem colSpan={4} rowSpan={4}>
-                        <Box color="darkgray" paddingTop="5px">
-                            breaks: {diagnostics?.breaks}
-                        </Box>
-                        <Box color="darkgray">engine: {diagnostics?.engine}</Box>
-                        <Box color="darkgray">body: {diagnostics?.body}</Box>
-                        <Box color="darkgray">lighting: {diagnostics?.lighting}</Box>
-                        <Box color="darkgray">battery: {diagnostics?.battery}</Box>
-                        <Box color="darkgray">sensors: {diagnostics?.sensors}</Box>
-                    </GridItem>
+                            <Box color="darkgray" paddingTop="5px">
+                                breaks: {diagnostics?.breaks}
+                            </Box>
+                            <Box color="darkgray">engine: {diagnostics?.engine}</Box>
+                            <Box color="darkgray">body: {diagnostics?.body}</Box>
+                            <Box color="darkgray">lighting: {diagnostics?.lighting}</Box>
+                            <Box color="darkgray">battery: {diagnostics?.battery}</Box>
+                            <Box color="darkgray">sensors: {diagnostics?.sensors}</Box>
+                        </GridItem>
                     </ModalBody>
 
                     <ModalFooter>
