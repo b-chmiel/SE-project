@@ -15,7 +15,7 @@ namespace se_project.Functions
     {
         public static (string username, Models.UserType type) SolveGUID(CompanyDBEntities _context, string guid)
         {
-            var user = _context.Users.First(x => x.Guid.Equals(guid));
+            var user = _context.Users.FirstOrDefault(x => x.Guid.Equals(guid));
             if (user is null)
             {
                 throw new SecurityException("Guid not found");
