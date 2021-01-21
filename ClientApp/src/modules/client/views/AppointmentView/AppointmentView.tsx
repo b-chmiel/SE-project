@@ -34,7 +34,6 @@ export const AppointmentView: React.FC = () => {
     const handleSubmit = (values: VisitSubmitionType, {setSubmitting}: FormikHelpers<VisitSubmitionType>) => {
         setSubmitting(true);
         createVisit(formatVisit(values, licensePlate)).then((success) => {
-            console.log(formatVisit(values, licensePlate));
             if (success) {
                 history.push(ClientRoutes.APPOINTMENTS);
             } else {

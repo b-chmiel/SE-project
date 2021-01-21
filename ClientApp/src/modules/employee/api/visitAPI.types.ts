@@ -33,6 +33,8 @@ export enum VisitStatus {
     ATSERVICE = 'AT SERVICE',
     REPAIRED = 'REPAIRED',
     CHECKEDIN = 'CHECKED IN',
+    DIAGNOSE = 'DIAGNOSE',
+    PAID = 'PAID',
 }
 
 export interface VisitEmployeeInfo {

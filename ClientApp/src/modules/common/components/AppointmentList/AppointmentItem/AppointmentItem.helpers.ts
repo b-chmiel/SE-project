@@ -2,15 +2,15 @@ import {colors} from '../../../../../globalTheme/theme';
 
 export function getStatusColor(status: string): string {
     switch (status) {
-        case 'planned':
+        case 'at service':
             return colors.silver;
-        case 'atService':
+        case 'checked in':
             return colors.yellow;
         case 'repaired':
             return colors.green;
-        case 'checkedIn':
+        case 'diagnose':
             return colors.red;
         default:
-            return colors.green;
+            return colors.windsor;
     }
 }
