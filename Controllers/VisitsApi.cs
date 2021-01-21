@@ -432,6 +432,7 @@ namespace se_project.Controllers
             if (body.Price != null) visit.Price = body.Price;
             if (body.Priority != visit.Priority) visit.Priority = body.Priority;
             if (body.Type != visit.Type) visit.Type = body.Type;
+            if (body.RequiredActions != null) visit.RequiredActions = body.RequiredActions;
             try
             {
                 _context.SaveChanges();
