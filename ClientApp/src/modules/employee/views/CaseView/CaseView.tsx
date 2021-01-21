@@ -76,7 +76,7 @@ export const CaseView: React.FC = () => {
                     <CarCard licensePlate={car?.licensePlate ?? ''} model={car?.model ?? ''} type={car?.type ?? ''} />
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={1} marginTop={4}>
-                    <DatePicker name={'date'} value={parsedDate(visit)} onChange={() => {}} showPopperArrow disabled={true} />
+                    <DatePicker name={'date'} value={parsedDate(visit)} onChange={() => {}} showPopperArrow disabled={true} isUnlimited />
                 </GridItem>
                 <GridItem rowSpan={1} colSpan={1} marginTop={2}>
                     <Button width="242px" margin={2} onClick={onOpen}>

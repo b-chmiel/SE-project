@@ -11,6 +11,7 @@ interface Props {
     value: Date;
     showPopperArrow?: boolean;
     disabled?: boolean;
+    isUnlimited?: boolean;
 }
 
 /**
@@ -22,7 +23,15 @@ interface Props {
  * @param showPopperArrow
  * @constructor
  */
-export const DatePicker: React.FC<Props> = ({name, value, onChange, isClearable = false, showPopperArrow = false, disabled = false}) => {
+export const DatePicker: React.FC<Props> = ({
+    name,
+    value,
+    onChange,
+    isClearable = false,
+    showPopperArrow = false,
+    disabled = false,
+    isUnlimited = false,
+}) => {
     return (
         // Honestly, I have no idea how to improve this part without writing a compatible datepicker myself...
         // @ts-ignore
@@ -31,7 +40,7 @@ export const DatePicker: React.FC<Props> = ({name, value, onChange, isClearable 
             selected={value && new Date(value)}
             onChange={(value: any) => onChange(name, value as Date)}
             isClearable={isClearable}
-            minDate={getTomorrow()}
+            minDate={isUnlimited ? null : getTomorrow()}
             inline
             disabled={disabled}
         />

@@ -13,8 +13,8 @@ export const ActionsList: React.FC<Props> = ({title, actions}) => {
                 {title}
             </Text>
             <UnorderedList spacing={3}>
-                {actions.map((action) => (
-                    <ListItem>
+                {actions.map((action, i) => (
+                    <ListItem key={i}>
                         <Text>{action}</Text>
                     </ListItem>
                 ))}
