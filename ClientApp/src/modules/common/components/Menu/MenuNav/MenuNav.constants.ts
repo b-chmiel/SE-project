@@ -3,10 +3,6 @@ import {Link} from './MenuNav.types';
 
 export const ClientLinks: Link<ClientRoutes>[] = [
     {
-        title: 'YOUR PROFILE',
-        path: ClientRoutes.PROFILE,
-    },
-    {
         title: 'YOUR CARS',
         path: ClientRoutes.CARS,
     },
