@@ -1,5 +1,7 @@
 import {Box} from '@chakra-ui/react';
+import {FormikErrors} from 'formik';
 import React from 'react';
+import {Car} from '../../api/carAPI.types';
 
 export function getCardState(state: number) {
     switch (state) {
@@ -28,3 +30,19 @@ export function getCardState(state: number) {
             );
     }
 }
+
+export const validate = (values: Car) => {
+    const errors: FormikErrors<Car> = {};
+
+    if (values.licensePlate.length === 0) {
+        errors.licensePlate = 'Please provide license plate';
+    }
+    if (values.model.length === 0) {
+        errors.model = 'Please provide car model';
+    }
+    if (values.licensePlate.length < 4) {
+        errors.licensePlate = 'Too short license plate';
+    }
+
+    return errors;
+};

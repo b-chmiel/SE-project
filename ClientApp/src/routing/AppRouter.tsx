@@ -32,7 +32,7 @@ export const AppRouter: React.FC = () => {
                     <AppointmentView />
                 </RestrictedRoute>
                 <RestrictedRoute path={ClientRoutes.CARS} accountType={UserType.CLIENT}>
-                    <CarsView props={''}></CarsView>
+                    <CarsView></CarsView>
                 </RestrictedRoute>
                 <RestrictedRoute path={ClientRoutes.CLIENT_CASE} accountType={UserType.CLIENT}>
                     <AppointmentDetailView />

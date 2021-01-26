@@ -34,3 +34,10 @@ export function getDiagnosticProfile(licensePlate: string): Promise<DiagnosticPr
         .then((response) => response.data)
         .catch(() => null);
 }
+
+export function postCar(car: Car): Promise<any | null> {
+    return axios
+        .post(API_BASE_PATH + ApiRoutes.CARS, car, {headers: {Guid: localStorage.getItem('client_uuid')}})
+        .then((response) => response.data)
+        .catch(() => null);
+}

@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {getCar, getCars, getDiagnosticProfile} from '../api/carAPI';
+import {getCar, getCars, getDiagnosticProfile, postCar} from '../api/carAPI';
 import {Car, DiagnosticProfile} from '../api/carAPI.types';
 
 export function useCar() {
@@ -47,5 +47,17 @@ export function useCar() {
         return false;
     }
 
-    return {isFetching, cars, car, diagnosticProfile, fetchCars, fetchCar, fetchDiagnosticProfile};
+    async function addCar(car: Car): Promise<boolean> {
+        setFetching(true);
+
+        const response = await postCar(car);
+        if (response !== null) {
+            setFetching(false);
+            return true;
+        }
+        setFetching(false);
+        return false;
+    }
+
+    return {isFetching, cars, car, diagnosticProfile, fetchCars, fetchCar, fetchDiagnosticProfile, addCar};
 }
