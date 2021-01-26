@@ -1,13 +1,13 @@
-import {Box, Button, Center, Flex, Text} from '@chakra-ui/react';
-import {format, parseISO} from 'date-fns';
+import { Box, Button, Center, Flex, Text } from '@chakra-ui/react';
+import { format, parseISO } from 'date-fns';
 import React from 'react';
-import {useHistory} from 'react-router-dom';
-import {colors} from '../../../../../globalTheme/theme';
-import {Visit} from '../../../../employee/api/visitAPI.types';
-import {CarIcon} from '../../CarCard/CarCard.icons';
-import {Dot} from '../../Dot/Dot';
-import {dateFormat} from './AppointmentItem.constants';
-import {getStatusColor} from './AppointmentItem.helpers';
+import { useHistory } from 'react-router-dom';
+import { colors } from '../../../../../globalTheme/theme';
+import { CarIcon } from '../../../../client/components/CarCard/CarCard.icons';
+import { Visit } from '../../../../employee/api/visitAPI.types';
+import { Dot } from '../../Dot/Dot';
+import { dateFormat } from './AppointmentItem.constants';
+import { getStatusColor } from './AppointmentItem.helpers';
 
 interface Props {
     visit: Visit;

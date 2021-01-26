@@ -1,9 +1,9 @@
-import {Box, Button, Center, Container, Grid, GridItem} from '@chakra-ui/react';
+import { Box, Button, Center, Container, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
-import {useHistory} from 'react-router-dom';
-import {ClientRoutes} from '../../../../routing/routes';
-import {DiagnosticProfileButton} from '../DiagnosticProfile/DiagnosticProfile';
-import {CarIcon} from './CarCard.icons';
+import { useHistory } from 'react-router-dom';
+import { ClientRoutes } from '../../../../routing/routes';
+import { DiagnosticProfileButton } from '../../../common/components/DiagnosticProfile/DiagnosticProfile';
+import { CarIcon } from './CarCard.icons';
 
 interface Props {
     model: string;

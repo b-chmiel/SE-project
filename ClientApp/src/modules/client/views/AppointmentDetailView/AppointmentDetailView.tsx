@@ -1,17 +1,17 @@
-import {Button, createStandaloneToast, Grid, GridItem, Text, useDisclosure} from '@chakra-ui/react';
+import { Button, createStandaloneToast, Grid, GridItem, Text, useDisclosure } from '@chakra-ui/react';
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
-import {ClientRoutes} from '../../../../routing/routes';
-import {CarCard} from '../../../common/components/CarCard/CarCard';
-import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
-import {TextInfoBadge} from '../../../common/components/TextInfoBadge/TextInfoBadge';
-import {VisitStatus} from '../../api/visitAPI.types';
-import {ActionsList} from '../../components/ActionsList/ActionsList';
-import {FinishTransactionModal} from '../../components/FinishTransactionModal/FinishTransactionModal';
-import {useCar} from '../../hooks/useCar';
-import {useVisit} from '../../hooks/useVisit';
-import {parsedDate} from './AppointmentDetailView.helpers';
+import { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { ClientRoutes } from '../../../../routing/routes';
+import { DatePicker } from '../../../common/components/DatePicker/DatePicker';
+import { TextInfoBadge } from '../../../common/components/TextInfoBadge/TextInfoBadge';
+import { VisitStatus } from '../../api/visitAPI.types';
+import { ActionsList } from '../../components/ActionsList/ActionsList';
+import { CarCard } from '../../components/CarCard/CarCard';
+import { FinishTransactionModal } from '../../components/FinishTransactionModal/FinishTransactionModal';
+import { useCar } from '../../hooks/useCar';
+import { useVisit } from '../../hooks/useVisit';
+import { parsedDate } from './AppointmentDetailView.helpers';
 
 export const AppointmentDetailView: React.FC = () => {
     //@ts-ignore

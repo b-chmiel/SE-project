@@ -1,44 +1,22 @@
 import {Box} from '@chakra-ui/react';
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import { CarCard } from '../../../common/components/CarCard/CarCard';
-import { CarCardModal } from '../../../common/components/CarCard/CarCardModal';
+import React from 'react';
+import {useInit} from '../../../common/hooks/useInit';
+import {CarCard} from '../../components/CarCard/CarCard';
+import {CarCardModal} from '../../components/CarCard/CarCardModal';
+import {useCar} from '../../hooks/useCar';
 
-type CarsProps = {
-    props: string;
-};
-type Car = {
-    licensePlate: string,
-    model: string,
-    type: string
-}
+const CarsView: React.FC = () => {
+    const {fetchCars, cars} = useCar();
 
-const CarsView: React.FC<CarsProps> = ({props}) => {
-
-    const [cars, setCars] = React.useState<Car[]>([]);
-
-    useEffect(()=>{
-        axios.get('/api/0.1.1/cars', {
-            headers: {
-                'Guid': localStorage.getItem('client_uuid')
-            }
-        }).then((res)=>{
-            setCars(res.data)
-        })
-    },[])
+    useInit(fetchCars);
 
     return (
         <Box>
-            <CarCardModal></CarCardModal>
+            <CarCardModal />
 
-            {cars?.map(c=>
-                <CarCard
-                    licensePlate={c.licensePlate}
-                    model={c.model}
-                    type={c.type}
-                    showAppointmentButton
-                ></CarCard>
-            )}
+            {cars?.map((c) => (
+                <CarCard licensePlate={c.licensePlate} model={c.model} type={c.type} showAppointmentButton></CarCard>
+            ))}
         </Box>
     );
 };

@@ -1,20 +1,20 @@
-import {Box, Button, createStandaloneToast, Flex, FormControl, Grid, GridItem, Text, useDisclosure} from '@chakra-ui/react';
-import {format} from 'date-fns';
-import {Field, Formik, FormikHelpers} from 'formik';
-import React, {useEffect, useState} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
-import {WorkshopEmployeeRoutes} from '../../../../routing/routes';
-import {CarCard} from '../../../common/components/CarCard/CarCard';
-import {DatePicker} from '../../../common/components/DatePicker/DatePicker';
-import {TextInfoBadge} from '../../../common/components/TextInfoBadge/TextInfoBadge';
-import {TodoList} from '../../../common/components/TodoList/TodoList';
-import {VisitStatus, VisitType} from '../../api/visitAPI.types';
-import {ChangeStatusModal} from '../../components/ChangeStatusModal/ChangeStatusModal';
-import {useCar} from '../../hooks/useCar';
-import {useVisit} from '../../hooks/useVisit';
-import {dateFormat, initialValues} from './CaseView.constants';
-import {parsedDate} from './CaseView.helpers';
-import {ActionsSubmitionType} from './CaseView.types';
+import { Box, Button, createStandaloneToast, Flex, FormControl, Grid, GridItem, Text, useDisclosure } from '@chakra-ui/react';
+import { format } from 'date-fns';
+import { Field, Formik, FormikHelpers } from 'formik';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { WorkshopEmployeeRoutes } from '../../../../routing/routes';
+import { CarCard } from '../../../client/components/CarCard/CarCard';
+import { DatePicker } from '../../../common/components/DatePicker/DatePicker';
+import { TextInfoBadge } from '../../../common/components/TextInfoBadge/TextInfoBadge';
+import { TodoList } from '../../../common/components/TodoList/TodoList';
+import { VisitStatus, VisitType } from '../../api/visitAPI.types';
+import { ChangeStatusModal } from '../../components/ChangeStatusModal/ChangeStatusModal';
+import { useCar } from '../../hooks/useCar';
+import { useVisit } from '../../hooks/useVisit';
+import { dateFormat, initialValues } from './CaseView.constants';
+import { parsedDate } from './CaseView.helpers';
+import { ActionsSubmitionType } from './CaseView.types';
 
 export const CaseView: React.FC = () => {
     //@ts-ignore

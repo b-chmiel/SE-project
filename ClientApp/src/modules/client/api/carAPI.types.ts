@@ -2,7 +2,6 @@ export interface Car {
     licensePlate: string;
     model: string;
     type: CarType;
-    username: string;
 }
 
 export enum CarType {
