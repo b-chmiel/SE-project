@@ -18,7 +18,7 @@
  
 ## Overview
 
-Car workshop service web application allows client and employee to manage car visit in the workshop. Client adds a car and report accident, so that an appoinment can be made. Employee accepts visit and update cars state while repairing or maintaing the car. Clear employee interface allows to choose suitable visit to do. After fixes are done and visit is paid the car is ready to collect. 
+Car workshop service web application allows client and employee to manage car visits in the workshop. Client adds a car and report accident, so that an appointment can be made. Employee accepts visit and update cars state while repairing or maintaining the car. Clear employee interface allows to choose suitable visit to do. After fixes are done and visits is paid the car is ready to collect. 
 
 ## How to run app
 
