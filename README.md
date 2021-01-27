@@ -1,5 +1,7 @@
 ## Table of contents
-- [Overview)(#overview)
+- [Overview](#overview)
+
+-[How to run app](#run)
 
 - [Service](#service)
 
@@ -17,6 +19,21 @@
 ## Overview
 
 Car workshop service web application allows client and employee to manage car visit in the workshop. Client adds a car and report accident, so that an appoinment can be made. Employee accepts visit and update cars state while repairing or maintaing the car. Clear employee interface allows to choose suitable visit to do. After fixes are done and visit is paid the car is ready to collect. 
+
+## How to run app
+
+Clone project
+
+```
+  git clone https://github.com/bachm44/SE-project
+   ```
+
+Go to project directory 
+
+ ```
+  cd SE-project
+   ```
+
 
 ## Service
 
