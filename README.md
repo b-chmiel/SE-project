@@ -47,8 +47,9 @@ Go to
 ```
   localhost:5001
    ```
-Project is also available here~~(depricated)~~
-~~https://se-project-2020.herokuapp.com~~
+~~Project is also available here
+(depricated)
+https://se-project-2020.herokuapp.com~~
    
 ## Service
 
