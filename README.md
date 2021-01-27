@@ -1,7 +1,7 @@
 ## Table of contents
 - [Overview](#overview)
 
--[How to run app](#run)
+- [How to run app](#run)
 
 - [Service](#service)
 
@@ -22,6 +22,8 @@ Car workshop service web application allows client and employee to manage car vi
 
 ## How to run app
 
+Install Node.js and .NET framework
+
 Clone project
 
 ```
@@ -34,7 +36,20 @@ Go to project directory
   cd SE-project
    ```
 
+Run project 
 
+ ```
+  dotnet run
+   ```
+
+Go to 
+
+```
+  localhost:5001
+   ```
+~~Project is also available here ~~
+~~https://se-project-2020.herokuapp.com~~
+   
 ## Service
 
 Service enables interactions between UI and database providing multiple (22) methods processing database content to useful form.
