@@ -1,4 +1,5 @@
 ## Table of contents
+- [Overview)(#overview)
 
 - [Service](#service)
 
@@ -11,6 +12,11 @@
   - [Database](#about-database)
 
   - [Configuration files](#service-configuration-files)
+  
+ 
+## Overview
+
+Car workshop service web application allows client and employee to manage car visit in the workshop. Client adds a car and report accident, so that an appoinment can be made. Employee accepts visit and update cars state while repairing or maintaing the car. Clear employee interface allows to choose suitable visit to do. After fixes are done and visit is paid the car is ready to collect. 
 
 ## Service
 
