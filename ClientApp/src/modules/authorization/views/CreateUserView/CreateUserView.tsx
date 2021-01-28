@@ -1,10 +1,10 @@
-import {Box, Button, Center, Container, Heading, Input, Switch} from '@chakra-ui/react';
+import {Box, Button, Center, Container, Heading, Input} from '@chakra-ui/react';
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import {AuthenticationRoutes} from '../../../../routing/routes';
 import {createUser} from '../../helpers/AuthService';
-import {boxswt, button, errormsg, input, swt} from '../AuthorizationView/AuthorizationView.styles';
-import {getUserType} from './CreateUserView.helpers';
+import {UserType} from '../../helpers/AuthService.types';
+import {button, errormsg, input} from '../AuthorizationView/AuthorizationView.styles';
 
 const CreateUserView: React.FC = ({children}) => {
     const history = useHistory();
@@ -14,7 +14,6 @@ const CreateUserView: React.FC = ({children}) => {
     const [surname, setSurname] = useState('');
     const [first, setFirst] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [type, setType] = useState(false); // CLIENT = false
     const [telephone, setTelephone] = useState('');
     const [alreadyExists, setAlreadyExists] = useState(false);
 
@@ -45,12 +44,9 @@ const CreateUserView: React.FC = ({children}) => {
         setTelephone(e.currentTarget.value);
         setFirst(true);
     }
-    function toggleType() {
-        setType(!type);
-    }
 
     function submitLogin(username: string, password: string) {
-        createUser(name, surname, username, password, getUserType(type), telephone).then((r) => {
+        createUser(name, surname, username, password, UserType.CLIENT, telephone).then((r) => {
             if (r === true) {
                 history.push(AuthenticationRoutes.SIGNIN);
             } else {
@@ -94,11 +90,6 @@ const CreateUserView: React.FC = ({children}) => {
                     style={input}
                 />
                 <Input value={telephone} onChange={onChangeTelephone} type="tel" placeholder="500500500" style={input} />
-
-                <Box style={boxswt} mb="0">
-                    <Switch onChange={toggleType} id="type" style={swt} />
-                    Are you employee?
-                </Box>
 
                 <Center>
                     <Button
